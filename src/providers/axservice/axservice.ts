@@ -5,34 +5,33 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/Rx';
 import { StorageserviceProvider } from '../storageservice/storageservice';
+import { ParameterserviceProvider } from '../parameterservice/parameterservice';
 
 @Injectable()
 export class AxserviceProvider {
 
-  public user: string;
-  public proxyUser = 'erp@salamair.com';
-  public token: string;
-
   constructor(public http: Http, private msAdal: MSAdal,
-    public storageservice: StorageserviceProvider) {
+    private storageservice: StorageserviceProvider, private parameterservice: ParameterserviceProvider) {
     console.log('Hello AxserviceProvider Provider');
   }
 
   login = Observable.create((observer) => {
     let authContext: AuthenticationContext = this.msAdal.createAuthenticationContext('https://login.windows.net/common');
-    authContext.acquireTokenAsync('https://salamair-devaos.sandbox.ax.dynamics.com', 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e', 'https://AuthCRMClient',
+    authContext.acquireTokenAsync(this.parameterservice.D365URL, 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e', 'https://AuthCRMClient',
      '','')
       .then((authResponse: AuthenticationResult) => {
         if( authResponse.accessToken != '') {
           this.storageservice.setAuthenticated(true);
+          this.storageservice.setLoginUser(authResponse.userInfo.uniqueId);
         } else {
           this.storageservice.setAuthenticated(false);
+          this.storageservice.setLoginUser('');
         }
-        this.user = authResponse.userInfo.uniqueId;
         observer.next(authResponse);
       })
       .catch((e: any) => {
         this.storageservice.setAuthenticated(false);
+        this.storageservice.setLoginUser('');
         observer.error(e);
         console.log('Authentication failed', e)
       });
@@ -40,15 +39,17 @@ export class AxserviceProvider {
 
   createProxyUserToken = Observable.create((observer) => {
     let authContext: AuthenticationContext = this.msAdal.createAuthenticationContext('https://login.windows.net/common');
-    authContext.acquireTokenSilentAsync('https://salamair-devaos.sandbox.ax.dynamics.com', 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e',
-     this.proxyUser)
+    authContext.acquireTokenSilentAsync(this.parameterservice.D365URL, 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e',
+     this.parameterservice.proxyUser)
       .then((authResponse: AuthenticationResult) => {
-        this.token = authResponse.accessToken;
+        this.storageservice.setToken(authResponse.accessToken);
+        this.storageservice.setTokenExpiryDateTime(authResponse.expiresOn);
         observer.next(authResponse);
         console.log('Proxy user token is ' , authResponse.accessToken);
         console.log('Proxy user token will expire on ', authResponse.expiresOn);
       })
       .catch((e: any) => {
+        this.storageservice.setToken('');
         observer.error(e);
         console.log('Authentication failed', e)
       });

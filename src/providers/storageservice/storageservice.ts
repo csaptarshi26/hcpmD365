@@ -3,33 +3,57 @@ import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/Rx';
+import { ParameterserviceProvider } from '../parameterservice/parameterservice';
+import { DateTime } from 'ionic-angular';
 
 @Injectable()
 export class StorageserviceProvider {
 
-  public D365URL: string;
-  public authenticated: boolean;
-  private totalStorageVariables: number = 2;
+  
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private parameterservice: ParameterserviceProvider) {
     console.log('Hello StorageserviceProvider Provider');
   }
 
   getAllValuesFromStorage = Observable.create((observer) => {
     let variables = 0;
     this.storage.get('D365URL').then((data) => {
-      this.D365URL = data;
+      this.parameterservice.D365URL = data;
       observer.next(data);
       variables++;
-      if(variables == this.totalStorageVariables) {
+      if(variables == this.parameterservice.totalStorageVariables) {
         observer.complete();
       }
     })
     this.storage.get('authenticated').then((data) => {
-      this.authenticated = data;
+      this.parameterservice.authenticated = data;
       observer.next(data);
       variables++;
-      if(variables == this.totalStorageVariables) {
+      if(variables == this.parameterservice.totalStorageVariables) {
+        observer.complete();
+      }
+    })
+    this.storage.get('user').then((data) => {
+      this.parameterservice.user = data;
+      observer.next(data);
+      variables++;
+      if(variables == this.parameterservice.totalStorageVariables) {
+        observer.complete();
+      }
+    })
+    this.storage.get('token').then((data) => {
+      this.parameterservice.token = data;
+      observer.next(data);
+      variables++;
+      if(variables == this.parameterservice.totalStorageVariables) {
+        observer.complete();
+      }
+    })
+    this.storage.get('tokenExpiryDateTime').then((data) => {
+      this.parameterservice.tokenExpiryDateTime = data;
+      observer.next(data);
+      variables++;
+      if(variables == this.parameterservice.totalStorageVariables) {
         observer.complete();
       }
     })
@@ -37,11 +61,26 @@ export class StorageserviceProvider {
 
   setD365URL(D365URL: string) {
     this.storage.set('D365URL', D365URL);
-    this.D365URL = D365URL;
+    this.parameterservice.D365URL = D365URL;
   }
 
   setAuthenticated(authenticated: boolean) {
     this.storage.set('authenticated', authenticated);
-    this.authenticated = authenticated;
+    this.parameterservice.authenticated = authenticated;
+  }
+
+  setLoginUser(user: string) {
+    this.storage.set('user', user);
+    this.parameterservice.user = user;
+  }
+
+  setToken(token: string) {
+    this.storage.set('token', token);
+    this.parameterservice.token = token;
+  }
+
+  setTokenExpiryDateTime(tokenExpiryDateTime: Date) {
+    this.storage.set('tokenExpiryDateTime', tokenExpiryDateTime);
+    this.parameterservice.tokenExpiryDateTime = tokenExpiryDateTime;
   }
 }

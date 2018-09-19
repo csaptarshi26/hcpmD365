@@ -15,6 +15,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { ProfilePage } from '../pages/profile/profile';
 import { StorageserviceProvider } from '../providers/storageservice/storageservice';
 import { IonicStorageModule } from '@ionic/storage';
+import { ParameterserviceProvider } from '../providers/parameterservice/parameterservice';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { IonicStorageModule } from '@ionic/storage';
     MSAdal,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AxserviceProvider,
-    StorageserviceProvider
+    StorageserviceProvider,
+    ParameterserviceProvider
   ]
 })
 export class AppModule {}

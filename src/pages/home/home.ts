@@ -3,6 +3,7 @@ import { NavController, LoadingController } from 'ionic-angular';
 import { StorageserviceProvider } from '../../providers/storageservice/storageservice';
 import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { LoginPage } from '../login/login';
+import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 
 @Component({
   selector: 'page-home',
@@ -10,7 +11,7 @@ import { LoginPage } from '../login/login';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController, private parameterservice: ParameterserviceProvider, 
     public storageservice: StorageserviceProvider, public axservice: AxserviceProvider,
     public loadingCtrl: LoadingController) {
     this.initializeStorageVariables();  
@@ -39,7 +40,7 @@ export class HomePage {
   }
 
   navigatingToLogin() {
-    if(this.storageservice.authenticated == true) {
+    if(this.parameterservice.authenticated == true) {
       let loading = this.loadingCtrl.create({
         spinner: 'dots',
         content: 'Please wait'
