@@ -16,7 +16,7 @@ export class ParameterserviceProvider {
   constructor() {
     console.log('Hello ParameterserviceProvider Provider');
 
-    this.D365URL = 'https://salamair-devaos.sandbox.ax.dynamics.com'; //needs to be eliminated
+     //needs to be eliminated
   }
 
 }
