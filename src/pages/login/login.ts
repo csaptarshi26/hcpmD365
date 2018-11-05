@@ -33,6 +33,12 @@ export class LoginPage {
       loading.dismiss();
       console.log('Login '+ data);
       this.user = this.parameterservice.user;
+      this.axservice.createProxyUserToken.subscribe((data) => {
+
+      }, (error) => {
+        
+      })
+
     }, (error) => {
       loading.dismiss();
       console.log('Login - error ' + error);

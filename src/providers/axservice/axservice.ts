@@ -18,7 +18,7 @@ export class AxserviceProvider {
   }
 
   login = Observable.create((observer) => {
-    this.parameterservice.D365URL = 'https://salamair-devaos.sandbox.ax.dynamics.com';
+    //this.parameterservice.D365URL = 'https://salamair-devaos.sandbox.ax.dynamics.com';
     let authContext: AuthenticationContext = this.msAdal.createAuthenticationContext('https://login.windows.net/common');
     authContext.acquireTokenAsync(this.parameterservice.D365URL, 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e', 'https://AuthCRMClient',
      '','')
@@ -59,9 +59,19 @@ export class AxserviceProvider {
   })
 
   getWorkerDetails(user: string): Observable<any>{
-    this.workerDetailsURL = this.parameterservice.D365URL + 'api/services/AFZCRMServiceGroup/AFZCRMService/GetEmpPersonalDetails';
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/GetEmpPersonalDetails';
     let body = {_empId: user};
-    let headers = new Headers({'Content-Type': 'application/Json'});
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getWorkerTimesheetPeriods(user: string): Observable<any>{
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetPeriods';
+    let body = {_empId: user};
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
     let options = new RequestOptions({headers: headers});
     return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
       .map(this.extractData)

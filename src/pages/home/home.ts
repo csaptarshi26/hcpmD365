@@ -18,7 +18,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    
+    this.storageservice.setD365URL('https://salamair-devaos.sandbox.ax.dynamics.com');
   }
 
   initializeStorageVariables() {
