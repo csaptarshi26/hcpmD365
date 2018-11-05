@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { SettingsPage } from '../pages/settings/settings';
+import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +27,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'Login', component: LoginPage },
       { title: 'Profile', component: ProfilePage },
+      { title: 'Timesheet', component: TimesheetView1Page },
       { title: 'Settings', component: SettingsPage }
     ];
 

@@ -16,6 +16,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { StorageserviceProvider } from '../providers/storageservice/storageservice';
 import { IonicStorageModule } from '@ionic/storage';
 import { ParameterserviceProvider } from '../providers/parameterservice/parameterservice';
+import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ParameterserviceProvider } from '../providers/parameterservice/paramete
     HomePage,
     LoginPage,
     SettingsPage,
+    TimesheetView1Page,
     ProfilePage
   ],
   imports: [
@@ -37,6 +39,7 @@ import { ParameterserviceProvider } from '../providers/parameterservice/paramete
     HomePage,
     LoginPage,
     SettingsPage,
+    TimesheetView1Page,
     ProfilePage
   ],
   providers: [

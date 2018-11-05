@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AxserviceProvider } from '../../providers/axservice/axservice';
+import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 
-/**
- * Generated class for the TimesheetView1Page page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -15,11 +11,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TimesheetView1Page {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TimesheetView1Page');
+    this.getWorkerTimesheetPeriods();
+  }
+
+  getWorkerTimesheetPeriods() {
+    this.axservice.getWorkerTimesheetPeriods(this.parameterservice.user).subscribe(res => {
+      
+    }, (error) => {
+      console.log('Error - get worker ts period details: '+ error);
+    })
   }
 
 }
