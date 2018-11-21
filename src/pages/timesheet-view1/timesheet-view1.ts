@@ -17,11 +17,11 @@ export class TimesheetView1Page {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TimesheetView1Page');
-    this.getWorkerTimesheetPeriods();
+    this.getWorkerCurrentTimesheet();
   }
 
-  getWorkerTimesheetPeriods() {
-    this.axservice.getWorkerTimesheetPeriods(this.parameterservice.user).subscribe(res => {
+  getWorkerCurrentTimesheet() {
+    this.axservice.getWorkerCurrentTimesheet(this.parameterservice.user).subscribe(res => {
       
     }, (error) => {
       console.log('Error - get worker ts period details: '+ error);
