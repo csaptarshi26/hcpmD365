@@ -14,11 +14,12 @@ export class HomePage {
   constructor(public navCtrl: NavController, private parameterservice: ParameterserviceProvider, 
     public storageservice: StorageserviceProvider, public axservice: AxserviceProvider,
     public loadingCtrl: LoadingController) {
-    this.initializeStorageVariables();  
+      
+      this.initializeStorageVariables();  
   }
 
   ionViewDidLoad() {
-    this.storageservice.setD365URL('https://salamair-devaos.sandbox.ax.dynamics.com');
+    
   }
 
   initializeStorageVariables() {

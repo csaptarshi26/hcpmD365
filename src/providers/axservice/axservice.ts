@@ -18,7 +18,10 @@ export class AxserviceProvider {
   }
 
   login = Observable.create((observer) => {
-    //this.parameterservice.D365URL = 'https://salamair-devaos.sandbox.ax.dynamics.com';
+    //---------------
+    this.storageservice.setD365URL('https://salamair-devaos.sandbox.ax.dynamics.com');
+    this.parameterservice.D365URL = 'https://salamair-devaos.sandbox.ax.dynamics.com';
+    //---------------
     let authContext: AuthenticationContext = this.msAdal.createAuthenticationContext('https://login.windows.net/common');
     authContext.acquireTokenAsync(this.parameterservice.D365URL, 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e', 'https://AuthCRMClient',
      '','')

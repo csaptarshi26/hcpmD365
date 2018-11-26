@@ -10,8 +10,9 @@ export class ParameterserviceProvider {
   public proxyUser = 'erp@salamair.com';
   public token: string;
   public tokenExpiryDateTime: Date;
+  public employeeId: string;
 
-  public totalStorageVariables: number = 5;
+  public totalStorageVariables: number = 6;
 
   constructor() {
     console.log('Hello ParameterserviceProvider Provider');

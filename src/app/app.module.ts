@@ -17,14 +17,20 @@ import { StorageserviceProvider } from '../providers/storageservice/storageservi
 import { IonicStorageModule } from '@ionic/storage';
 import { ParameterserviceProvider } from '../providers/parameterservice/parameterservice';
 import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
+import { TimesheetView2Page } from '../pages/timesheet-view2/timesheet-view2';
+import { TimesheetView3Page } from '../pages/timesheet-view3/timesheet-view3';
+import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    SettingsPage,
+    SettingsPage,    
     TimesheetView1Page,
+    TimesheetView2Page,
+    TimesheetView3Page,
+    TimesheetDayPage,
     ProfilePage
   ],
   imports: [
@@ -40,7 +46,10 @@ import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
     LoginPage,
     SettingsPage,
     TimesheetView1Page,
-    ProfilePage
+    TimesheetView2Page,
+    TimesheetView3Page,
+    TimesheetDayPage,
+    ProfilePage,
   ],
   providers: [
     StatusBar,

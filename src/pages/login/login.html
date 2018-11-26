@@ -1,14 +1,15 @@
 
 <ion-header>
-
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-  <h2>You are logged in as {{user}}</h2>
-  <button ion-button color="secondary" (click)='login()' block>Login</button>
+  <h4>
+    <div *ngIf="authenticated; else elseBlock">You are logged in as {{user}}</div>
+    <ng-template #elseBlock>Please login</ng-template>
+  </h4>
+  <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
+  <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
 </ion-content>

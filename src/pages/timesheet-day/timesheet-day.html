@@ -1,0 +1,32 @@
+<ion-card>
+  <ion-card-content>
+    <ion-list >
+      <ion-item>
+        <ion-label>Project</ion-label>
+        <ion-select [(ngModel)]="project" interface="action-sheet">
+          <ion-option value="project">val1</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="category" interface="action-sheet">
+          <ion-option value="category">val1</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="activity" interface="action-sheet">
+          <ion-option value="activity">val1</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item (click)="presentProfileModal()">Day 1 {{startDate}}</ion-item>
+      <ion-item>Day 2</ion-item>
+      <ion-item>Day 3</ion-item>
+      <ion-item>Day 4</ion-item>
+      <ion-item>Day 5</ion-item>
+      <ion-item>Day 6</ion-item>
+      <ion-item>Day 7</ion-item>
+      <button ion-button block color="danger">Delete</button>
+    </ion-list>
+  </ion-card-content>
+</ion-card>

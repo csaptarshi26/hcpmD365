@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { TimesheetView3Page } from './../timesheet-view3/timesheet-view3';
+import { Component, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 /**
  * Generated class for the TimesheetView2Page page.
@@ -14,12 +16,25 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'timesheet-view2.html',
 })
 export class TimesheetView2Page {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  showDetails: any;
+  @ViewChild('viewContainerRef', { read: ViewContainerRef }) VCR: ViewContainerRef;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public modalCtrl: ModalController, public viewCtrl: ViewController, private CFR: ComponentFactoryResolver) {
+    this.showDetails = navParams.get('redirected');
   }
-
+  send() {
+    let componentFactory = this.CFR.resolveComponentFactory(TimesheetView2Page);
+    let componentRef: ComponentRef<TimesheetView2Page> = this.VCR.createComponent(componentFactory);
+    let currentComponent = componentRef.instance;
+  }
+  presentProfileModal() {
+    let profileModal = this.modalCtrl.create(TimesheetView3Page);
+    profileModal.present();
+  }
+  onClickCancel() {
+    this.viewCtrl.dismiss();
+  }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TimesheetView2Page');
-  }
 
+  }
 }

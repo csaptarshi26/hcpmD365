@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
+import { StorageserviceProvider } from '../../providers/storageservice/storageservice';
 
 @IonicPage()
 @Component({
@@ -11,16 +12,21 @@ import { ParameterserviceProvider } from '../../providers/parameterservice/param
 export class LoginPage {
 
   public user: string;
+  public authenticated: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, public loadingCtrl: LoadingController,
-    private parameterservice: ParameterserviceProvider) {
+    private parameterservice: ParameterserviceProvider,public storageservice: StorageserviceProvider) {
       
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.authenticated = this.parameterservice.authenticated;
     this.user = this.parameterservice.user;
+    if(this.authenticated == false) {
+      this.login();
+    }
   }
 
   login() {
@@ -33,8 +39,9 @@ export class LoginPage {
       loading.dismiss();
       console.log('Login '+ data);
       this.user = this.parameterservice.user;
+      this.authenticated = true;
       this.axservice.createProxyUserToken.subscribe((data) => {
-
+        this.navCtrl.pop();
       }, (error) => {
         
       })
@@ -43,6 +50,13 @@ export class LoginPage {
       loading.dismiss();
       console.log('Login - error ' + error);
     });
-  }  
+  } 
+  
+  logout() {
+    this.authenticated = false;
+    this.storageservice.setAuthenticated(false);
+    this.storageservice.setLoginUser("");
+    this.storageservice.setEmployeeId("");
+  }
 
 }

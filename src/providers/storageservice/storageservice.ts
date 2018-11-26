@@ -57,6 +57,14 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
+    this.storage.get('employeeId').then((data) => {
+      this.parameterservice.employeeId = data;
+      observer.next(data);
+      variables++;
+      if(variables == this.parameterservice.totalStorageVariables) {
+        observer.complete();
+      }
+    })
   })
 
   setD365URL(D365URL: string) {
@@ -82,5 +90,10 @@ export class StorageserviceProvider {
   setTokenExpiryDateTime(tokenExpiryDateTime: Date) {
     this.storage.set('tokenExpiryDateTime', tokenExpiryDateTime);
     this.parameterservice.tokenExpiryDateTime = tokenExpiryDateTime;
+  }
+
+  setEmployeeId(employeeId: string) {
+    this.storage.set('employeeId', employeeId);
+    this.parameterservice.employeeId = employeeId;
   }
 }

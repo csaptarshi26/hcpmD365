@@ -1,3 +1,7 @@
 page-timesheet-view2 {
 
+    ::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
 }
