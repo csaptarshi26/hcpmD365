@@ -6,6 +6,7 @@ import { Observer } from 'rxjs/Observer';
 import 'rxjs/Rx';
 import { StorageserviceProvider } from '../storageservice/storageservice';
 import { ParameterserviceProvider } from '../parameterservice/parameterservice';
+import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 
 @Injectable()
 export class AxserviceProvider {
@@ -84,6 +85,46 @@ export class AxserviceProvider {
   getWorkerCurrentTimesheet(user: string): Observable<any>{
     this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getCurEmplTSDetails';
     let body = {_empId: user};
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getWorkerTimesheetProject(): Observable<any>{
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetProject';
+    let body = {};
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getWorkerTimesheetActivity(projId: string): Observable<any>{
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetActivity';
+    let body = {_projId: projId};
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getWorkerTimesheetCategory(): Observable<any>{
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetCategory';
+    let body = {};
+    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  updateWorkerTimesheet(timesheetTableContact: timesheetTableContact): Observable<any>{
+    this.workerDetailsURL = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/updateEmplTSDetails';
+    let body = {_timesheetTableContract: timesheetTableContact};
     let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
     let options = new RequestOptions({headers: headers});
     return this.http.post(this.workerDetailsURL, JSON.stringify(body), options)
