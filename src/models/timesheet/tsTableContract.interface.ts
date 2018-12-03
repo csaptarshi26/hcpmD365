@@ -4,6 +4,7 @@ export interface timesheetTableContact{
     EmplId:string,
     PeriodFrom:Date,
     PeriodTo:Date,
-    TimesheetNumber:string
+    TimesheetNumber:string,
+    IsEditable: boolean,
     TimesheetLineList:timesheetLineList[]
 }
