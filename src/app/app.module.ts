@@ -1,6 +1,11 @@
+import { LeaveTabsPage } from './../pages/leave-tabs/leave-tabs';
+import { LeaveView2Page } from './../pages/leave-view2/leave-view2';
+import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FullCalendarModule } from 'ng-fullcalendar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -31,13 +36,18 @@ import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
     TimesheetView2Page,
     TimesheetView3Page,
     TimesheetDayPage,
-    ProfilePage
+    LeaveView1Page,
+    ProfilePage,
+    LeaveView2Page,
+    LeaveTabsPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    BrowserAnimationsModule,
+    IonicModule.forRoot(MyApp,{tabsPlacement: 'top'}),
     IonicStorageModule.forRoot(),
+    FullCalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,6 +60,9 @@ import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
     TimesheetView3Page,
     TimesheetDayPage,
     ProfilePage,
+    LeaveView1Page,
+    LeaveView2Page,
+    LeaveTabsPage
   ],
   providers: [
     StatusBar,

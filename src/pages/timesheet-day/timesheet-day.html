@@ -1,32 +1,38 @@
-<ion-card>
-  <ion-card-content>
-    <ion-list >
-      <ion-item>
-        <ion-label>Project</ion-label>
-        <ion-select [(ngModel)]="project" interface="action-sheet">
-          <ion-option value="project">val1</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Category</ion-label>
-        <ion-select [(ngModel)]="category" interface="action-sheet">
-          <ion-option value="category">val1</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Activity</ion-label>
-        <ion-select [(ngModel)]="activity" interface="action-sheet">
-          <ion-option value="activity">val1</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item (click)="presentProfileModal()">Day 1 {{startDate}}</ion-item>
-      <ion-item>Day 2</ion-item>
-      <ion-item>Day 3</ion-item>
-      <ion-item>Day 4</ion-item>
-      <ion-item>Day 5</ion-item>
-      <ion-item>Day 6</ion-item>
-      <ion-item>Day 7</ion-item>
-      <button ion-button block color="danger">Delete</button>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button outline color="primary" (click)="submitTs()">Submit</button>
+    </ion-buttons>
+    <ion-title>Request </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let lineList of tsLineList">
+    <div *ngIf="lineList.IsDeleted==0">
+      <ion-item-group (click)="editProjectDetails(lineList)">
+        <ion-item-divider color="light">
+          <b>Project:{{lineList.ProjName}}</b><br>
+          <p>Total Hours: {{lineList.TotalHrs}}</p>
+        </ion-item-divider>
+        <ion-item>
+          <ion-label stacked>Category</ion-label>
+          <ion-label>{{lineList.CategoryId}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Activity</ion-label>
+          <ion-label>{{lineList.ProjActivityNumber}}</ion-label>
+        </ion-item>
+        <!-- <div *ngIf="isEditable; else viewRequest">
+          <button ion-button block outline >Edit Request</button>
+        </div>
+        <ng-template #viewRequest><button ion-button block outline>View Request</button></ng-template> -->
+      </ion-item-group>
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,13 +1,46 @@
 page-timesheet-view1 {
    
-    // .card .list .item {
-    //     border-bottom: 1px solid #d4d2d2;
-    // }
+    .card .list .item {
+        border-bottom: 1px solid #d4d2d2;
+    }
     .grid{
         margin-left: 20px
     }
-    .scroll-bar-indicator
-{
-	display: none;
-}
+    .scroll-bar-indicator{
+	    display: none;
+    }
+    .notFound{
+        font-family: Lato, sans-serif;
+        font-size: 21pt;
+        color: rgb(47, 41, 43);
+        font-weight: normal;
+        font-style: normal;
+        text-align: left;
+    }
+    .tsNumber{
+        font-family: Lato, sans-serif;
+        font-size: 16pt;
+        color:  #0A6ACC;
+        font-weight: 400;
+        font-style: normal;
+        text-align: left;
+    }
+    .noTs{
+        font-family: Lato, sans-serif;
+        font-size: 13pt;
+        color: rgb(47, 41, 43);
+        font-weight: 600;
+        font-style: normal;
+        text-align: left;
+        padding: 5px;
+        line-height: 1.2;
+        overflow-y: hidden;
+    }
+    .addLine{
+        margin-top: -7px;
+    }
+    .fabButton{
+        position:absolute;
+        z-index: 1;
+    }
 }

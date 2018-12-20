@@ -1,17 +1,105 @@
 <ion-header>
-    <ion-toolbar color="primary">
-        <ion-buttons left>
-            <button ion-button icon-only (click)="onClickCancel()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
-        </ion-buttons>
-        <ion-title>Add Timesheet</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons right>
+      <button ion-button round outline color="primary" (click)="updateTimesheet()" [disabled]="!isEditable">Save</button>
+    </ion-buttons>
+    <ion-title>Timesheet</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-    <page-timesheet-day></page-timesheet-day>
-    <ng-template #viewContainerRef></ng-template>
-    <button ion-button block color="secondary" (click)="send()">New Line</button>
+  <ion-list>
+    <div *ngIf="tsLineList!=null; else newLine">
+      <!-- WHEN REQUEST STATUS IS EDITABLE-->
+      <div *ngIf="isEditable;else viewOnly">
+        <!-- PROJECTS IN SELECT OPTION MODE-->
+        <ion-item>
+          <ion-label>Project</ion-label>
+          <ion-select [(ngModel)]="tsLineList[0].ProjId" interface="action-sheet" (ionChange)="selectedProject(tsLineList[0].ProjId)">
+            <ion-option *ngFor="let projects of tsProject" value="{{projects.ProjId}}">{{projects.ProjId}} -
+              {{projects.Name}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <!-- CATEGORY IN SELECT OPTION MODE-->
+        <ion-item>
+          <ion-label>Category</ion-label>
+          <ion-select [(ngModel)]="tsLineList[0].CategoryId" interface="action-sheet" (ionchange)="selectedCategory(tsLineList[0].CategoryId)">
+            <ion-option *ngFor="let category of tsCategory" value="{{category.CategoryId}}">{{category.CategoryId}}
+              - {{category.Description}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <!-- ACTIVITY IN SELECT OPTION MODE-->
+        <ion-item>
+          <ion-label>Activity</ion-label>
+          <ion-select [(ngModel)]="tsLineList[0].ProjActivityNumber" interface="action-sheet" (ionchange)="selectedActivity(tsLineList[0].ProjActivityNumber)">
+            <ion-option *ngFor="let activity of tsActivity" value="{{activity.ActivityNumber}}">{{activity.ActivityNumber}}
+              - {{activity.Description}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
+    <ng-template #newLine>
+      <!-- PROJECTS IN SELECT OPTION MODE-->
+      <ion-item>
+        <ion-label>Project</ion-label>
+        <ion-select [(ngModel)]="newTsLine.ProjId" interface="action-sheet" (ionChange)="selectedProject(newTsLine.ProjId)">
+          <ion-option *ngFor="let projects of tsProject" value="{{projects.ProjId}}">{{projects.ProjId}} -
+            {{projects.Name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <!-- CATEGORY IN SELECT OPTION MODE-->
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="newTsLine.CategoryId" interface="action-sheet" (ionchange)="selectedCategory(newTsLine.CategoryId)">
+          <ion-option *ngFor="let category of tsCategory" value="{{category.CategoryId}}">{{category.CategoryId}}
+            - {{category.Description}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <!-- ACTIVITY IN SELECT OPTION MODE-->
+      <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="newTsLine.ProjActivityNumber" interface="action-sheet" (ionchange)="selectedActivity(newTsLine.ProjActivityNumber)">
+          <ion-option *ngFor="let activity of tsActivity" value="{{activity.ActivityNumber}}">{{activity.ActivityNumber}}
+            - {{activity.Description}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ng-template>
+    <!-- WHEN REQUEST CANNOT BE EDITABLE-->
+
+    <ng-template #viewOnly>
+      <div *ngFor="let lineList of tsLineList">
+        <ion-item>
+          <ion-label text-left>Project</ion-label>
+          <ion-label text-right>{{lineList.ProjId}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label text-left>Category</ion-label>
+          <ion-label text-right>{{lineList.CategoryId}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label text-left>Activity</ion-label>
+          <ion-label text-right>{{lineList.ProjActivityNumber}}</ion-label>
+        </ion-item>
+      </div>
+    </ng-template>
+    <!--DISPLAY HOURS IN CALENDAR MODE-->
+
+    <ion-list>
+      <div id="calendar"></div>
+    </ion-list>
+    <!-- <div *ngFor="let days of lineList.TimesheetLineDateList">
+            <ion-item (click)="presentProfileModal(days)">
+                <ion-label text-left>{{days.LineDate | date:'d MMM , EE'}}</ion-label>
+                <ion-label text-right>{{days.Hours}} Hrs</ion-label>
+            </ion-item>
+        </div> -->
+
+  </ion-list>
 </ion-content>

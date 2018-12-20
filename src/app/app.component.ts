@@ -1,3 +1,5 @@
+import { LeaveTabsPage } from './../pages/leave-tabs/leave-tabs';
+import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,6 +22,11 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+    // this.statusBar.styleLightContent();
+    // this.statusBar.hide();
+    this.statusBar.backgroundColorByHexString('#f4f4f4');
+    this.statusBar.styleLightContent();
+   
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -28,9 +35,9 @@ export class MyApp {
       { title: 'Login', component: LoginPage },
       { title: 'Profile', component: ProfilePage },
       { title: 'Timesheet', component: TimesheetView1Page },
-      { title: 'Settings', component: SettingsPage }
+      { title: 'Leave', component:LeaveTabsPage},
+      { title: 'Settings', component: SettingsPage },
     ];
-
   }
 
   initializeApp() {
@@ -41,7 +48,6 @@ export class MyApp {
       this.splashScreen.hide();
     });
   }
-
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario

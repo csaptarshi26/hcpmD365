@@ -1,16 +1,34 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>
-      Comment
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div id="id01" class="w3-modal w3-animate-opacity" style="display:block">
+  <div class="w3-modal-content w3-card-4">
+    <header class="w3-container w3-light-grey">
+      <span (click)="dismiss()" class="w3-button w3-large w3-display-topright">&times;</span>
+      <h2 text-center>Comments</h2>
+    </header>
+    <div class="w3-container" *ngFor="let tsDate of tsLineDate">
+      <h2>{{date | date:'d MMM , EE'}}</h2>
+      <ion-item>
+        <ion-label color="primary" floating>Hours</ion-label>
+        <ion-input type="text" [(ngModel)]="tsDate.Hours"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Internal Comment</ion-label>
+        <ion-input type="text" [(ngModel)]="tsDate.InternalComments"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>External Comment</ion-label>
+        <ion-input type="text" [(ngModel)]="tsDate.ExternalComments"></ion-input>
+      </ion-item>
 
+      <button ion-button (click)="save(tsDate)" block>Save</button>
+    </div>
+  </div>
+</div>
 
+<!-- 
 <ion-content padding>
   <ion-list>
     <ion-item><ion-textarea placeholder="Internal Comment"></ion-textarea></ion-item>
     <ion-item><ion-textarea placeholder="External Comment"></ion-textarea></ion-item>
   </ion-list>
   <button ion-button (click)="dismiss()" block>Close Modal</button>
-</ion-content>
+</ion-content> -->

@@ -1,0 +1,11 @@
+<ion-content padding>
+    <h2 text-center>My Leave Request</h2>
+  <div>
+    <ion-segment [(ngModel)]="status">
+      <ion-segment-button round value="all">All</ion-segment-button>
+      <ion-segment-button value="draft">Draft</ion-segment-button>
+      <ion-segment-button value="approved">Approved</ion-segment-button>
+      <ion-segment-button value="rejected">Rejected</ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-content>

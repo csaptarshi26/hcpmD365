@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar>
     <ion-title>Login</ion-title>
@@ -11,5 +10,9 @@
     <ng-template #elseBlock>Please login</ng-template>
   </h4>
   <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
-  <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
+  <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>  
+  
 </ion-content>
+
+
+
