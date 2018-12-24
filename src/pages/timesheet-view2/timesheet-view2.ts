@@ -1,3 +1,4 @@
+import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { timesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
@@ -40,6 +41,7 @@ export class TimesheetView2Page {
   periodFrom: Date;
   periodTo: Date;
 
+  newTSContact=<timesheetTableContact>{};
 
   newTsLine = <timesheetLineList>{};
   tsTable: timesheetTableContact = {} as timesheetTableContact;
@@ -49,9 +51,10 @@ export class TimesheetView2Page {
   tsActivity: timesheetActivity;
   tsCategory: timesheetCategory;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public events: Events,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
     public modalCtrl: ModalController, public viewCtrl: ViewController, public alertCtrl: AlertController,
-    private axservice: AxserviceProvider, private toastCtrl: ToastController, public loadingCtrl: LoadingController) {
+    private axservice: AxserviceProvider, private toastCtrl: ToastController, public loadingCtrl: LoadingController,
+    private parameterservice: ParameterserviceProvider) {
     this.getParameters();
     this.getWorkerTimesheetProjects();
     this.getWorkerTimesheetCategory();
@@ -66,11 +69,11 @@ export class TimesheetView2Page {
     this.periodTo = this.navParams.get("periodTo");
     tsLineData = this.navParams.get("lineList");
     this.isEditable = this.navParams.get("isEditable");
-    if (tsLineData != null){
-     this.tsLineList = Array(tsLineData);
-    }else{
-      this.tsLineDate=this.getBetweenDates();
-      this.newTsLine.TimesheetLineDateList=Object(this.tsLineDate);
+    if (tsLineData != null) {
+      this.tsLineList = Array(tsLineData);
+    } else {
+      this.tsLineDate = this.getBetweenDates();
+      this.newTsLine.TimesheetLineDateList = Object(this.tsLineDate);
     }
   }
   selectedProject(project: any) {
@@ -182,22 +185,21 @@ export class TimesheetView2Page {
       this.presentCommentModal(selectedDateList, this.tsLineList);
     } else {
       let selectedDateList;
-      selectedDateList=this.getSelectedDateLineList(Array(this.newTsLine), d);
-      //console.log(this.newTsLine);
+      selectedDateList = this.getSelectedDateLineList(Array(this.newTsLine), d);
       this.presentCommentModal(selectedDateList, Array(this.newTsLine));
     }
   }
   getBetweenDates() {
     var dateString = this.periodFrom;
     var actualDate = new Date(dateString);
-    var lineDateList=[];
-    for(var i=0; i<7; i++){
-      var dt=new Date(actualDate.getFullYear(), actualDate.getMonth(), actualDate.getDate()+i);
+    var lineDateList = [];
+    for (var i = 0; i < 7; i++) {
+      var dt = new Date(actualDate.getFullYear(), actualDate.getMonth(), actualDate.getDate() + i);
       lineDateList.push({
-        ExternalComments:"",
-        Hours:0,
-        InternalComments:"",
-        LineDate:moment(dt).format("YYYY-MM-DD HH:mm:ss")
+        ExternalComments: "",
+        Hours: 0,
+        InternalComments: "",
+        LineDate: moment(dt).format("YYYY-MM-DD HH:mm:ss")
       });
     }
     return lineDateList;
@@ -216,32 +218,53 @@ export class TimesheetView2Page {
     return selectedDateList;
   }
   updateTimesheet() {
-    if (!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)) {
-      var len = Object.keys(this.tsTable.TimesheetLineList).length;
-      var lineNum=0;
-      if(len!=0){
-        lineNum=this.tsTable.TimesheetLineList[len-1].LineNum;
-        this.newTsLine.LineNum=lineNum+1;
-        Object.keys(this.tsTable.TimesheetLineList).map(e => {
+    if (typeof this.tsTable === "undefined") {
+      this.newTSContact.PeriodFrom=this.periodFrom;
+      this.newTSContact.PeriodTo=this.periodTo;
+      this.newTSContact.IsEditable=true;
+      this.newTSContact.EmplId=this.parameterservice.user;
+      this.newTSContact.TimesheetLineList=this.newTsLine;
+
+      this.tsTable=this.newTSContact;
+    } else {
+      if (!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)) {
+        var len = Object.keys(this.tsTable.TimesheetLineList).length;
+        var lineNum = 0;
+        if (len != 0) {
+          lineNum = this.tsTable.TimesheetLineList[len - 1].LineNum;
+          this.newTsLine.LineNum = lineNum + 1;
+          Object.keys(this.tsTable.TimesheetLineList).map(e => {
+            this.tsTable.TimesheetLineList[len] = this.newTsLine;
+          });
+        } else {
+          this.newTsLine.LineNum = lineNum + 1;
           this.tsTable.TimesheetLineList[len] = this.newTsLine;
-        });
-      }else{
-        this.newTsLine.LineNum=lineNum+1;
-        this.tsTable.TimesheetLineList[len] = this.newTsLine;
+        }
       }
     }
+    console.log(this.tsTable);
     this.showConfirm(this.tsTable);
   }
 
   updateWorkerTimesheet(tsTableContact: timesheetTableContact) {
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...',
+      duration: 1000
+    });
+    loading.present();
     this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
-      (res) =>{
-        this.tsTable=res; 
+      (res) => {
+        this.tsTable = res;
         console.log(res);
         console.log(this.tsTable);
+        loading.dismiss();
         this.presentToast("Timesheet Updated Successfully")
       },
-      (error) => this.presentToast("Error - updating timesheet" + error)
+      (error) => {
+        loading.dismiss();
+        this.presentToast("Error - updating timesheet" + error)
+      }
     );
   }
   showConfirm(tsTable) {
@@ -252,18 +275,12 @@ export class TimesheetView2Page {
         {
           text: 'Disagree',
           handler: () => {
-            console.log('Disagree clicked');
+           console.log("disagree clicked");
           }
         },
         {
           text: 'Agree',
           handler: () => {
-            let loading = this.loadingCtrl.create({
-              spinner: 'circles',
-              content: 'Please wait...',
-              duration: 1000
-            });
-            loading.present();
             this.updateWorkerTimesheet(tsTable)
           }
         }

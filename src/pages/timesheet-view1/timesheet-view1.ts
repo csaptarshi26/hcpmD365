@@ -23,7 +23,7 @@ export class TimesheetView1Page {
   status: String = "all";
   showDetails: boolean = false;
 
-  tsIndex:any;
+  tsIndex: any;
 
   @ViewChild('viewContainerRef', { read: ViewContainerRef }) VCR: ViewContainerRef;
 
@@ -32,7 +32,7 @@ export class TimesheetView1Page {
     private CFR: ComponentFactoryResolver, private toastCtrl: ToastController, public loadingCtrl: LoadingController) {
 
   }
-  modalPage(tsTableDetails: timesheetTableContact, details: any, isEditable: boolean) {
+  modalPage(tsTableDetails: timesheetTableContact, details: any, isEditable: boolean, i: any) {
     let profileModal = this.modalCtrl.create(TimesheetDayPage,
       {
         tsTableContact: tsTableDetails,
@@ -43,13 +43,11 @@ export class TimesheetView1Page {
       });
 
     profileModal.onDidDismiss(data => {
-      if(data!=null){
-        this.tsTableContact = data;
+      if (data != null) {
+        this.tsTableContact[i] = data;
       }
     });
     profileModal.present();
-
-
   }
   send() {
     let componentFactory = this.CFR.resolveComponentFactory(TimesheetDayPage);
@@ -65,19 +63,12 @@ export class TimesheetView1Page {
 
   //DELETE TIMESHEETLINE OPERATION WHICH IS CALLED WHEN USER AGREES ON CONFIRM ALERT
   deleteTsOperation(lineList, tsDetails) {
-    let loading = this.loadingCtrl.create({
-      spinner: 'circles',
-      content: 'Please wait...',
-      duration: 2000
-    });
     var arr = tsDetails.TimesheetLineList;
     arr.forEach(el => {
       if (el == lineList) {
         el.IsDeleted = 1;
-        loading.present();
       }
     });
-    loading.dismiss();
     this.DeleteWorkerTimesheet(tsDetails);
   }
 
@@ -89,32 +80,43 @@ export class TimesheetView1Page {
       content: 'Please wait...',
       duration: 2000
     });
-
     loading.present();
     this.axservice.getWorkerCurrentTimesheet(this.parameterservice.user).subscribe(res => {
       loading.dismiss();
-      if (res != null) {
-        this.showDetails = true;
-        console.log(res)
-        this.tsTableContact = res;
-        this.showDetails = true;
-        this.periodFrom = this.tsTableContact[0].PeriodFrom;
-        this.periodTo = this.tsTableContact[0].PeriodTo;
-      }
+      if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
+      console.log(res)
+      this.tsTableContact = res;
+      this.periodFrom = this.tsTableContact[0].PeriodFrom;
+      this.periodTo = this.tsTableContact[0].PeriodTo;
     }, (error) => {
       this.showDetails = false;
       console.log('Error - get worker ts period details: ' + error);
     })
   }
   newTimesheet() {
-    this.navCtrl.push(TimesheetView2Page,{isEditable:true});
+    let newTS = this.modalCtrl.create(TimesheetView2Page,{
+      isEditable: true,
+      periodFrom:this.periodFrom,
+      periodTo:this.periodTo
+    });
+    newTS.onDidDismiss(data => {
+      if (data != null) {
+        console.log(data);
+      }
+    });
+    newTS.present();
   }
   //METHOD TO UPDATE/DELETE TIMESHEET
   DeleteWorkerTimesheet(tsTableContact: timesheetTableContact) {
-    var msg;
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...',
+      duration: 2000
+    });
+    loading.present();
     this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
-      (res) => this.presentToast("Timesheet Deleted Successfully"),
-      error => this.presentToast("Error While Deleting Timesheet Line" + error)
+      (res) => { loading.dismiss(); this.presentToast("Timesheet Deleted Successfully") },
+      error => { loading.dismiss(); this.presentToast("Error While Deleting Timesheet Line" + error) }
     );
 
   }
@@ -161,8 +163,8 @@ export class TimesheetView1Page {
     confirm.present();
   }
 
-  newTsLine(tsDetails,i:any) {
-    this.tsIndex=i;
+  newTsLine(tsDetails, i: any) {
+    this.tsIndex = i;
     var obj: timesheetLineList;
     let profileModal = this.modalCtrl.create(TimesheetView2Page,
       {
@@ -173,9 +175,9 @@ export class TimesheetView1Page {
         tsTable: tsDetails
       });
 
-    profileModal.onDidDismiss(data=>{
-      if(data!=null){ 
-        this.tsTableContact[this.tsIndex]=data;
+    profileModal.onDidDismiss(data => {
+      if (data != null) {
+        this.tsTableContact[this.tsIndex] = data;
         console.log(this.tsTableContact);
       }
     })
@@ -187,5 +189,31 @@ export class TimesheetView1Page {
       this.getWorkerCurrentTimesheet();
       refresher.complete();
     }, 2000);
+  }
+
+  DeleteHeader(details, i) {
+    details.IsDeleted = 1;
+    this.showConfirmForHeaderDelete(details);
+  }
+  showConfirmForHeaderDelete(tsDetails) {
+    const confirm = this.alertCtrl.create({
+      title: 'Delete Timesheet Header?',
+      message: 'Are you sure you want to delete this Timesheet Header?',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            this.DeleteWorkerTimesheet(tsDetails);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

@@ -6,5 +6,6 @@ export interface timesheetTableContact{
     PeriodTo:Date,
     TimesheetNumber:string,
     IsEditable: boolean,
+    IsDeleted:Number,
     TimesheetLineList:timesheetLineList
 }

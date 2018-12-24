@@ -14,27 +14,26 @@
 
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
-    refreshingSpinner="circles" refreshingText="Refreshing..." pullMin="200">
-      </ion-refresher-content>
-    </ion-refresher>
-      <h2 text-center *ngIf="showDetails" color="primary">{{periodFrom | date:'mediumDate'}} - {{periodTo |
-        date:'mediumDate'}}</h2>
-      <div>
-        <ion-segment [(ngModel)]="status">
-          <ion-segment-button value="all">All</ion-segment-button>
-          <ion-segment-button value="draft">Draft</ion-segment-button>
-          <ion-segment-button value="approved">Approved</ion-segment-button>
-          <ion-segment-button value="rejected">Rejected</ion-segment-button>
-        </ion-segment>
-      </div>
-      <div *ngIf="showDetails; else noTs">
-        <div *ngFor="let details of tsTableContact,let i=index">
-          <div [ngSwitch]="status">
-            <ion-list *ngSwitchCase="'all'">
-              <ion-item>
-                <ion-label text-right>
-                  <!-- <ion-fab top right class="fabButton">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Refreshing..." pullMin="200">
+    </ion-refresher-content>
+  </ion-refresher>
+  <h2 text-center class="tsPeriod">{{periodFrom | date:'mediumDate'}} - {{periodTo | date:'mediumDate'}}</h2>
+  <div>
+    <ion-segment [(ngModel)]="status">
+      <ion-segment-button value="all">All</ion-segment-button>
+      <ion-segment-button value="draft">Draft</ion-segment-button>
+      <ion-segment-button value="approved">Approved</ion-segment-button>
+      <ion-segment-button value="rejected">Rejected</ion-segment-button>
+    </ion-segment>
+  </div>
+  <div *ngIf="showDetails; else noTs">
+    <div *ngFor="let details of tsTableContact,let i=index">
+      <div [ngSwitch]="status">
+        <ion-list *ngSwitchCase="'all'">
+          <ion-item>
+            <ion-label text-right>
+              <!-- <ion-fab top right class="fabButton">
                 <button ion-fab mini>{{details.ApprovalStatus}}</button>
                 <ion-fab-list>
                   <button ion-fab color="primary" (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">
@@ -46,135 +45,124 @@
                   </button>
                 </ion-fab-list>
               </ion-fab> -->
-                  <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
-                    {{details.ApprovalStatus}}
-                  </button>
-                </ion-label>
-                <ion-label item-left>
-                  <p class="tsNumber">
-                    {{details.TimesheetNumber}}
-                    <button [disabled]="!details.IsEditable" (click)="newTsLine(details,i)" ion-button round icon-only
-                      small class="addLine">
-                      <ion-icon name="add"></ion-icon>
-                    </button>
-                  </p>
-                  <div *ngFor="let lineList of details.TimesheetLineList">
-                    <div *ngIf="lineList.IsDeleted==0">
-                      <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
-                        <ion-item no-padding>
-                          <p padding-left>{{lineList.ProjId}}</p>
-                          <p padding-left>Hours:{{lineList.TotalHrs}}</p>
-                        </ion-item>
-                        <!-- <ion-item-options side="left">
+              <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                {{details.ApprovalStatus}}
+              </button>
+              <button [disabled]="!details.IsEditable" (click)="DeleteHeader(details,i)" ion-button round icon-only
+                small color="danger">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+            </ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">
+                {{details.TimesheetNumber}}
+                <button [disabled]="!details.IsEditable" (click)="newTsLine(details,i)" ion-button round icon-only
+                  small class="addLine">
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </p>
+              <div *ngFor="let lineList of details.TimesheetLineList">
+                <div *ngIf="lineList.IsDeleted==0">
+                  <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
+                    <ion-item no-padding>
+                      <p padding-left>{{lineList.ProjId}}</p>
+                      <p padding-left>Hours:{{lineList.TotalHrs}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
                       <button ion-button color="danger" (click)="deleteTs(lineList,details)">
                         <ion-icon name="trash"></ion-icon>
                       </button>
-                    </ion-item-options> -->
-                        <ion-item-options side="right">
-                          <button ion-button color="danger" (click)="deleteTs(lineList,details)">
-                            <ion-icon name="trash"></ion-icon>
-                          </button>
-                        </ion-item-options>
-                      </ion-item-sliding>
-                    </div>
-                  </div>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-            <!-- FOR DRAFT STATUS-->
-            <ion-list *ngSwitchCase="'draft'">
-              <ion-item *ngIf="details.ApprovalStatus=='Draft'" no-lines>
-                <ion-label text-right><button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
-                <ion-label item-left>
-                  <p class="tsNumber">
-                    {{details.TimesheetNumber}}
-                    <button ion-button round icon-only small class="addLine">
-                      <ion-icon name="add"></ion-icon>
-                    </button>
-                  </p>
-                  <div *ngFor="let lineList of details.TimesheetLineList">
-                    <div *ngIf="lineList.IsDeleted==0">
-                      <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
-                        <ion-item no-padding>
-                          <p padding-left>{{lineList.ProjId}}</p>
-                          <p padding-left>Hours:{{lineList.TotalHrs}}</p>
-                        </ion-item>
-                        <ion-item-options side="right">
-                          <button ion-button color="danger" (click)="deleteTs(lineList,details)">
-                            <ion-icon name="trash"></ion-icon>
-                          </button>
-                        </ion-item-options>
-                      </ion-item-sliding>
-                    </div>
-                  </div>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-            <!-- FOR APPROVED STATUS-->
-            <ion-list *ngSwitchCase="'approved'">
-              <ion-item *ngIf="details.ApprovalStatus=='Approved'" no-lines>
-                <ion-label text-right><button ion-button round outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
-                <ion-label item-left>
-                  <p class="tsNumber">{{details.TimesheetNumber}}</p>
-                  <div *ngFor="let lineList of details.TimesheetLineList">
-                    <div *ngIf="lineList.IsDeleted==0">
-                      <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
-                        <ion-item no-padding>
-                          <p padding-left>{{lineList.ProjId}}</p>
-                          <p padding-left>Hours:{{lineList.TotalHrs}}</p>
-                        </ion-item>
-                        <!-- <ion-item-options side="left">
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- FOR DRAFT STATUS-->
+        <ion-list *ngSwitchCase="'draft'">
+          <ion-item *ngIf="details.ApprovalStatus=='Draft'" no-lines>
+            <ion-label text-right><button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">
+                {{details.TimesheetNumber}}
+                <button ion-button round icon-only small class="addLine">
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </p>
+              <div *ngFor="let lineList of details.TimesheetLineList">
+                <div *ngIf="lineList.IsDeleted==0">
+                  <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
+                    <ion-item no-padding>
+                      <p padding-left>{{lineList.ProjId}}</p>
+                      <p padding-left>Hours:{{lineList.TotalHrs}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
                       <button ion-button color="danger" (click)="deleteTs(lineList,details)">
                         <ion-icon name="trash"></ion-icon>
                       </button>
-                    </ion-item-options> -->
-                        <ion-item-options side="right">
-                          <button ion-button color="danger" (click)="deleteTs(lineList,details)">
-                            <ion-icon name="trash"></ion-icon>
-                          </button>
-                        </ion-item-options>
-                      </ion-item-sliding>
-                    </div>
-                  </div>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-            <!-- FOR REJECTED STATUS-->
-            <ion-list *ngSwitchCase="'rejected'">
-              <ion-item *ngIf="details.ApprovalStatus=='Rejected'" no-lines>
-                <ion-label text-right><button ion-button round outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
-                <ion-label item-left>
-                  <p class="tsNumber">{{details.TimesheetNumber}}</p>
-                  <div *ngFor="let lineList of details.TimesheetLineList">
-                    <div *ngIf="lineList.IsDeleted==0">
-                      <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
-                        <ion-item no-padding>
-                          <p padding-left>{{lineList.ProjId}}</p>
-                          <p padding-left>Hours:{{lineList.TotalHrs}}</p>
-                        </ion-item>
-                        <!-- <ion-item-options side="left">
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- FOR APPROVED STATUS-->
+        <ion-list *ngSwitchCase="'approved'">
+          <ion-item *ngIf="details.ApprovalStatus=='Approved'" no-lines>
+            <ion-label text-right><button ion-button round outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">{{details.TimesheetNumber}}</p>
+              <div *ngFor="let lineList of details.TimesheetLineList">
+                <div *ngIf="lineList.IsDeleted==0">
+                  <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
+                    <ion-item no-padding>
+                      <p padding-left>{{lineList.ProjId}}</p>
+                      <p padding-left>Hours:{{lineList.TotalHrs}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
                       <button ion-button color="danger" (click)="deleteTs(lineList,details)">
                         <ion-icon name="trash"></ion-icon>
                       </button>
-                    </ion-item-options> -->
-                        <ion-item-options side="right">
-                          <button ion-button color="danger" (click)="deleteTs(lineList,details)">
-                            <ion-icon name="trash"></ion-icon>
-                          </button>
-                        </ion-item-options>
-                      </ion-item-sliding>
-                    </div>
-                  </div>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </div>
-        </div>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- FOR REJECTED STATUS-->
+        <ion-list *ngSwitchCase="'rejected'">
+          <ion-item *ngIf="details.ApprovalStatus=='Rejected'" no-lines>
+            <ion-label text-right><button ion-button round outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable)">{{details.ApprovalStatus}}</button></ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">{{details.TimesheetNumber}}</p>
+              <div *ngFor="let lineList of details.TimesheetLineList">
+                <div *ngIf="lineList.IsDeleted==0">
+                  <ion-item-sliding (ionSwipe)="deleteTs(lineList,details)">
+                    <ion-item no-padding>
+                      <p padding-left>{{lineList.ProjId}}</p>
+                      <p padding-left>Hours:{{lineList.TotalHrs}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" (click)="deleteTs(lineList,details)">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
       </div>
+    </div>
+  </div>
 
-      <ng-template #noTs>
-        <div class="noTs">
-          No Timesheet Available
-        </div>
-      </ng-template>
+  <ng-template #noTs>
+    <div class="noTs">
+      No Timesheet Available
+    </div>
+  </ng-template>
 </ion-content>

@@ -1,9 +1,11 @@
+import { CommentsPage } from './../comments/comments';
+import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { TimesheetView2Page } from './../timesheet-view2/timesheet-view2';
 import { timesheetLineList } from './../../models/timesheet/tsLineListContact.interface';
 import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
 import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { Component, Input, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, ToastController } from 'ionic-angular';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import * as moment from 'moment'
@@ -29,10 +31,11 @@ export class TimesheetDayPage {
   tsLineDateList: timesheetLineDateList[];
   tsLineList: timesheetLineList;
   tsTable = {} as timesheetTableContact;
+  tsChanged:boolean=false;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public modalCtrl: ModalController, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
+    public modalCtrl: ModalController, public viewCtrl: ViewController,
+    private toastCtrl: ToastController, public loadingCtrl: LoadingController) {
 
     this.getParamData();
     this.dates=[];
@@ -51,6 +54,7 @@ export class TimesheetDayPage {
       profileModal.onDidDismiss(data => {
         
         if(data!=null){
+          this.tsChanged=true;
           this.tsTable=data;
           this.tsLineList=data.TimesheetLineList;
         }
@@ -70,9 +74,6 @@ export class TimesheetDayPage {
   }
   ionViewDidLoad() {
   }
-  ngOnInit() {
-
-  }
   getParamData() {
     this.tsTable=this.navParams.get("tsTableContact");
     this.tsLineList = this.navParams.get("tsTableLine");
@@ -83,9 +84,51 @@ export class TimesheetDayPage {
   }
   
   goBack() {
-    this.viewCtrl.dismiss();
+    if(this.tsChanged){
+      this.viewCtrl.dismiss(this.tsTable);
+    }else{
+      this.viewCtrl.dismiss();
+    }
   }
   submitTs(){
-    console.log(this.tsTable)
+    let commentModal = this.modalCtrl.create('CommentsPage');
+    commentModal.onDidDismiss(comment => {
+        if(comment!=null){
+         this.SubmitWorkerTimesheet(this.tsTable,comment)
+        }
+      });
+      commentModal.present();
+  }
+
+  SubmitWorkerTimesheet(tsTableContact: timesheetTableContact,comment:string) {
+    var msg;
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...',
+      duration: 2000
+    });
+    loading.present();
+    console.log(tsTableContact);
+    console.log(comment);
+    this.axservice.submitWorkerTimesheet(tsTableContact,comment).subscribe(
+      (res) =>{ 
+        loading.dismiss();
+        this.presentToast("Timesheet Submitted Successfully")
+      },
+      error =>{
+        loading.dismiss();
+        this.presentToast("Error While Submitted Timesheet Line" + error)
+      }
+    );
+  }
+  presentToast(msg: any) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      position: 'top',
+      showCloseButton: true,
+      closeButtonText: "ok"
+    });
+    toast.present();
   }
 }

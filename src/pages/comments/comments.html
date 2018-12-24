@@ -1,0 +1,17 @@
+<div id="id01" class="w3-modal w3-animate-opacity" style="display:block">
+  <div class="w3-modal-content w3-card-4">
+    <header class="w3-container w3-light-grey">
+      <span (click)="dismiss()" class="w3-button w3-large w3-display-topright">&times;</span>
+      <h2 text-center>Comments</h2>
+    </header>
+    <div>
+      <div class="w3-container" style="height:200px;">
+        <ion-item>
+          <ion-label color="primary" floating>Comments</ion-label>
+          <ion-textarea [(ngModel)]="comments"></ion-textarea>
+        </ion-item>
+      </div>
+      <button ion-button outline block (click)="submit()" style="height:40px">Submit</button>
+    </div>
+  </div>
+</div>
