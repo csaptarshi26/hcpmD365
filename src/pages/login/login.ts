@@ -26,9 +26,6 @@ export class LoginPage {
         
   }
   
-  // goToSlide() {this.slides.slideTo(2, 500);}
-  // nextSlide() {this.slides.slideNext();}
-  // prevSlide() {this.slides.slidePrev();}
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.authenticated = this.parameterservice.authenticated;
@@ -75,7 +72,7 @@ export class LoginPage {
   setFullcalendarEvents() {
     var eventData = [
       {
-        start: moment("2018-12-23").format("YYYY-MM-DD"),
+        start:moment('2017-05-22'),
         allDay: true,
         title: "hi"
       }
@@ -86,19 +83,18 @@ export class LoginPage {
     const component = this;
     $(document).ready(function () {
       $('#calendar').fullCalendar({
-        height: 200,
+        defaultView:'basicWeek',
         editable: true,
         eventLimit: false,
         header: {
           left: '',
           center: '',
           right: ''
-        },
-        defaultView: 'basicWeek',
-        visibleRange: {
-          start: moment("2018-12-23T12:00:00").format("YYYY-MM-DD"),
-          end: moment("2018-12-29T12:00:00").format("YYYY-MM-DD")
-        },
+        }, visibleRange: {
+          start:moment('2018-12-16').format("YYYY-MM-DD"),
+          end:moment('2018-12-22').format("YYYY-MM-DD")
+        } ,
+       
         events: evntData,
         eventAfterRender: function(event, element, view) {
           $(element).css('width','97%');

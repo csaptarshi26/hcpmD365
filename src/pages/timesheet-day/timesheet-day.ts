@@ -156,6 +156,9 @@ export class TimesheetDayPage {
   }
   setFullcalendarOptions(evntData: any, tsLineList) {
     const component = this;
+    var sdate=moment(this.periodFrom).format("YYYY-MM-DD");
+    var edate=moment(this.periodTo,"YYYY-MM-DD").add('days',1)
+    console.log(sdate + "   "+ edate);
     $(document).ready(function () {
       $('#calendar1').fullCalendar({
         height: 200,
@@ -166,29 +169,29 @@ export class TimesheetDayPage {
           center: '',
           right: ''
         },
-        defaultView: 'basicWeek',
+        defaultView: 'basic',
         visibleRange: {
-          start: moment(this.periodFrom).format("YYYY-MM-DD"),
-          end: moment(this.periodTo).format("YYYY-MM-DD")
+          start: sdate,
+          end: edate
         },
-        dayRender: (date, cell) => {
-          var today = new Date();
-          if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
-            cell.css("background-color", "#caddff");
-          }
-          if (tsLineList != null) {
-            Object.keys(tsLineList).map(el => {
-              var arr = tsLineList[el].TimesheetLineDateList;
-              arr.forEach(key => {
-                if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
-                  if (key.WorkingHours == 0) {
-                    cell.css("background-color", "#f4f4f4");
-                  }
-                }
-              });
-            });
-          }
-        },
+        // dayRender: (date, cell) => {
+        //   var today = new Date();
+        //   if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
+        //     cell.css("background-color", "#caddff");
+        //   }
+        //   if (tsLineList != null) {
+        //     Object.keys(tsLineList).map(el => {
+        //       var arr = tsLineList[el].TimesheetLineDateList;
+        //       arr.forEach(key => {
+        //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
+        //           if (key.WorkingHours == 0) {
+        //             cell.css("background-color", "#f4f4f4");
+        //           }
+        //         }
+        //       });
+        //     });
+        //   }
+        // },
         events: evntData
       });
       $('#calendar1').fullCalendar('removeEvents');

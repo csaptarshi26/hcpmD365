@@ -135,6 +135,8 @@ export class TimesheetView2Page {
   }
   setFullcalendarOptions(evntData: any, tsLineList) {
     const component = this;
+    var sdate=moment(this.periodFrom).format("YYYY-MM-DD");
+    var edate=moment(this.periodTo,"YYYY-MM-DD").add('days',1)
     $(document).ready(function () {
       $('#calendar').fullCalendar({
         height: 200,
@@ -145,10 +147,10 @@ export class TimesheetView2Page {
           center: '',
           right: ''
         },
-        defaultView: 'basicWeek',
+        defaultView: 'basic',
         visibleRange: {
-          start: moment(this.periodFrom).format("YYYY-MM-DD"),
-          end: moment(this.periodTo).format("YYYY-MM-DD")
+          start: sdate,
+          end: edate
         },
         dayClick: (date) => {
           var d = moment(date).format("YYYY-MM-DD")
@@ -158,24 +160,24 @@ export class TimesheetView2Page {
           var d = moment(event.start).format("YYYY-MM-DD")
           component.modal(d);
         },
-        dayRender: (date, cell) => {
-          var today = new Date();
-          if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
-            cell.css("background-color", "#E5E5F7");
-          }
-          if (tsLineList != null) {
-            Object.keys(tsLineList).map(el => {
-              var arr = tsLineList[el].TimesheetLineDateList;
-              arr.forEach(key => {
-                if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
-                  if (key.WorkingHours == 0) {
-                    cell.css("background-color", "#f4f4f4");
-                  }
-                }
-              });
-            });
-          }
-        },
+        // dayRender: (date, cell) => {
+        //   var today = new Date();
+        //   if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
+        //     cell.css("background-color", "#E5E5F7");
+        //   }
+        //   if (tsLineList != null) {
+        //     Object.keys(tsLineList).map(el => {
+        //       var arr = tsLineList[el].TimesheetLineDateList;
+        //       arr.forEach(key => {
+        //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
+        //           if (key.WorkingHours == 0) {
+        //             cell.css("background-color", "#f4f4f4");
+        //           }
+        //         }
+        //       });
+        //     });
+        //   }
+        // },
         events: evntData
       });
       $('#calendar').fullCalendar('removeEvents');

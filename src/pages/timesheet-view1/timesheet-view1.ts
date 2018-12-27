@@ -238,9 +238,7 @@ export class TimesheetView1Page {
   submitTs(details,i) {
     let commentModal = this.modalCtrl.create('CommentsPage');
     commentModal.onDidDismiss(comment => {
-      if (comment != null && comment !="") {
-        this.SubmitWorkerTimesheet(details, comment,i)
-      }
+      this.SubmitWorkerTimesheet(details, comment,i)
     });
     commentModal.present();
   }
@@ -270,7 +268,7 @@ export class TimesheetView1Page {
   getList(){
     var sDate=new Date(moment(this.periodFrom).format("YYYY-MM-DD"));
     var eDate=new Date(moment(this.periodTo).format("YYYY-MM-DD"));
-    for(var i=0;i<7;i++){
+    for(var i=0;i<24;i++){
       this.periodList.push({periodFrom:sDate,periodTo:eDate})
 
       var prevPeriodFrom= new Date(sDate);
@@ -285,7 +283,6 @@ export class TimesheetView1Page {
   }
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
-    console.log("selected period :: ", this.periodList[currentIndex]);
     this.getWorkerCurrentTimesheet(this.periodList[currentIndex].periodFrom);
   }
   
