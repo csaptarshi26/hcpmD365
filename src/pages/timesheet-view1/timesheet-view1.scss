@@ -9,16 +9,8 @@ page-timesheet-view1 {
     .scroll-bar-indicator{
 	    display: none;
     }
-    .notFound{
-        font-family: Lato, sans-serif;
-        font-size: 21pt;
-        color: rgb(47, 41, 43);
-        font-weight: normal;
-        font-style: normal;
-        text-align: left;
-    }
     .tsNumber{
-        font-family: Lato, sans-serif;
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
         font-size: 16pt;
         color:  #0A6ACC;
         font-weight: 400;
@@ -26,7 +18,7 @@ page-timesheet-view1 {
         text-align: left;
     }
     .noTs{
-        font-family: Lato, sans-serif;
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
         font-size: 13pt;
         color: rgb(47, 41, 43);
         font-weight: 600;
@@ -37,7 +29,7 @@ page-timesheet-view1 {
         overflow-y: hidden;
     }
     .addLine{
-        margin-top: -7px;
+        margin-top: -10px;
     }
     .fabButton{
         position:absolute;
@@ -45,5 +37,25 @@ page-timesheet-view1 {
     }
     .tsPeriod{
         color: #0A6ACC;
+    }
+    .sliderNavigation{
+        height:15px;
+        margin-top: 0px;
+    }
+    ion-content ion-fab-list[side=left] .fab-in-list, ion-fab-list[side=right] .fab-in-list {
+        margin: 0 4px !important;
+    }
+    ion-content ion-fab-list[side=right] {
+        margin: -4px 55px !important;
+    }
+    ion-content .fab {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    .projName{
+        font-weight: 500;
+    }
+    button:disabled {
+        opacity: .4 !important;
     }
 }

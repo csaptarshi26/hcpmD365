@@ -6,6 +6,10 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FullCalendarModule } from 'ng-fullcalendar';
+import { SwiperModule } from 'ngx-swiper-wrapper';
+import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { CustomFormsModule } from 'ng2-validation'  
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -26,6 +30,10 @@ import { TimesheetView2Page } from '../pages/timesheet-view2/timesheet-view2';
 import { TimesheetView3Page } from '../pages/timesheet-view3/timesheet-view3';
 import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
 
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'horizontal',
+  slidesPerView: 'auto'
+};
 @NgModule({
   declarations: [
     MyApp,
@@ -47,7 +55,9 @@ import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
     BrowserAnimationsModule,
     IonicModule.forRoot(MyApp,{tabsPlacement: 'top'}),
     IonicStorageModule.forRoot(),
-    FullCalendarModule
+    FullCalendarModule,
+    SwiperModule,
+    CustomFormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -71,7 +81,11 @@ import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AxserviceProvider,
     StorageserviceProvider,
-    ParameterserviceProvider
+    ParameterserviceProvider,
+    {
+      provide: SWIPER_CONFIG,
+      useValue: DEFAULT_SWIPER_CONFIG
+    }
   ]
 })
 export class AppModule {}

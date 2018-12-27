@@ -1,4 +1,4 @@
-<div id="id01" class="w3-modal w3-animate-opacity" style="display:block">
+<div id="id01" class="w3-modal w3-animate-opacity" style="display:block; padding-top: 50px">
   <div class="w3-modal-content w3-card-4">
     <header class="w3-container w3-light-grey">
       <span (click)="dismiss()" class="w3-button w3-large w3-display-topright">&times;</span>
@@ -6,21 +6,19 @@
     </header>
     <div *ngFor="let tsDate of tsLineDate">
       <div class="w3-container" style="height:300px;">
-        <h2>{{date | date:'d MMM , EE'}}</h2>
         <ion-item>
-          <ion-label color="primary" floating>Hours</ion-label>
-          <ion-input type="text" [(ngModel)]="tsDate.Hours"></ion-input>
+          <ion-label color="inputLabelColor" floating>Hours</ion-label>
+          <ion-input type="number" [readonly]="!isEditable" [min]="0" [max]="24" [(ngModel)]="tsDate.Hours" (ionChange)="validateHrs(tsDate.Hours)"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label color="primary" floating>Internal Comment</ion-label>
-          <ion-input type="text" [(ngModel)]="tsDate.InternalComments"></ion-input>
+          <ion-label color="inputLabelColor" floating>Internal Comment</ion-label>
+          <ion-textarea [readonly]="!isEditable" [(ngModel)]="tsDate.InternalComments"></ion-textarea>
         </ion-item>
         <ion-item>
-          <ion-label color="primary" floating>External Comment</ion-label>
-          <ion-input type="text" [(ngModel)]="tsDate.ExternalComments"></ion-input>
+          <ion-label color="inputLabelColor" floating>External Comment</ion-label>
+          <ion-textarea [readonly]="!isEditable" [(ngModel)]="tsDate.ExternalComments"></ion-textarea>
         </ion-item>
       </div>
-      <button ion-button outline block (click)="save(tsDate)" style="height:40px">Save</button>
     </div>
   </div>
 </div>

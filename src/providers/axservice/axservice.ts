@@ -80,9 +80,9 @@ export class AxserviceProvider {
       .catch(this.handleError);
   }
 
-  getWorkerCurrentTimesheet(user: string): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getCurEmplTSDetails';
-    let body = {_empId: user};
+  getWorkerTimesheet(user: string, periodDate: Date): Observable<any>{
+    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getEmplTSDetails';
+    let body = {_empId: user, _periodDate: periodDate};
     let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
     let options = new RequestOptions({headers: headers});
     return this.http.post(url, JSON.stringify(body), options)

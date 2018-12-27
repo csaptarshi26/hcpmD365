@@ -23,7 +23,6 @@ export class CommentsPage {
     
   }
   submit(){
-    console.log(this.comments);
     this.viewCtrl.dismiss(this.comments);
   }
   dismiss() {

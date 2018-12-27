@@ -1,3 +1,8 @@
 page-timesheet-day {
-    
+    .card .item {
+        border-bottom: 1px solid #d4d2d2;
+        &:last-child{
+            border: none;
+        }
+    }
 }

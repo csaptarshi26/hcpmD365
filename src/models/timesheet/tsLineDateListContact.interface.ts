@@ -3,5 +3,5 @@ export interface timesheetLineDateList{
     Hours:Number,
     InternalComments:string,
     LineDate:string,
-    
+    WorkingHours:any
 }

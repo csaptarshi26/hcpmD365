@@ -7,6 +7,8 @@ import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 import * as _ from "lodash";
 import { TimesheetDayPage } from '../timesheet-day/timesheet-day';
+import { Slides } from 'ionic-angular';
+import * as moment from 'moment'
 
 @IonicPage()
 @Component({
@@ -15,13 +17,16 @@ import { TimesheetDayPage } from '../timesheet-day/timesheet-day';
 })
 
 export class TimesheetView1Page {
-
+  @ViewChild(Slides) slides: Slides;
   tsTableContact: timesheetTableContact;
   TimesheetLineList: timesheetLineList;
   periodFrom: Date;
   periodTo: Date;
   status: String = "all";
   showDetails: boolean = false;
+
+  periodList:any=[];
+  DelTsLineIndex:any;
 
   tsIndex: any;
 
@@ -55,9 +60,10 @@ export class TimesheetView1Page {
     let currentComponent = componentRef.instance;
   }
   ionViewDidLoad() {
-    this.getWorkerCurrentTimesheet();
+    this.getWorkerCurrentTimesheet(new Date());
   }
-  deleteTs(lineList, tsDetails) {
+  deleteTs(lineList, tsDetails,i) {
+    this.DelTsLineIndex=i;
     this.showConfirm(lineList, tsDetails);
   }
 
@@ -74,49 +80,60 @@ export class TimesheetView1Page {
 
   //METHOD TO REMOVE PERTICULAR 'ELEMENT' FROM GIVEN 'ARRAY'
 
-  getWorkerCurrentTimesheet() {
+  getWorkerCurrentTimesheet(periodDate:Date) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
-      content: 'Please wait...',
-      duration: 2000
+      content: 'Please wait...'
     });
     loading.present();
-    this.axservice.getWorkerCurrentTimesheet(this.parameterservice.user).subscribe(res => {
+    
+    this.axservice.getWorkerTimesheet(this.parameterservice.user,periodDate).subscribe(res => {
       loading.dismiss();
       if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
       console.log(res)
       this.tsTableContact = res;
       this.periodFrom = this.tsTableContact[0].PeriodFrom;
       this.periodTo = this.tsTableContact[0].PeriodTo;
+      this.getList();
     }, (error) => {
+      loading.dismiss();
       this.showDetails = false;
       console.log('Error - get worker ts period details: ' + error);
-    })
+    });
+  
   }
   newTimesheet() {
-    let newTS = this.modalCtrl.create(TimesheetView2Page,{
+    let newTS = this.modalCtrl.create(TimesheetView2Page, {
       isEditable: true,
-      periodFrom:this.periodFrom,
-      periodTo:this.periodTo
+      periodFrom: this.periodFrom,
+      periodTo: this.periodTo
     });
     newTS.onDidDismiss(data => {
       if (data != null) {
-        console.log(data);
+        var len=Object.keys(this.tsTableContact).length;
+        Object.keys(this.tsTableContact).map(e=>{
+          this.tsTableContact[len]=data;
+        })
+        console.log(this.tsTableContact);
       }
     });
     newTS.present();
   }
   //METHOD TO UPDATE/DELETE TIMESHEET
-  DeleteWorkerTimesheet(tsTableContact: timesheetTableContact) {
+  DeleteWorkerTimesheet(tsTable: timesheetTableContact) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
-      content: 'Please wait...',
-      duration: 2000
+      content: 'Please wait...'
     });
     loading.present();
-    this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
-      (res) => { loading.dismiss(); this.presentToast("Timesheet Deleted Successfully") },
-      error => { loading.dismiss(); this.presentToast("Error While Deleting Timesheet Line" + error) }
+
+    this.axservice.updateWorkerTimesheet(tsTable).subscribe(
+      (res) => {
+        this.tsTableContact[this.DelTsLineIndex]=res;
+        loading.dismiss();
+        this.presentToast("Timesheet Deleted Successfully")
+      },
+      error => { this.presentToast("Error While Deleting Timesheet Line" + error) }
     );
 
   }
@@ -125,7 +142,6 @@ export class TimesheetView1Page {
   presentToast(msg: any) {
     let toast = this.toastCtrl.create({
       message: msg,
-      duration: 2000,
       position: 'top',
       showCloseButton: true,
       closeButtonText: "ok"
@@ -186,14 +202,14 @@ export class TimesheetView1Page {
 
   doRefresh(refresher) {
     setTimeout(() => {
-      this.getWorkerCurrentTimesheet();
+      this.getWorkerCurrentTimesheet(new Date());
       refresher.complete();
     }, 2000);
   }
 
-  DeleteHeader(details, i) {
-    details.IsDeleted = 1;
+  DeleteHeader(details) {
     this.showConfirmForHeaderDelete(details);
+
   }
   showConfirmForHeaderDelete(tsDetails) {
     const confirm = this.alertCtrl.create({
@@ -209,6 +225,7 @@ export class TimesheetView1Page {
         {
           text: 'Agree',
           handler: () => {
+            tsDetails.IsDeleted = 1;
             this.DeleteWorkerTimesheet(tsDetails);
           }
         }
@@ -216,4 +233,60 @@ export class TimesheetView1Page {
     });
     confirm.present();
   }
+  goToSlide() { this.slides.slideTo(2, 500); }
+ 
+  submitTs(details,i) {
+    let commentModal = this.modalCtrl.create('CommentsPage');
+    commentModal.onDidDismiss(comment => {
+      if (comment != null && comment !="") {
+        this.SubmitWorkerTimesheet(details, comment,i)
+      }
+    });
+    commentModal.present();
+  }
+
+  SubmitWorkerTimesheet(tsTableContact: timesheetTableContact, comment: string,i:any) {
+    var msg;
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...'
+    });
+    loading.present();
+    console.log(tsTableContact);
+    this.axservice.submitWorkerTimesheet(tsTableContact, comment).subscribe(
+      (res) => {
+        this.tsTableContact[i] = res;
+        loading.dismiss();
+        this.presentToast("Timesheet Submitted Successfully")
+      },
+      error => {
+        loading.dismiss();
+        this.presentToast("Error While Submitted Timesheet Line" + error)
+      }
+    );
+  }
+
+
+  getList(){
+    var sDate=new Date(moment(this.periodFrom).format("YYYY-MM-DD"));
+    var eDate=new Date(moment(this.periodTo).format("YYYY-MM-DD"));
+    for(var i=0;i<7;i++){
+      this.periodList.push({periodFrom:sDate,periodTo:eDate})
+
+      var prevPeriodFrom= new Date(sDate);
+      var prevPeriodTo=new Date(eDate);
+
+      prevPeriodFrom.setDate(prevPeriodFrom.getDate()-7);
+      prevPeriodTo.setDate(prevPeriodTo.getDate()-7);
+
+      sDate=prevPeriodFrom;
+      eDate=prevPeriodTo;      
+    }
+  }
+  slideChanged() {
+    let currentIndex = this.slides.getActiveIndex();
+    console.log("selected period :: ", this.periodList[currentIndex]);
+    this.getWorkerCurrentTimesheet(this.periodList[currentIndex].periodFrom);
+  }
+  
 }

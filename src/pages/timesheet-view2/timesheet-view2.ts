@@ -19,6 +19,7 @@ declare var $: any;
 import { Nav, Platform } from 'ionic-angular';
 import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { Events } from 'ionic-angular';
+import { Validators } from '@angular/forms';
 
 /**
  * Generated class for the TimesheetView2Page page.
@@ -40,8 +41,9 @@ export class TimesheetView2Page {
   isEditable: boolean;
   periodFrom: Date;
   periodTo: Date;
+  isNewTs:boolean;
 
-  newTSContact=<timesheetTableContact>{};
+  newTSContact = <timesheetTableContact>{};
 
   newTsLine = <timesheetLineList>{};
   tsTable: timesheetTableContact = {} as timesheetTableContact;
@@ -71,8 +73,10 @@ export class TimesheetView2Page {
     this.isEditable = this.navParams.get("isEditable");
     if (tsLineData != null) {
       this.tsLineList = Array(tsLineData);
+      this.isNewTs=false;
     } else {
       this.tsLineDate = this.getBetweenDates();
+      this.isNewTs=true;
       this.newTsLine.TimesheetLineDateList = Object(this.tsLineDate);
     }
   }
@@ -127,9 +131,9 @@ export class TimesheetView2Page {
         });
       });
     }
-    this.setFullcalendarOptions(eventData);
+    this.setFullcalendarOptions(eventData, tslineList);
   }
-  setFullcalendarOptions(evntData: any) {
+  setFullcalendarOptions(evntData: any, tsLineList) {
     const component = this;
     $(document).ready(function () {
       $('#calendar').fullCalendar({
@@ -138,7 +142,7 @@ export class TimesheetView2Page {
         eventLimit: false,
         header: {
           left: '',
-          center: 'title',
+          center: '',
           right: ''
         },
         defaultView: 'basicWeek',
@@ -150,8 +154,27 @@ export class TimesheetView2Page {
           var d = moment(date).format("YYYY-MM-DD")
           component.modal(d);
         },
-        eventClick: function (event) {
-          alert(event.title);
+        eventClick: (event) => {
+          var d = moment(event.start).format("YYYY-MM-DD")
+          component.modal(d);
+        },
+        dayRender: (date, cell) => {
+          var today = new Date();
+          if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
+            cell.css("background-color", "#E5E5F7");
+          }
+          if (tsLineList != null) {
+            Object.keys(tsLineList).map(el => {
+              var arr = tsLineList[el].TimesheetLineDateList;
+              arr.forEach(key => {
+                if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
+                  if (key.WorkingHours == 0) {
+                    cell.css("background-color", "#f4f4f4");
+                  }
+                }
+              });
+            });
+          }
         },
         events: evntData
       });
@@ -217,47 +240,31 @@ export class TimesheetView2Page {
     });
     return selectedDateList;
   }
-  updateTimesheet() {
-    if (typeof this.tsTable === "undefined") {
-      this.newTSContact.PeriodFrom=this.periodFrom;
-      this.newTSContact.PeriodTo=this.periodTo;
-      this.newTSContact.IsEditable=true;
-      this.newTSContact.EmplId=this.parameterservice.user;
-      this.newTSContact.TimesheetLineList=this.newTsLine;
-
-      this.tsTable=this.newTSContact;
-    } else {
-      if (!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)) {
-        var len = Object.keys(this.tsTable.TimesheetLineList).length;
-        var lineNum = 0;
-        if (len != 0) {
-          lineNum = this.tsTable.TimesheetLineList[len - 1].LineNum;
-          this.newTsLine.LineNum = lineNum + 1;
-          Object.keys(this.tsTable.TimesheetLineList).map(e => {
-            this.tsTable.TimesheetLineList[len] = this.newTsLine;
-          });
-        } else {
-          this.newTsLine.LineNum = lineNum + 1;
-          this.tsTable.TimesheetLineList[len] = this.newTsLine;
-        }
+  validator(tsDetail) {
+    Object.keys(tsDetail.TimesheetLineList).map(e => {
+     
+      if(this.isNewTs){
+        const line = tsDetail.TimesheetLineList[e];
+      }else{
+        const line = tsDetail.TimesheetLineList[e];
+        console.log(line);
       }
-    }
-    console.log(this.tsTable);
-    this.showConfirm(this.tsTable);
+    });
+    return false;
   }
-
   updateWorkerTimesheet(tsTableContact: timesheetTableContact) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
-      content: 'Please wait...',
-      duration: 1000
+      content: 'Please wait...'
     });
     loading.present();
+    loading.dismiss();
+    if(this.validator(tsTableContact)){
+
+    }
     this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
       (res) => {
         this.tsTable = res;
-        console.log(res);
-        console.log(this.tsTable);
         loading.dismiss();
         this.presentToast("Timesheet Updated Successfully")
       },
@@ -267,21 +274,21 @@ export class TimesheetView2Page {
       }
     );
   }
-  showConfirm(tsTable) {
+  showConfirm() {
     const confirm = this.alertCtrl.create({
-      title: 'Update Timesheet Line?',
-      message: 'Are you sure you want to update this Timesheet Line?',
+      title: 'Update',
+      message: 'Do you want to update the line?',
       buttons: [
         {
           text: 'Disagree',
           handler: () => {
-           console.log("disagree clicked");
           }
         },
         {
           text: 'Agree',
           handler: () => {
-            this.updateWorkerTimesheet(tsTable)
+            this.lineNumOpp();
+            this.updateWorkerTimesheet(this.tsTable);
           }
         }
       ]
@@ -298,10 +305,36 @@ export class TimesheetView2Page {
     });
 
     toast.onDidDismiss(() => {
-      console.log(this.tsTable);
       this.viewCtrl.dismiss(this.tsTable);
-      //this.navCtrl.pop();this.tsTable
     });
     toast.present();
+  }
+  lineNumOpp() {
+    if (typeof this.tsTable === "undefined") {
+      this.newTSContact.PeriodFrom = this.periodFrom;
+      this.newTSContact.PeriodTo = this.periodTo;
+      this.newTSContact.IsEditable = true;
+      this.newTSContact.EmplId = "000020";
+      this.newTSContact.TimesheetNumber = "";
+      var arr = [];
+      arr = Array(this.newTsLine);
+      this.newTSContact.TimesheetLineList = Object(arr);
+      this.tsTable = this.newTSContact;
+    } else {
+      if (!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)) {
+        var len = Object.keys(this.tsTable.TimesheetLineList).length;
+        var lineNum = 0;
+        if (len != 0) {
+          lineNum = this.tsTable.TimesheetLineList[len - 1].LineNum;
+          this.newTsLine.LineNum = lineNum + 1;
+          Object.keys(this.tsTable.TimesheetLineList).map(e => {
+            this.tsTable.TimesheetLineList[len] = this.newTsLine;
+          });
+        } else {
+          this.newTsLine.LineNum = lineNum + 1;
+          this.tsTable.TimesheetLineList[len] = this.newTsLine;
+        }
+      }
+    }
   }
 }
