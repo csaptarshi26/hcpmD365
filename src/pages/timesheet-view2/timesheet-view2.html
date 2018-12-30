@@ -5,18 +5,14 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-
-    <ion-fab top right style="margin-top: -10px;">
-      <button ion-fab mini icon-only color="primary" (click)="SaveTs()" [disabled]="!isEditable">
-        <ion-icon name="document"></ion-icon>
-      </button>
-    </ion-fab>
-    <!-- <ion-buttons right>
-      <button ion-button icon-only color="primary" (click)="showConfirm()" [disabled]="!isEditable">
-        
-      </button>
-    </ion-buttons> -->
     <ion-title>Details</ion-title>
+    <ion-buttons end>
+      <ion-fab top right edge>
+        <button ion-fab mini icon-only color="primary" (click)="SaveTs()" [disabled]="!isEditable">
+          <ion-icon name="document"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

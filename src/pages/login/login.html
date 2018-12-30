@@ -4,6 +4,7 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()">
   <h4>
     <div *ngIf="authenticated; else elseBlock">You are logged in as {{user}}</div>
@@ -12,7 +13,7 @@
   <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
   <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
 
-  <ion-list style="margin-top:-20px">
+  <!-- <ion-list style="margin-top:-20px">
     <div id="calendar"></div>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

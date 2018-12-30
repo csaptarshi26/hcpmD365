@@ -6,27 +6,28 @@
       </button>
     </ion-buttons>
     <ion-title>Lines</ion-title>
-    <ion-fab top right style="margin-top: -10px;">
-      <button ion-fab mini [disabled]="!isEditable" (click)="addTsLine()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-fab>
-    
+    <ion-buttons end>
+      <ion-fab top right edge>
+        <button ion-fab mini [disabled]="!isEditable" (click)="addTsLine()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list style="margin-top:-20px;" >
+  <ion-list style="margin-top:-20px;">
     <div id="calendar1"></div>
   </ion-list>
   <ion-list *ngFor="let lineList of tsLineList,let i=index">
     <div *ngIf="lineList.IsDeleted==0">
       <ion-item-group (click)="editProjectDetails(lineList)">
-          <ion-item-divider color="light" sticky [ngStyle]="{'border-left-style': 'solid','border-left-width' : '15px','border-left-color':colorList[i].bgColor }">
-            <b>Project : {{lineList.ProjName}}</b><br>
-            <span style="margin-top:8px;">Total Hours : {{lineList.TotalHrs}}</span><br>
-            <span style="margin-top:8px;">Activity : {{lineList.ActivityName}}</span>
-          </ion-item-divider>
+        <ion-item-divider color="light" sticky [ngStyle]="{'border-left-style': 'solid','border-left-width' : '15px','border-left-color':colorList[i].bgColor }">
+          <b>Project : {{lineList.ProjName}}</b><br>
+          <span style="margin-top:8px;">Total Hours : {{lineList.TotalHrs}}</span><br>
+          <span style="margin-top:8px;">Activity : {{lineList.ActivityName}}</span>
+        </ion-item-divider>
       </ion-item-group>
     </div>
   </ion-list>

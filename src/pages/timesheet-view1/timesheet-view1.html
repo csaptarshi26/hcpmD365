@@ -4,11 +4,13 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Timesheets</ion-title>
-    <ion-fab top right style="margin-top: -10px;">
-      <button ion-fab mini (click)="newTimesheet()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-fab>
+    <ion-buttons end>
+      <ion-fab top right edge>
+        <button ion-fab mini (click)="newTimesheet()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -26,7 +28,7 @@
           <div class="swiper-button-next" (click)="nextSlide()"></div>
           <div class="swiper-button-prev" (click)="prevSlide()"></div>
         </ion-slide>
-       
+
       </ion-slides>
     </div>
   </div>

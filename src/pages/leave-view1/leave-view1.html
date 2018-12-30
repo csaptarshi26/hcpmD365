@@ -12,8 +12,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-    <h2 text-center>My Leave Request</h2>
+<ion-content>
+    <h2 text-center></h2>
   <div>
     <ion-segment [(ngModel)]="status">
       <ion-segment-button round value="all">All</ion-segment-button>
@@ -24,4 +24,73 @@
   </div>
 
   
+  <div >
+    <div >
+      <div >
+        <div [ngSwitch]="status">
+          <ion-list *ngSwitchCase="'all'">
+            <ion-item>
+              <ion-label text-right>
+                <button ion-button outline>
+                  Status
+                </button>
+              </ion-label>
+              <ion-label item-left>
+                <p class="tsNumber">
+                 Leave Number
+                  <ion-fab small class="addLine">
+                    <button ion-fab mini color="primary">
+                      <ion-icon name="arrow-dropright"></ion-icon>
+                    </button>
+                    <ion-fab-list side="right">
+                      <button ion-fab [disabled]="!details.IsEditable" (click)="DeleteLeave(details,i)" color="danger">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                      <button ion-fab [disabled]="!details.IsEditable" (click)="submitLeave(details,i)" color="secondary">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                      </button>
+                    </ion-fab-list>
+                  </ion-fab>
+                </p>
+
+                <div >
+                  <div >
+                    <ion-item-sliding (ionSwipe)="deleteLeave(lineList,details,i)">
+                      <ion-item no-padding text-wrap (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                        <p text-wrap class="projName">Start date - End Date</p>
+                        <p>Leave Days : 4/</p>
+                      </ion-item>
+                      <ion-item-options side="right">
+                        <button ion-button color="danger" [disabled]="!details.IsEditable" (click)="deleteTs(lineList,details,i)">
+                          <ion-icon name="trash"></ion-icon>
+                        </button>
+                      </ion-item-options>
+                    </ion-item-sliding>
+                  </div>
+                </div>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <!-- FOR DRAFT STATUS -->
+          <ion-list *ngSwitchCase="'draft'">
+            <ion-item *ngIf="details.ApprovalStatus=='Draft'">
+              
+            </ion-item>
+          </ion-list>
+          <!-- FOR APPROVED STATUS -->
+          <ion-list *ngSwitchCase="'approved'">
+            <ion-item *ngIf="details.ApprovalStatus=='Approved'">
+              
+            </ion-item>
+          </ion-list>
+          <!-- FOR REJECTED STATUS-->
+          <ion-list *ngSwitchCase="'returned'">
+            <ion-item *ngIf="details.ApprovalStatus=='Returned'">
+              
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

@@ -1,3 +1,5 @@
+import { AxserviceProvider } from './../../providers/axservice/axservice';
+import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { LeaveView2Page } from './../leave-view2/leave-view2';
 import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
 import { Component } from '@angular/core';
@@ -17,10 +19,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LeaveView1Page {
   
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private axservice: AxserviceProvider,
+    private parameterservice: ParameterserviceProvider) {
   }
 
   ionViewDidLoad() {
+    this.getLeaveApplication();
   }
 
+  getLeaveApplication(){
+    this.axservice.getWorkerLeaveAppl(this.parameterservice.user).subscribe(
+      res =>{
+        console.log(res);
+      },
+      error =>{
+
+      }
+    )
+  }
 }
