@@ -7,13 +7,15 @@ import 'rxjs/Rx';
 import { StorageserviceProvider } from '../storageservice/storageservice';
 import { ParameterserviceProvider } from '../parameterservice/parameterservice';
 import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
+import { HTTP } from '@ionic-native/http';
 
 @Injectable()
 export class AxserviceProvider {
 
   constructor(public http: Http, private msAdal: MSAdal,
-    private storageservice: StorageserviceProvider, private parameterservice: ParameterserviceProvider) {
-    console.log('Hello AxserviceProvider Provider');
+    private storageservice: StorageserviceProvider, private parameterservice: ParameterserviceProvider,
+    private hTTP: HTTP) {
+    console.log('Hello AxserviceProvider Provider');    
   }
 
   login = Observable.create((observer) => {
@@ -61,83 +63,113 @@ export class AxserviceProvider {
   })
 
   getWorkerDetails(user: string): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/GetEmpPersonalDetails';
-    let body = {_empId: user};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/GetEmpPersonalDetails';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_empId: user};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   getWorkerTimesheetPeriods(user: string): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetPeriods';
-    let body = {_empId: user};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetPeriods';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_empId: user};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
-
-  getWorkerTimesheet(user: string, periodDate: Date): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getEmplTSDetails';
-    let body = {_empId: user, _periodDate: periodDate};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
+  
+  getWorkerTimesheet(user: string, periodDate: Date): Observable<any> {
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getEmplTSDetails';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_empId: user, _periodDate: periodDate};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
+  }  
 
   getWorkerTimesheetProject(): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetProject';
-    let body = {};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetProject';
+      this.hTTP.setDataSerializer( "json" );      
+      this.hTTP.post(url, {}, {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   getWorkerTimesheetActivity(projId: string): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetActivity';
-    let body = {_projId: projId};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetActivity';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_projId: projId};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   getWorkerTimesheetCategory(): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetCategory';
-    let body = {};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getWorkerTimesheetCategory';
+      this.hTTP.setDataSerializer( "json" );      
+      this.hTTP.post(url, {}, {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   updateWorkerTimesheet(timesheetTableContact: timesheetTableContact): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/updateEmplTSDetails';
-    let body = {_timesheetTableContract: timesheetTableContact};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/updateEmplTSDetails';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_timesheetTableContract: timesheetTableContact};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   submitWorkerTimesheet(timesheetTableContact: timesheetTableContact, comments: string): Observable<any>{
-    let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/submitEmplTimesheet';
-    let body = {_timesheetTableContract: timesheetTableContact, _comments: comments};
-    let headers = new Headers({'Content-Type': 'application/Json', 'Authorization': 'Bearer '+this.parameterservice.token});
-    let options = new RequestOptions({headers: headers});
-    return this.http.post(url, JSON.stringify(body), options)
-      .map(this.extractData)
-      .catch(this.handleError);
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/submitEmplTimesheet';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_timesheetTableContract: timesheetTableContact, _comments: comments};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
   }
 
   private extractData(res: Response) { 

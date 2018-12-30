@@ -1,4 +1,3 @@
-import { LeaveTabsPage } from './../pages/leave-tabs/leave-tabs';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
@@ -35,7 +34,7 @@ export class MyApp {
       { title: 'Login', component: LoginPage },
       { title: 'Profile', component: ProfilePage },
       { title: 'Timesheet', component: TimesheetView1Page },
-      { title: 'Leave', component:LeaveTabsPage},
+      { title: 'Leave', component:LeaveView1Page},
       { title: 'Settings', component: SettingsPage },
     ];
   }

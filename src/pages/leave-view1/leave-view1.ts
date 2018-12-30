@@ -21,7 +21,6 @@ export class LeaveView1Page {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveView1Page');
   }
 
 }

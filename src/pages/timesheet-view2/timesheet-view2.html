@@ -7,7 +7,7 @@
     </ion-buttons>
 
     <ion-fab top right style="margin-top: -10px;">
-      <button ion-fab mini icon-only color="primary" (click)="showConfirm()" [disabled]="!isEditable">
+      <button ion-fab mini icon-only color="primary" (click)="SaveTs()" [disabled]="!isEditable">
         <ion-icon name="document"></ion-icon>
       </button>
     </ion-fab>
@@ -28,21 +28,21 @@
       <div *ngIf="isEditable;else viewOnly">
         <!-- PROJECTS IN SELECT OPTION MODE-->
         <ion-item>
-          <ion-label color="labelColor">Project</ion-label>
+          <ion-label color="labelColor" stacked>Project</ion-label>
           <ion-select [(ngModel)]="tsLineList[0].ProjId" interface="action-sheet" (ionChange)="selectedProject(tsLineList[0].ProjId)">
             <ion-option *ngFor="let projects of tsProject" value="{{projects.ProjId}}">{{projects.Name}}</ion-option>
           </ion-select>
         </ion-item>
         <!-- CATEGORY IN SELECT OPTION MODE-->
         <ion-item>
-          <ion-label color="labelColor">Category</ion-label>
+          <ion-label color="labelColor" stacked>Category</ion-label>
           <ion-select [(ngModel)]="tsLineList[0].CategoryId" interface="action-sheet" (ionchange)="selectedCategory(tsLineList[0].CategoryId)">
             <ion-option *ngFor="let category of tsCategory" value="{{category.CategoryId}}">{{category.Description}}</ion-option>
           </ion-select>
         </ion-item>
         <!-- ACTIVITY IN SELECT OPTION MODE-->
         <ion-item>
-          <ion-label color="labelColor">Activity</ion-label>
+          <ion-label color="labelColor" stacked> Activity</ion-label>
           <ion-select [(ngModel)]="tsLineList[0].ProjActivityNumber" interface="action-sheet" (ionchange)="selectedActivity(tsLineList[0].ProjActivityNumber)">
             <ion-option *ngFor="let activity of tsActivity" value="{{activity.ActivityNumber}}">{{activity.Description}}</ion-option>
           </ion-select>
@@ -52,21 +52,21 @@
     <ng-template #newLine>
       <!-- PROJECTS IN SELECT OPTION MODE-->
       <ion-item>
-        <ion-label color="labelColor">Project</ion-label>
+        <ion-label color="labelColor" stacked>Project</ion-label>
         <ion-select [(ngModel)]="newTsLine.ProjId" interface="action-sheet" (ionChange)="selectedProject(newTsLine.ProjId)">
           <ion-option *ngFor="let projects of tsProject" value="{{projects.ProjId}}" text-wrap>{{projects.Name}}</ion-option>
         </ion-select>
       </ion-item>
       <!-- CATEGORY IN SELECT OPTION MODE-->
       <ion-item>
-        <ion-label color="labelColor">Category</ion-label>
+        <ion-label color="labelColor" stacked>Category</ion-label>
         <ion-select [(ngModel)]="newTsLine.CategoryId" interface="action-sheet" (ionchange)="selectedCategory(newTsLine.CategoryId)">
           <ion-option *ngFor="let category of tsCategory" value="{{category.CategoryId}}">{{category.Description}}</ion-option>
         </ion-select>
       </ion-item>
       <!-- ACTIVITY IN SELECT OPTION MODE-->
       <ion-item>
-        <ion-label color="labelColor">Activity</ion-label>
+        <ion-label color="labelColor" stacked>Activity</ion-label>
         <ion-select [(ngModel)]="newTsLine.ProjActivityNumber" interface="action-sheet" (ionchange)="selectedActivity(newTsLine.ProjActivityNumber)">
           <ion-option *ngFor="let activity of tsActivity" value="{{activity.ActivityNumber}}">{{activity.Description}}</ion-option>
         </ion-select>
@@ -77,16 +77,16 @@
     <ng-template #viewOnly>
       <div *ngFor="let lineList of tsLineList">
         <ion-item text-wrap>
-          <ion-label text-left color="labelColor">Project</ion-label>
-          <ion-label text-right>{{lineList.ProjName}}</ion-label>
+          <ion-label color="labelColor" stacked>Project</ion-label>
+          <ion-label>{{lineList.ProjName}}</ion-label>
         </ion-item>
         <ion-item text-wrap>
-          <ion-label text-left color="labelColor">Category</ion-label>
-          <ion-label text-right>{{lineList.CategoryName}}</ion-label>
+          <ion-label color="labelColor" stacked>Category</ion-label>
+          <ion-label>{{lineList.CategoryName}}</ion-label>
         </ion-item>
         <ion-item text-wrap>
-          <ion-label text-left color="labelColor">Activity</ion-label>
-          <ion-label text-right>{{lineList.ActivityName}}</ion-label>
+          <ion-label color="labelColor" stacked>Activity</ion-label>
+          <ion-label>{{lineList.ActivityName}}</ion-label>
         </ion-item>
       </div>
     </ng-template>

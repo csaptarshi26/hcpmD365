@@ -23,7 +23,10 @@
       <ion-slides #slides style="height:40px" dir="rtl" (ionSlideDidChange)="slideChanged()">
         <ion-slide class="slide-page-one tsNumber" *ngFor="let list of periodList">
           {{list.periodFrom | date:'mediumDate'}} - {{list.periodTo | date:'mediumDate'}}
+          <div class="swiper-button-next" (click)="nextSlide()"></div>
+          <div class="swiper-button-prev" (click)="prevSlide()"></div>
         </ion-slide>
+       
       </ion-slides>
     </div>
   </div>

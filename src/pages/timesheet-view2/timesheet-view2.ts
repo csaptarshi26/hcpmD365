@@ -41,7 +41,7 @@ export class TimesheetView2Page {
   isEditable: boolean;
   periodFrom: Date;
   periodTo: Date;
-  isNewTs:boolean;
+  isNewTs: boolean;
 
   newTSContact = <timesheetTableContact>{};
 
@@ -73,10 +73,10 @@ export class TimesheetView2Page {
     this.isEditable = this.navParams.get("isEditable");
     if (tsLineData != null) {
       this.tsLineList = Array(tsLineData);
-      this.isNewTs=false;
+      this.isNewTs = false;
     } else {
       this.tsLineDate = this.getBetweenDates();
-      this.isNewTs=true;
+      this.isNewTs = true;
       this.newTsLine.TimesheetLineDateList = Object(this.tsLineDate);
     }
   }
@@ -135,8 +135,8 @@ export class TimesheetView2Page {
   }
   setFullcalendarOptions(evntData: any, tsLineList) {
     const component = this;
-    var sdate=moment(this.periodFrom).format("YYYY-MM-DD");
-    var edate=moment(this.periodTo,"YYYY-MM-DD").add('days',1)
+    var sdate = moment(this.periodFrom).format("YYYY-MM-DD");
+    var edate = moment(this.periodTo, "YYYY-MM-DD").add('days', 1)
     $(document).ready(function () {
       $('#calendar').fullCalendar({
         height: 200,
@@ -160,26 +160,39 @@ export class TimesheetView2Page {
           var d = moment(event.start).format("YYYY-MM-DD")
           component.modal(d);
         },
-        // dayRender: (date, cell) => {
-        //   var today = new Date();
-        //   if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
-        //     cell.css("background-color", "#E5E5F7");
-        //   }
-        //   if (tsLineList != null) {
-        //     Object.keys(tsLineList).map(el => {
-        //       var arr = tsLineList[el].TimesheetLineDateList;
-        //       arr.forEach(key => {
-        //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
-        //           if (key.WorkingHours == 0) {
-        //             cell.css("background-color", "#f4f4f4");
-        //           }
-        //         }
-        //       });
-        //     });
-        //   }
-        // },
+        
+        dayRender: (date, cell) => {
+          var today = new Date();
+          if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
+            cell.css("background-color", "#E5E5F7");
+          }
+          //   if (tsLineList != null) {
+          //     Object.keys(tsLineList).map(el => {
+          //       var arr = tsLineList[el].TimesheetLineDateList;
+          //       arr.forEach(key => {
+          //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
+          //           if (key.WorkingHours == 0) {
+          //             cell.css("background-color", "#f4f4f4");
+          //           }
+          //         }
+          //       });
+          //     });
+          //   }
+        },
         events: evntData
       });
+      $('.fc-day-header span').each(function() {
+        var fullTxt = $(this).html();
+        var date=fullTxt.split(' ');
+        var dayName=date[0];
+        var month=date[1].split('/')[0];
+        var day=date[1].split('/')[1];
+        
+        if(month.length==1) month="0" + month;
+        if(day.length==1) day="0"+day;
+        $(this).html(dayName +"\n" + month + "/" + day);
+        
+      });     
       $('#calendar').fullCalendar('removeEvents');
       $('#calendar').fullCalendar('addEventSource', evntData);
       $('#calendar').fullCalendar('rerenderEvents');
@@ -242,16 +255,26 @@ export class TimesheetView2Page {
     });
     return selectedDateList;
   }
-  validator(tsDetail) {
-    Object.keys(tsDetail.TimesheetLineList).map(e => {
-     
-      if(this.isNewTs){
-        const line = tsDetail.TimesheetLineList[e];
-      }else{
-        const line = tsDetail.TimesheetLineList[e];
-        console.log(line);
-      }
+  showErrorOnValidate(msg: any) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      position: 'top',
+      showCloseButton: true,
+      closeButtonText: "ok"
     });
+    toast.present();
+  }
+  validator(line) {
+    if (typeof line.ProjId === "undefined") {
+      this.showErrorOnValidate("Project Cannot Be blank");
+    } else if (typeof line.CategoryId === "undefined") {
+      this.showErrorOnValidate("Category Cannot Be blank");
+    } else if (typeof line.ProjActivityNumber === "undefined") {
+      this.showErrorOnValidate("Activity Cannot Be blank");
+    } else {
+      return true
+    }
     return false;
   }
   updateWorkerTimesheet(tsTableContact: timesheetTableContact) {
@@ -261,9 +284,6 @@ export class TimesheetView2Page {
     });
     loading.present();
     loading.dismiss();
-    if(this.validator(tsTableContact)){
-
-    }
     this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
       (res) => {
         this.tsTable = res;
@@ -272,9 +292,15 @@ export class TimesheetView2Page {
       },
       (error) => {
         loading.dismiss();
-        this.presentToast("Error - updating timesheet" + error)
-      }
-    );
+        this.presentToast("Error - updating timesheet")
+      });
+  }
+  SaveTs() {
+    if(!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)){
+      if(this.validator(this.newTsLine)) this.showConfirm();
+    }else{
+      this.showConfirm();
+    }
   }
   showConfirm() {
     const confirm = this.alertCtrl.create({
@@ -300,7 +326,7 @@ export class TimesheetView2Page {
   presentToast(msg: any) {
     let toast = this.toastCtrl.create({
       message: msg,
-      duration: 1000,
+      duration: 2000,
       position: 'top',
       showCloseButton: true,
       closeButtonText: "ok"

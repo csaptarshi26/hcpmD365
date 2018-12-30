@@ -11,6 +11,7 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import * as moment from 'moment'
 import { timesheetLineDateList } from '../../models/timesheet/tsLineDateListContact.interface';
+import { timesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 @IonicPage()
 @Component({
@@ -33,6 +34,7 @@ export class TimesheetDayPage {
   tsLineList: timesheetLineList;
   tsTable = {} as timesheetTableContact;
   tsChanged: boolean = false;
+  periodDateList:timesheetPeriodDateList[]=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
     public modalCtrl: ModalController, public viewCtrl: ViewController, public paramService: ParameterserviceProvider,
@@ -41,6 +43,7 @@ export class TimesheetDayPage {
     this.getParamData();
     this.dates = [];
     this.getBetweenDate();
+    
     this.colorList = this.paramService.colorList;
   }
 
@@ -84,7 +87,9 @@ export class TimesheetDayPage {
     this.periodTo = this.navParams.get("endDate");
     this.isEditable = this.navParams.get("isEditable");
     this.setFullcalendarEvents(this.tsLineList);
-
+    
+    this.periodDateList.push(this.tsTable.TimesheetPeriodDateList);
+    console.log(this.periodDateList)
   }
 
   goBack() {
@@ -158,7 +163,6 @@ export class TimesheetDayPage {
     const component = this;
     var sdate=moment(this.periodFrom).format("YYYY-MM-DD");
     var edate=moment(this.periodTo,"YYYY-MM-DD").add('days',1)
-    console.log(sdate + "   "+ edate);
     $(document).ready(function () {
       $('#calendar1').fullCalendar({
         height: 200,
@@ -174,11 +178,11 @@ export class TimesheetDayPage {
           start: sdate,
           end: edate
         },
-        // dayRender: (date, cell) => {
-        //   var today = new Date();
-        //   if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
-        //     cell.css("background-color", "#caddff");
-        //   }
+        dayRender: (date, cell) => {
+          var today = new Date();
+          if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
+            cell.css("background-color", "#E5E5F7");
+          }
         //   if (tsLineList != null) {
         //     Object.keys(tsLineList).map(el => {
         //       var arr = tsLineList[el].TimesheetLineDateList;
@@ -191,9 +195,21 @@ export class TimesheetDayPage {
         //       });
         //     });
         //   }
-        // },
+        },
         events: evntData
       });
+      $('.fc-day-header span').each(function() {
+        var fullTxt = $(this).html();
+        var date=fullTxt.split(' ');
+        var dayName=date[0];
+        var month=date[1].split('/')[0];
+        var day=date[1].split('/')[1];
+        
+        if(month.length==1) month="0" + month;
+        if(day.length==1) day="0"+day;
+        $(this).html(dayName +"\n" + month + "/" + day);
+        
+      });     
       $('#calendar1').fullCalendar('removeEvents');
       $('#calendar1').fullCalendar('addEventSource', evntData);
       $('#calendar1').fullCalendar('rerenderEvents');

@@ -24,16 +24,9 @@
       <ion-item-group (click)="editProjectDetails(lineList)">
           <ion-item-divider color="light" sticky [ngStyle]="{'border-left-style': 'solid','border-left-width' : '15px','border-left-color':colorList[i].bgColor }">
             <b>Project : {{lineList.ProjName}}</b><br>
-            <span style="margin-top:8px;">Total Hours : {{lineList.TotalHrs}}</span>
+            <span style="margin-top:8px;">Total Hours : {{lineList.TotalHrs}}</span><br>
+            <span style="margin-top:8px;">Activity : {{lineList.ActivityName}}</span>
           </ion-item-divider>
-          <ion-item>
-            <ion-label stacked color="labelColor">Category</ion-label>
-            <ion-label>{{lineList.CategoryName}}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked color="labelColor">Activity</ion-label>
-            <ion-label>{{lineList.ActivityName}}</ion-label>
-          </ion-item>
       </ion-item-group>
     </div>
   </ion-list>

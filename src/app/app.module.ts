@@ -1,4 +1,3 @@
-import { LeaveTabsPage } from './../pages/leave-tabs/leave-tabs';
 import { LeaveView2Page } from './../pages/leave-view2/leave-view2';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,6 +28,7 @@ import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
 import { TimesheetView2Page } from '../pages/timesheet-view2/timesheet-view2';
 import { TimesheetView3Page } from '../pages/timesheet-view3/timesheet-view3';
 import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
+import { HTTP } from '@ionic-native/http';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -46,8 +46,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TimesheetDayPage,
     LeaveView1Page,
     ProfilePage,
-    LeaveView2Page,
-    LeaveTabsPage
   ],
   imports: [
     BrowserModule,
@@ -70,9 +68,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TimesheetView3Page,
     TimesheetDayPage,
     ProfilePage,
-    LeaveView1Page,
-    LeaveView2Page,
-    LeaveTabsPage
+    LeaveView1Page
   ],
   providers: [
     StatusBar,
@@ -82,6 +78,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     AxserviceProvider,
     StorageserviceProvider,
     ParameterserviceProvider,
+    HTTP,
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG

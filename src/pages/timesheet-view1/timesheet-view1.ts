@@ -9,6 +9,7 @@ import * as _ from "lodash";
 import { TimesheetDayPage } from '../timesheet-day/timesheet-day';
 import { Slides } from 'ionic-angular';
 import * as moment from 'moment'
+import { timesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 @IonicPage()
 @Component({
@@ -86,7 +87,7 @@ export class TimesheetView1Page {
       content: 'Please wait...'
     });
     loading.present();
-    
+    this.showDetails=false;
     this.axservice.getWorkerTimesheet(this.parameterservice.user,periodDate).subscribe(res => {
       loading.dismiss();
       if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
@@ -111,7 +112,13 @@ export class TimesheetView1Page {
     newTS.onDidDismiss(data => {
       if (data != null) {
         var len=Object.keys(this.tsTableContact).length;
+        console.log(len);
         Object.keys(this.tsTableContact).map(e=>{
+          if(len==1 && this.tsTableContact[e].TimesheetNumber==""){
+            data.TimesheetPeriodDateList=this.tsTableContact[e].TimesheetPeriodDateList;
+            len=0;
+            this.showDetails=true;
+          }
           this.tsTableContact[len]=data;
         })
         console.log(this.tsTableContact);
@@ -129,11 +136,14 @@ export class TimesheetView1Page {
 
     this.axservice.updateWorkerTimesheet(tsTable).subscribe(
       (res) => {
-        this.tsTableContact[this.DelTsLineIndex]=res;
+        if(!(typeof this.DelTsLineIndex === "undefined")){
+          this.tsTableContact[this.DelTsLineIndex]=res;
+        }
+        console.log(this.tsTableContact);
         loading.dismiss();
         this.presentToast("Timesheet Deleted Successfully")
       },
-      error => { this.presentToast("Error While Deleting Timesheet Line" + error) }
+      error => {loading.dismiss(); this.presentToast("Error While Deleting Timesheet Line") }
     );
 
   }
@@ -142,6 +152,7 @@ export class TimesheetView1Page {
   presentToast(msg: any) {
     let toast = this.toastCtrl.create({
       message: msg,
+      duration:3000,
       position: 'top',
       showCloseButton: true,
       closeButtonText: "ok"
@@ -202,7 +213,7 @@ export class TimesheetView1Page {
 
   doRefresh(refresher) {
     setTimeout(() => {
-      this.getWorkerCurrentTimesheet(new Date());
+      this.getWorkerCurrentTimesheet(this.periodFrom);
       refresher.complete();
     }, 2000);
   }
@@ -238,7 +249,7 @@ export class TimesheetView1Page {
   submitTs(details,i) {
     let commentModal = this.modalCtrl.create('CommentsPage');
     commentModal.onDidDismiss(comment => {
-      this.SubmitWorkerTimesheet(details, comment,i)
+      if(comment!=null) this.SubmitWorkerTimesheet(details, comment,i);
     });
     commentModal.present();
   }
@@ -254,12 +265,13 @@ export class TimesheetView1Page {
     this.axservice.submitWorkerTimesheet(tsTableContact, comment).subscribe(
       (res) => {
         this.tsTableContact[i] = res;
+        console.log(res);
         loading.dismiss();
         this.presentToast("Timesheet Submitted Successfully")
       },
       error => {
         loading.dismiss();
-        this.presentToast("Error While Submitted Timesheet Line" + error)
+        this.presentToast("Error While Submitted Timesheet Line")
       }
     );
   }
@@ -284,6 +296,12 @@ export class TimesheetView1Page {
   slideChanged() {
     let currentIndex = this.slides.getActiveIndex();
     this.getWorkerCurrentTimesheet(this.periodList[currentIndex].periodFrom);
+  }
+  nextSlide() {
+    this.slides.slideNext();
+  }
+  prevSlide() {
+    this.slides.slidePrev();
   }
   
 }

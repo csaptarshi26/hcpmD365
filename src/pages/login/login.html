@@ -12,17 +12,7 @@
   <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
   <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
 
-  <!-- <ion-list style="margin-top:-20px">
-      <div id="calendar"></div>
-    </ion-list> -->
-
-
-    <ion-fab small class="addLine">
-        <button ion-fab mini color="primary"><ion-icon name="arrow-dropright"></ion-icon></button>
-        <ion-fab-list side="right">
-          <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
-          <button ion-fab color="danger"><ion-icon name="trash"></ion-icon></button>
-          <button ion-fab color="secondary"><ion-icon name="checkmark-circle"></ion-icon></button>
-        </ion-fab-list>
-      </ion-fab>
+  <ion-list style="margin-top:-20px">
+    <div id="calendar"></div>
+  </ion-list>
 </ion-content>

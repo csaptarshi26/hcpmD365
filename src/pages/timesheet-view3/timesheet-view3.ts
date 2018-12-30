@@ -28,19 +28,20 @@ export class TimesheetView3Page {
   }
   dismiss() {
     var commentFlag = false;
-    Object.keys(this.tsLineDate).map(e => {
-      if (this.tsLineDate[e].Hours > 24 || this.tsLineDate[e].Hours < 0) {
-        this.presentToast("Hours should be within 0 to 24 ");
-      } else {
-        if (this.tsLineDate[e].Hours != 0 && !(this.invalidHrs)) {
-          console.log(this.tsLineDate[e].ExternalComments);
-          if (this.tsLineDate[e].ExternalComments == "") {
-            commentFlag = true;
-            this.presentToast("External Comment cannot be left blank");
+    if (this.isEditable) {
+      Object.keys(this.tsLineDate).map(e => {
+        if (this.tsLineDate[e].Hours > 24 || this.tsLineDate[e].Hours < 0) {
+          this.presentToast("Hours should be within 0 to 24 ");
+        } else {
+          if (this.tsLineDate[e].Hours != 0 && !(this.invalidHrs)) {
+            if (this.tsLineDate[e].ExternalComments == "") {
+              commentFlag = true;
+              this.presentToast("External Comment cannot be left blank");
+            }
           }
         }
-      }
-    })
+      })
+    }
     if (!commentFlag && !this.invalidHrs) {
       this.viewCtrl.dismiss(this.tsLineList);
     }
