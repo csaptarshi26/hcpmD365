@@ -58,4 +58,17 @@ page-timesheet-view1 {
     button:disabled {
         opacity: .4 !important;
     }
+
+    .swiper-button-prev, .swiper-button-next {
+        top: 50%;
+        margin-top: -10px !important;
+        background-position: center;
+        position: absolute;
+        z-index: 10;
+        width: 27px;
+        height: 20px !important;
+        background-repeat: no-repeat;
+        background-size: 27px 44px;
+        cursor: pointer;
+    }
 }

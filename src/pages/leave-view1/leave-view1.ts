@@ -1,3 +1,4 @@
+import { LeaveApp } from './../../models/Leave/LeaveAppContact.interface';
 import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { LeaveView2Page } from './../leave-view2/leave-view2';
@@ -19,6 +20,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LeaveView1Page {
   
+  leaveApp:LeaveApp;
+  status: String = "all";
   constructor(public navCtrl: NavController, public navParams: NavParams,private axservice: AxserviceProvider,
     private parameterservice: ParameterserviceProvider) {
   }
@@ -30,6 +33,7 @@ export class LeaveView1Page {
   getLeaveApplication(){
     this.axservice.getWorkerLeaveAppl(this.parameterservice.user).subscribe(
       res =>{
+        this.leaveApp=res;
         console.log(res);
       },
       error =>{

@@ -12,8 +12,7 @@
   </h4>
   <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
   <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
-
-  <!-- <ion-list style="margin-top:-20px">
-    <div id="calendar"></div>
-  </ion-list> -->
+  
+  <div class="swiper-button-next" (click)="nextSlide()"></div>
+          <div class="swiper-button-prev" (click)="prevSlide()"></div>
 </ion-content>

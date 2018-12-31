@@ -1,3 +1,24 @@
 page-leave-view1 {
-
+    .tsNumber{
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
+        font-size: 16pt;
+        color:  #0A6ACC;
+        font-weight: 400;
+        font-style: normal;
+        text-align: left;
+    }
+    .noTs{
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
+        font-size: 13pt;
+        color: rgb(47, 41, 43);
+        font-weight: 600;
+        font-style: normal;
+        text-align: left;
+        padding: 5px;
+        line-height: 1.2;
+        overflow-y: hidden;
+    }
+    .addLine{
+        margin-top: -10px;
+    }
 }
