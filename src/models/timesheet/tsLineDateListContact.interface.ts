@@ -1,4 +1,4 @@
-export interface timesheetLineDateList{
+export interface TimesheetLineDateList{
     ExternalComments:string,
     Hours:Number,
     InternalComments:string,

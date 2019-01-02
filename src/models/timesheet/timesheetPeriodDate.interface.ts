@@ -1,4 +1,4 @@
-export interface timesheetPeriodDateList{
+export interface TimesheetPeriodDateList{
     PeriodDate:Date;
     WorkingHours:number;
 }

@@ -1,7 +1,7 @@
 page-leave-view1 {
     .tsNumber{
         font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
-        font-size: 16pt;
+        font-size: 13pt;
         color:  #0A6ACC;
         font-weight: 400;
         font-style: normal;
@@ -20,5 +20,8 @@ page-leave-view1 {
     }
     .addLine{
         margin-top: -10px;
+    }
+    .projName{
+        font-weight: 500;
     }
 }

@@ -1,12 +1,12 @@
-import { timesheetLineDateList } from "./tsLineDateListContact.interface";
+import { TimesheetLineDateList } from "./tsLineDateListContact.interface";
 
-export interface timesheetLineList{    
+export interface TimesheetLineList{    
     CategoryId:string;
     IsDeleted:Number;
     LineNum:Number;
     ProjActivityNumber:string;
     ProjId:string;
     ProjName:string;
-    TimesheetLineDateList:timesheetLineDateList;
+    TimesheetLineDateList:TimesheetLineDateList;
     TotalHrs:any;
 }

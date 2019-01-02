@@ -1,4 +1,4 @@
-export interface timesheetProject {
+export interface TimesheetProject {
     ProjId: string;
     Name: string;
 }

@@ -1,5 +1,5 @@
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
-import { timesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
+import { TimesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { TimesheetDayPage } from './../timesheet-day/timesheet-day';
@@ -9,15 +9,15 @@ import { TimesheetView3Page } from './../timesheet-view3/timesheet-view3';
 import { Component, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Modal, AlertController, LoadingController } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
-import { timesheetLineList } from '../../models/timesheet/tsLineListContact.interface';
-import { timesheetProject } from '../../models/timesheet/timesheetProject.interface';
-import { timesheetActivity } from '../../models/timesheet/timesheetActivity.interface';
-import { timesheetCategory } from '../../models/timesheet/timesheetCategory.interface';
+import { TimesheetLineList } from '../../models/timesheet/tsLineListContact.interface';
+import { TimesheetProject } from '../../models/timesheet/TimesheetProject.interface';
+import { TimesheetActivity } from '../../models/timesheet/TimesheetActivity.interface';
+import { TimesheetCategory } from '../../models/timesheet/TimesheetCategory.interface';
 import * as moment from 'moment';
 import { ToastController } from 'ionic-angular';
 declare var $: any;
 import { Nav, Platform } from 'ionic-angular';
-import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
+import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { Events } from 'ionic-angular';
 import { Validators } from '@angular/forms';
 
@@ -38,20 +38,21 @@ export class TimesheetView2Page {
   calendarOptions: Options;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
+  fcHeader: any = 0;
   isEditable: boolean;
   periodFrom: Date;
   periodTo: Date;
   isNewTs: boolean;
 
-  newTSContact = <timesheetTableContact>{};
+  newTSContact = <TimesheetTableContact>{};
 
-  newTsLine = <timesheetLineList>{};
-  tsTable: timesheetTableContact = {} as timesheetTableContact;
-  tsLineList: timesheetLineList[];
-  tsLineDate: timesheetLineDateList[];
-  tsProject: timesheetProject;
-  tsActivity: timesheetActivity;
-  tsCategory: timesheetCategory;
+  newTsLine = <TimesheetLineList>{};
+  tsTable: TimesheetTableContact = {} as TimesheetTableContact;
+  tsLineList: TimesheetLineList[];
+  tsLineDate: TimesheetLineDateList[];
+  tsProject: TimesheetProject;
+  tsActivity: TimesheetActivity;
+  tsCategory: TimesheetCategory;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
     public modalCtrl: ModalController, public viewCtrl: ViewController, public alertCtrl: AlertController,
@@ -65,7 +66,7 @@ export class TimesheetView2Page {
 
   }
   getParameters() {
-    var tsLineData: timesheetLineList;
+    var tsLineData: TimesheetLineList;
     this.tsTable = this.navParams.get("tsTable");
     this.periodFrom = this.navParams.get("periodFrom")
     this.periodTo = this.navParams.get("periodTo");
@@ -160,7 +161,7 @@ export class TimesheetView2Page {
           var d = moment(event.start).format("YYYY-MM-DD")
           component.modal(d);
         },
-        
+
         dayRender: (date, cell) => {
           var today = new Date();
           if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
@@ -181,18 +182,19 @@ export class TimesheetView2Page {
         },
         events: evntData
       });
-      $('.fc-day-header span').each(function() {
+      $('.fc-day-header span').each(function () {
+
         var fullTxt = $(this).html();
-        var date=fullTxt.split(' ');
-        var dayName=date[0];
-        var month=date[1].split('/')[0];
-        var day=date[1].split('/')[1];
-        
-        if(month.length==1) month="0" + month;
-        if(day.length==1) day="0"+day;
-        $(this).html(dayName +"<br>" + month + "/" + day);
-        
-      });     
+        var date = fullTxt.split(' ');
+        var dayName = date[0];
+        var month = date[1].split('/')[0];
+        var day = date[1].split('/')[1];
+
+        if (month.length == 1) month = "0" + month;
+        if (day.length == 1) day = "0" + day;
+        $(this).html(dayName + " " + month + "/" + day);
+
+      });
       $('#calendar').fullCalendar('removeEvents');
       $('#calendar').fullCalendar('addEventSource', evntData);
       $('#calendar').fullCalendar('rerenderEvents');
@@ -212,6 +214,7 @@ export class TimesheetView2Page {
           data.TimesheetLineDateList = Array(data.TimesheetLineDateList);
           data = Array(data);
         }
+        this.fcHeader = 10;
         this.setFullcalendarEvents(data);
       }
     })
@@ -277,13 +280,12 @@ export class TimesheetView2Page {
     }
     return false;
   }
-  updateWorkerTimesheet(tsTableContact: timesheetTableContact) {
+  updateWorkerTimesheet(tsTableContact: TimesheetTableContact) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...'
     });
     loading.present();
-    loading.dismiss();
     this.axservice.updateWorkerTimesheet(tsTableContact).subscribe(
       (res) => {
         this.tsTable = res;
@@ -296,9 +298,9 @@ export class TimesheetView2Page {
       });
   }
   SaveTs() {
-    if(!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)){
-      if(this.validator(this.newTsLine)) this.showConfirm();
-    }else{
+    if (!(Object.keys(this.newTsLine).length === 0 && this.newTsLine.constructor === Object)) {
+      if (this.validator(this.newTsLine)) this.showConfirm();
+    } else {
       this.showConfirm();
     }
   }

@@ -1,5 +1,5 @@
-import { timesheetLineList } from './../../models/timesheet/tsLineListContact.interface';
-import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
+import { TimesheetLineList } from './../../models/timesheet/tsLineListContact.interface';
+import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { TimesheetView2Page } from './../timesheet-view2/timesheet-view2';
 import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ToastController, AlertController, LoadingController } from 'ionic-angular';
@@ -9,7 +9,7 @@ import * as _ from "lodash";
 import { TimesheetDayPage } from '../timesheet-day/timesheet-day';
 import { Slides } from 'ionic-angular';
 import * as moment from 'moment'
-import { timesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
+import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 @IonicPage()
 @Component({
@@ -19,15 +19,17 @@ import { timesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodD
 
 export class TimesheetView1Page {
   @ViewChild(Slides) slides: Slides;
-  tsTableContact: timesheetTableContact;
-  TimesheetLineList: timesheetLineList;
+  tsTableContact: TimesheetTableContact;
+  TimesheetLineList: TimesheetLineList;
   periodFrom: Date;
   periodTo: Date;
   status: String = "all";
   showDetails: boolean = false;
 
-  periodList:any=[];
-  DelTsLineIndex:any;
+  pageRefreshed: boolean = false;
+
+  periodList: any = [];
+  DelTsLineIndex: any;
 
   tsIndex: any;
 
@@ -38,7 +40,7 @@ export class TimesheetView1Page {
     private CFR: ComponentFactoryResolver, private toastCtrl: ToastController, public loadingCtrl: LoadingController) {
 
   }
-  modalPage(tsTableDetails: timesheetTableContact, details: any, isEditable: boolean, i: any) {
+  modalPage(tsTableDetails: TimesheetTableContact, details: any, isEditable: boolean, i: any) {
     let profileModal = this.modalCtrl.create(TimesheetDayPage,
       {
         tsTableContact: tsTableDetails,
@@ -63,8 +65,8 @@ export class TimesheetView1Page {
   ionViewDidLoad() {
     this.getWorkerCurrentTimesheet(new Date());
   }
-  deleteTs(lineList, tsDetails,i) {
-    this.DelTsLineIndex=i;
+  deleteTs(lineList, tsDetails, i) {
+    this.DelTsLineIndex = i;
     this.showConfirm(lineList, tsDetails);
   }
 
@@ -81,14 +83,16 @@ export class TimesheetView1Page {
 
   //METHOD TO REMOVE PERTICULAR 'ELEMENT' FROM GIVEN 'ARRAY'
 
-  getWorkerCurrentTimesheet(periodDate:Date) {
+  getWorkerCurrentTimesheet(periodDate: Date) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...'
     });
-    loading.present();
-    this.showDetails=false;
-    this.axservice.getWorkerTimesheet(this.parameterservice.user,periodDate).subscribe(res => {
+    if (!this.pageRefreshed) {
+      loading.present();
+    }
+    this.showDetails = false;
+    this.axservice.getWorkerTimesheet(this.parameterservice.user, periodDate).subscribe(res => {
       loading.dismiss();
       if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
       console.log(res)
@@ -101,7 +105,7 @@ export class TimesheetView1Page {
       this.showDetails = false;
       console.log('Error - get worker ts period details: ' + error);
     });
-  
+
   }
   newTimesheet() {
     let newTS = this.modalCtrl.create(TimesheetView2Page, {
@@ -111,15 +115,15 @@ export class TimesheetView1Page {
     });
     newTS.onDidDismiss(data => {
       if (data != null) {
-        var len=Object.keys(this.tsTableContact).length;
+        var len = Object.keys(this.tsTableContact).length;
         console.log(len);
-        Object.keys(this.tsTableContact).map(e=>{
-          if(len==1 && this.tsTableContact[e].TimesheetNumber==""){
-            data.TimesheetPeriodDateList=this.tsTableContact[e].TimesheetPeriodDateList;
-            len=0;
-            this.showDetails=true;
+        Object.keys(this.tsTableContact).map(e => {
+          if (len == 1 && this.tsTableContact[e].TimesheetNumber == "") {
+            data.TimesheetPeriodDateList = this.tsTableContact[e].TimesheetPeriodDateList;
+            len = 0;
+            this.showDetails = true;
           }
-          this.tsTableContact[len]=data;
+          this.tsTableContact[len] = data;
         })
         console.log(this.tsTableContact);
       }
@@ -127,7 +131,7 @@ export class TimesheetView1Page {
     newTS.present();
   }
   //METHOD TO UPDATE/DELETE TIMESHEET
-  DeleteWorkerTimesheet(tsTable: timesheetTableContact) {
+  DeleteWorkerTimesheet(tsTable: TimesheetTableContact) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...'
@@ -136,14 +140,14 @@ export class TimesheetView1Page {
 
     this.axservice.updateWorkerTimesheet(tsTable).subscribe(
       (res) => {
-        if(!(typeof this.DelTsLineIndex === "undefined")){
-          this.tsTableContact[this.DelTsLineIndex]=res;
+        if (!(typeof this.DelTsLineIndex === "undefined")) {
+          this.tsTableContact[this.DelTsLineIndex] = res;
         }
         console.log(this.tsTableContact);
         loading.dismiss();
         this.presentToast("Timesheet Deleted Successfully")
       },
-      error => {loading.dismiss(); this.presentToast("Error While Deleting Timesheet Line") }
+      error => { loading.dismiss(); this.presentToast("Error While Deleting Timesheet Line") }
     );
 
   }
@@ -152,7 +156,7 @@ export class TimesheetView1Page {
   presentToast(msg: any) {
     let toast = this.toastCtrl.create({
       message: msg,
-      duration:3000,
+      duration: 3000,
       position: 'top',
       showCloseButton: true,
       closeButtonText: "ok"
@@ -192,7 +196,7 @@ export class TimesheetView1Page {
 
   newTsLine(tsDetails, i: any) {
     this.tsIndex = i;
-    var obj: timesheetLineList;
+    var obj: TimesheetLineList;
     let profileModal = this.modalCtrl.create(TimesheetView2Page,
       {
         lineList: obj,
@@ -213,6 +217,7 @@ export class TimesheetView1Page {
 
   doRefresh(refresher) {
     setTimeout(() => {
+      this.pageRefreshed = true;
       this.getWorkerCurrentTimesheet(this.periodFrom);
       refresher.complete();
     }, 2000);
@@ -245,16 +250,16 @@ export class TimesheetView1Page {
     confirm.present();
   }
   goToSlide() { this.slides.slideTo(2, 500); }
- 
-  submitTs(details,i) {
+
+  submitTs(details, i) {
     let commentModal = this.modalCtrl.create('CommentsPage');
     commentModal.onDidDismiss(comment => {
-      if(comment!=null) this.SubmitWorkerTimesheet(details, comment,i);
+      if (comment != null) this.SubmitWorkerTimesheet(details, comment, i);
     });
     commentModal.present();
   }
 
-  SubmitWorkerTimesheet(tsTableContact: timesheetTableContact, comment: string,i:any) {
+  SubmitWorkerTimesheet(tsTableContact: TimesheetTableContact, comment: string, i: any) {
     var msg;
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
@@ -277,20 +282,20 @@ export class TimesheetView1Page {
   }
 
 
-  getList(){
-    var sDate=new Date(moment(this.periodFrom).format("YYYY-MM-DD"));
-    var eDate=new Date(moment(this.periodTo).format("YYYY-MM-DD"));
-    for(var i=0;i<24;i++){
-      this.periodList.push({periodFrom:sDate,periodTo:eDate})
+  getList() {
+    var sDate = new Date(moment(this.periodFrom).format("YYYY-MM-DD"));
+    var eDate = new Date(moment(this.periodTo).format("YYYY-MM-DD"));
+    for (var i = 0; i < 24; i++) {
+      this.periodList.push({ periodFrom: sDate, periodTo: eDate })
 
-      var prevPeriodFrom= new Date(sDate);
-      var prevPeriodTo=new Date(eDate);
+      var prevPeriodFrom = new Date(sDate);
+      var prevPeriodTo = new Date(eDate);
 
-      prevPeriodFrom.setDate(prevPeriodFrom.getDate()-7);
-      prevPeriodTo.setDate(prevPeriodTo.getDate()-7);
+      prevPeriodFrom.setDate(prevPeriodFrom.getDate() - 7);
+      prevPeriodTo.setDate(prevPeriodTo.getDate() - 7);
 
-      sDate=prevPeriodFrom;
-      eDate=prevPeriodTo;      
+      sDate = prevPeriodFrom;
+      eDate = prevPeriodTo;
     }
   }
   slideChanged() {
@@ -303,5 +308,5 @@ export class TimesheetView1Page {
   prevSlide() {
     this.slides.slidePrev();
   }
-  
+
 }

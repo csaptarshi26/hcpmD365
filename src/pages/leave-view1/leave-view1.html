@@ -6,7 +6,7 @@
     <ion-title>Leave Application</ion-title>
     <ion-buttons end>
       <ion-fab top right edge>
-        <button ion-fab mini (click)="newTimesheet()">
+        <button ion-fab mini (click)="newLeave()">
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-fab>
@@ -15,7 +15,11 @@
 </ion-header>
 
 <ion-content>
-  <h2 text-center></h2>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Refreshing..." pullMin="400">
+    </ion-refresher-content>
+  </ion-refresher>
   <div>
     <ion-segment [(ngModel)]="status">
       <ion-segment-button value="all">All</ion-segment-button>
@@ -29,31 +33,52 @@
     <div *ngIf="!leaveDetails.IsDeleted">
       <div [ngSwitch]="status">
         <ion-list *ngSwitchCase="'all'">
-          <ion-item-sliding>
-            <ion-item>
+          <ion-item>
+            <ion-label item-right>
+              <button float-right ion-button outline (click)="editPage(leaveDetails)">
+                {{leaveDetails.Status}}
+              </button>
+            </ion-label>
+            <ion-label item-left>
+              <p text-wrap class="tsNumber">
+                {{leaveDetails.PeriodFrom | date:'shortDate'}} - {{leaveDetails.PeriodTo | date:'shortDate'}}
+                <ion-fab small class="addLine">
+                  <button ion-fab mini color="primary">
+                    <ion-icon name="arrow-dropright"></ion-icon>
+                  </button>
+                  <ion-fab-list side="right">
+                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails)">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails)">
+                      <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+                  </ion-fab-list>
+                </ion-fab>
+              </p>
+
               <div *ngFor="let leaveLine of leaveDetails.ApplicationLine">
-                <p class="tsNumber">
-                  {{leaveLine.AbsenceCodeDescription}}
-                  <button float-right ion-button outline>{{leaveDetails.Status}}</button>
-                </p>
-                <p>Leave Days : {{leaveLine.LeaveDays}}</p>
-                <p>{{leaveLine.ValidFrom | date:'E, LLL d yyyy'}} - {{leaveLine.ValidTo | date:'E, LLL d yyyy'}}</p>
+                <div>
+                  <ion-item-sliding>
+                    <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
+                      <p text-wrap class="projName">{{leaveLine.AbsenceCodeDescription}}</p>
+                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine)">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
               </div>
-            </ion-item>
-            <ion-item-options side="right">
-              <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeave()">
-                <ion-icon name="trash"></ion-icon>
-              </button>
-              <button ion-button color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave()">
-                <ion-icon name="checkmark-circle"></ion-icon>
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
+            </ion-label>
+          </ion-item>
         </ion-list>
         <!-- FOR DRAFT STATUS -->
         <ion-list *ngSwitchCase="'draft'">
-          <ion-item *ngIf="leaveDetails.Status=='Draft'">
-
+          <ion-item *ngIf="leaveDetails.Status=='created'">
+            s
           </ion-item>
         </ion-list>
         <!-- FOR APPROVED STATUS -->

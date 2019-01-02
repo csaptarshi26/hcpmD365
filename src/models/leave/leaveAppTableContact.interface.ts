@@ -1,7 +1,8 @@
-import { LeaveAppLine } from './LeaveAppLine.interface';
+import { LeaveAppLineContract } from "./leaveAppLineContract.interface";
 
-export interface LeaveApp{
-    ApplicationLine:LeaveAppLine;
+
+export interface LeaveAppTableContract{
+    ApplicationLine:LeaveAppLineContract
     IsDeleted:boolean;
     IsEditable:boolean;
     LeaveApplicationCode:string;

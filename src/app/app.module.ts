@@ -1,3 +1,5 @@
+import { DateDiffPipe } from './../pipes/date-diff/date-diff';
+import { PipesModule } from './../pipes/pipes.module';
 import { LeaveView2Page } from './../pages/leave-view2/leave-view2';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,6 +11,7 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { CustomFormsModule } from 'ng2-validation'  
+import { MomentModule } from 'ngx-moment';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -29,6 +32,7 @@ import { TimesheetView2Page } from '../pages/timesheet-view2/timesheet-view2';
 import { TimesheetView3Page } from '../pages/timesheet-view3/timesheet-view3';
 import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
 import { HTTP } from '@ionic-native/http';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -45,7 +49,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TimesheetView3Page,
     TimesheetDayPage,
     LeaveView1Page,
-    ProfilePage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,10 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     IonicStorageModule.forRoot(),
     FullCalendarModule,
     SwiperModule,
-    CustomFormsModule
+    MomentModule,
+    CustomFormsModule,
+    PipesModule,
+    NgxDaterangepickerMd
   ],
   bootstrap: [IonicApp],
   entryComponents: [

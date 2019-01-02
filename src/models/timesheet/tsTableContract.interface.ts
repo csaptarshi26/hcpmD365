@@ -1,6 +1,6 @@
-import { timesheetLineList } from './tsLineListContact.interface';
-import { timesheetPeriodDateList } from './timesheetPeriodDate.interface';
-export interface timesheetTableContact{
+import { TimesheetLineList } from './tsLineListContact.interface';
+import { TimesheetPeriodDateList } from './timesheetPeriodDate.interface';
+export interface TimesheetTableContact{
     ApprovalStatus:string,
     EmplId:string,
     PeriodFrom:Date,
@@ -8,6 +8,6 @@ export interface timesheetTableContact{
     TimesheetNumber:string,
     IsEditable: boolean,
     IsDeleted:Number,
-    TimesheetLineList:timesheetLineList
-    TimesheetPeriodDateList:timesheetPeriodDateList
+    TimesheetLineList:TimesheetLineList
+    TimesheetPeriodDateList:TimesheetPeriodDateList
 }

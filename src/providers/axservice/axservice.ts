@@ -1,3 +1,4 @@
+import { LeaveAppTableContract } from './../../models/leave/leaveAppTableContact.interface';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { MSAdal, AuthenticationContext, AuthenticationResult } from '@ionic-native/ms-adal';
@@ -6,7 +7,7 @@ import { Observer } from 'rxjs/Observer';
 import 'rxjs/Rx';
 import { StorageserviceProvider } from '../storageservice/storageservice';
 import { ParameterserviceProvider } from '../parameterservice/parameterservice';
-import { timesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
+import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { HTTP } from '@ionic-native/http';
 
 @Injectable()
@@ -144,11 +145,11 @@ export class AxserviceProvider {
     return service;
   }
 
-  updateWorkerTimesheet(timesheetTableContact: timesheetTableContact): Observable<any>{
+  updateWorkerTimesheet(TimesheetTableContact: TimesheetTableContact): Observable<any>{
     var service = Observable.create((observer) => {
       let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/updateEmplTSDetails';
       this.hTTP.setDataSerializer( "utf8" );
-      let body = {_timesheetTableContract: timesheetTableContact};
+      let body = {_timesheetTableContract: TimesheetTableContact};
       this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
         observer.next(JSON.parse(data.data));
       }).catch( error => {
@@ -158,11 +159,11 @@ export class AxserviceProvider {
     return service;
   }
 
-  submitWorkerTimesheet(timesheetTableContact: timesheetTableContact, comments: string): Observable<any>{
+  submitWorkerTimesheet(TimesheetTableContact: TimesheetTableContact, comments: string): Observable<any>{
     var service = Observable.create((observer) => {
       let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/submitEmplTimesheet';
       this.hTTP.setDataSerializer( "utf8" );
-      let body = {_timesheetTableContract: timesheetTableContact, _comments: comments};
+      let body = {_timesheetTableContract: TimesheetTableContact, _comments: comments};
       this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
         observer.next(JSON.parse(data.data));
       }).catch( error => {
@@ -184,13 +185,41 @@ export class AxserviceProvider {
       });
     });
     return service;
-  }  
+  } 
+  
+  updateEmplLeaveAppl(contract: LeaveAppTableContract): Observable<any> {
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/updateEmplLeaveAppl';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_contract: contract};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
+  } 
+
+  submitEmplLeaveAppl(contract: LeaveAppTableContract, comments: string): Observable<any> {
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/submitEmplLeaveAppl';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_contract: contract, _comments: comments};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
+  } 
 
   private extractData(res: Response) { 
     return res.json() || { };
   }
 
-  private handleError (error: Response | any) { 
+ private handleError (error: Response | any) { 
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';

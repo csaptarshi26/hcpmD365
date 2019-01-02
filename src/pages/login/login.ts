@@ -18,12 +18,12 @@ export class LoginPage {
   public user: string;
   public authenticated: boolean;
 
+
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, public loadingCtrl: LoadingController,
     private parameterservice: ParameterserviceProvider, public storageservice: StorageserviceProvider) {
-      this.setFullcalendarEvents();
   }
   
   ionViewDidLoad() {
@@ -33,57 +33,11 @@ export class LoginPage {
     if (this.authenticated == false) {
       this.login();
     }
+  
+  
   }
 
-  setFullcalendarEvents() {
-    var eventData =[{
-      start: moment('2018-12-31').format("YYYY-MM-DD"),
-      allDay: true,
-      title: 'hi'
-    }]
-    this.setFullcalendarOptions(eventData);
-  }
-  setFullcalendarOptions(evntData: any) {
-    console.clear();
-    const component = this;
-    var sdate = moment('2018-12-30').format("YYYY-MM-DD");
-    var edate = moment('2019-01-05', "YYYY-MM-DD").add('days', 1)
-    $(document).ready(function () {
-      $('#calendar').fullCalendar({
-        height: 200,
-        editable: true,
-        eventLimit: false,
-        header: {
-          left: '',
-          center: '',
-          right: ''
-        },
-        defaultView: 'basic',
-        visibleRange: {
-          start: sdate,
-          end: edate
-        },
-        events: evntData
-      });
-      $('.fc-day-header span').each(function() {
-        var fullTxt = $(this).html();
-        var date=fullTxt.split(' ');
-        var dayName=date[0];
-        var month=date[1].split('/')[0];
-        var day=date[1].split('/')[1];
-        
-        if(month.length==1) month="0" + month;
-        if(day.length==1) day="0"+day;
-        console.log("day name : " + dayName + " \nmonth : " + month + "\ndate : " + day )
-        $(this).html(dayName +"\n" + month + "/" + day);
-        
-      });     
-      $('#calendar').fullCalendar('removeEvents');
-      $('#calendar').fullCalendar('addEventSource', evntData);
-      $('#calendar').fullCalendar('rerenderEvents');
-    });
-  }
- 
+  
   login() {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',

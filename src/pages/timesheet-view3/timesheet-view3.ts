@@ -1,8 +1,8 @@
-import { timesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
+import { TimesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { ModalController, ViewController } from 'ionic-angular';
-import { timesheetLineList } from '../../models/timesheet/tsLineListContact.interface';
+import { TimesheetLineList } from '../../models/timesheet/tsLineListContact.interface';
 
 @IonicPage()
 @Component({
@@ -11,8 +11,8 @@ import { timesheetLineList } from '../../models/timesheet/tsLineListContact.inte
 })
 export class TimesheetView3Page {
   invalidHrs: boolean;
-  tsLineDate: timesheetLineDateList[];
-  tsLineList: timesheetLineList;
+  tsLineDate: TimesheetLineDateList[];
+  tsLineList: TimesheetLineList;
   date: any;
   isEditable: boolean;
   constructor(public navCtrl: NavController, public navParams: NavParams,

@@ -1,4 +1,4 @@
-export interface timesheetActivity {
+export interface TimesheetActivity {
     ActivityNumber: string;
     Description: string;
 }

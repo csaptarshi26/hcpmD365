@@ -1,4 +1,4 @@
-export interface timesheetCategory {
+export interface TimesheetCategory {
     CategoryId: string;
     Description: string;
 }
