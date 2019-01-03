@@ -111,12 +111,12 @@ export class TimesheetView1Page {
     let newTS = this.modalCtrl.create(TimesheetView2Page, {
       isEditable: true,
       periodFrom: this.periodFrom,
-      periodTo: this.periodTo
+      periodTo: this.periodTo,
+      periodList:this.tsTableContact[0].TimesheetPeriodDateList
     });
     newTS.onDidDismiss(data => {
       if (data != null) {
         var len = Object.keys(this.tsTableContact).length;
-        console.log(len);
         Object.keys(this.tsTableContact).map(e => {
           if (len == 1 && this.tsTableContact[e].TimesheetNumber == "") {
             data.TimesheetPeriodDateList = this.tsTableContact[e].TimesheetPeriodDateList;
@@ -125,7 +125,6 @@ export class TimesheetView1Page {
           }
           this.tsTableContact[len] = data;
         })
-        console.log(this.tsTableContact);
       }
     });
     newTS.present();
@@ -203,7 +202,8 @@ export class TimesheetView1Page {
         periodFrom: this.periodFrom,
         periodTo: this.periodTo,
         isEditable: true,
-        tsTable: tsDetails
+        tsTable: tsDetails,
+        periodList:this.tsTableContact[0].TimesheetPeriodDateList
       });
 
     profileModal.onDidDismiss(data => {

@@ -26,11 +26,11 @@
           </ion-item-divider>
 
           <ion-item>
-            <ion-label>From : </ion-label>
+            <ion-label color="dark">From : </ion-label>
             <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidFrom" [disabled]="!isEditable"></ion-datetime>
           </ion-item>
           <ion-item>
-            <ion-label>To : </ion-label>
+            <ion-label color="dark">To : </ion-label>
             <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"
               [disabled]="!isEditable"></ion-datetime>
           </ion-item>

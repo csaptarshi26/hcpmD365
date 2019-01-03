@@ -24,4 +24,7 @@ page-leave-view1 {
     .projName{
         font-weight: 500;
     }
+    button:disabled {
+        opacity: .4 !important;
+    }
 }

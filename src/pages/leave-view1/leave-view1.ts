@@ -6,7 +6,7 @@ import { ParameterserviceProvider } from './../../providers/parameterservice/par
 import { LeaveView2Page } from './../leave-view2/leave-view2';
 import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -22,7 +22,7 @@ export class LeaveView1Page {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
     private parameterservice: ParameterserviceProvider,public loadingCtrl: LoadingController,
-    private toastCtrl: ToastController, public alertCtrl: AlertController) {
+    private toastCtrl: ToastController, public alertCtrl: AlertController,public modalCtrl: ModalController) {
   }
   public ionViewWillEnter() {
     var data=this.navParams.get('leaveContact') || null;
@@ -53,19 +53,37 @@ export class LeaveView1Page {
     )
   }
 
-  submitLeave(leaveContact) {
-
+  submitLeave(leaveContact,i) {
+    let commentModal = this.modalCtrl.create('CommentsPage');
+    commentModal.onDidDismiss(comment => {
+      if (comment != null) this.submitLeaveServiceCall(leaveContact, comment,i);
+    });
+    commentModal.present();
+  }
+  submitLeaveServiceCall(leaveAppContact,comment,i){
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...',
+      duration : 2000
+    });
+    loading.present();
+    this.axservice.submitEmplLeaveAppl(leaveAppContact,comment).subscribe(
+      res=>{
+        loading.dismiss();
+        this.leaveApp[i]=res;
+      },error=>{
+        loading.dismiss();
+        console.log(error);
+      })
   }
 
-  deleteLeaveHeader(leaveContact:LeaveAppTableContract){
+  deleteLeaveHeader(leaveContact:LeaveAppTableContract,i){
     //leaveContact.IsDeleted=true;
-    this.showConfirm("Delete","Do you want to delete this Leave?",leaveContact);
+    this.showConfirm("Delete","Do you want to delete this Leave?",leaveContact,i);
   }
-  deleteLeaveLine(LeaveLine:LeaveAppLineContract) {
-
+  deleteLeaveLine(LeaveLine:LeaveAppLineContract,i) {
     //LeaveLine.IsDeleted=true;
-    console.log(LeaveLine);
-    this.showConfirm("Delete","Do you want to delete this Leave Line?",LeaveLine);
+    this.showConfirm("Delete","Do you want to delete this Leave Line?",LeaveLine,i);
   }
   newLeave() {
     this.navCtrl.push('LeaveAddPage');
@@ -84,8 +102,27 @@ export class LeaveView1Page {
       refresher.complete();
     }, 2000);
   }
+  deleteLeaveSerivceCall(leaveAppContact,i){
+    console.log(leaveAppContact);
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...',
+      duration : 2000
+    });
+    loading.present();
+    this.axservice.updateEmplLeaveAppl(leaveAppContact).subscribe(
+      res=>{
+        loading.dismiss();
+        this.leaveApp[i]=res;
+        this.presentToast("Leave Deleted Successfully");
+      },error=>{
+        loading.dismiss();
+        console.log(error);
+        this.presentToast("Connection Error");
+      });
+  }
 
-  showConfirm(title,msg,data) {
+  showConfirm(title,msg,data,i) {
     const confirm = this.alertCtrl.create({
       title: title,
       message: msg,
@@ -99,7 +136,7 @@ export class LeaveView1Page {
           text: 'Agree',
           handler: () => {
            data.IsDeleted=true;
-           console.log(this.leaveApp);
+           this.deleteLeaveSerivceCall(this.leaveApp[i],i);
           }
         }
       ]
@@ -114,5 +151,7 @@ export class LeaveView1Page {
       showCloseButton: true,
       closeButtonText: "ok"
     });
+
+    toast.present();
   }
 }

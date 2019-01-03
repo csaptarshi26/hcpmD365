@@ -29,7 +29,7 @@
     </ion-segment>
   </div>
 
-  <div *ngFor="let leaveDetails of leaveApp">
+  <div *ngFor="let leaveDetails of leaveApp,let i=index">
     <div *ngIf="!leaveDetails.IsDeleted">
       <div [ngSwitch]="status">
         <ion-list *ngSwitchCase="'all'">
@@ -47,10 +47,10 @@
                     <ion-icon name="arrow-dropright"></ion-icon>
                   </button>
                   <ion-fab-list side="right">
-                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails)">
+                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails,i)">
                       <ion-icon name="trash"></ion-icon>
                     </button>
-                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails)">
+                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails,i)">
                       <ion-icon name="checkmark-circle"></ion-icon>
                     </button>
                   </ion-fab-list>
@@ -58,14 +58,14 @@
               </p>
 
               <div *ngFor="let leaveLine of leaveDetails.ApplicationLine">
-                <div>
+                <div *ngIf="!leaveLine.IsDeleted">
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
                       <p text-wrap class="projName">{{leaveLine.AbsenceCodeDescription}}</p>
                       <p>Days : {{leaveLine.LeaveDays}}</p>
                     </ion-item>
                     <ion-item-options side="right">
-                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine)">
+                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine,i)">
                         <ion-icon name="trash"></ion-icon>
                       </button>
                     </ion-item-options>

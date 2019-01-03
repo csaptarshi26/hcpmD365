@@ -1,12 +1,6 @@
+import { LeaveAppLineContract } from './../../models/leave/leaveAppLineContract.interface';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the LeaveAddPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -15,11 +9,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LeaveAddPage {
 
+  leaveLine:LeaveAppLineContract = {} as LeaveAppLineContract;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeaveAddPage');
+    
+  }
+  goBack() {
+    this.navCtrl.pop();
   }
 
 }

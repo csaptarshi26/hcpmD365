@@ -36,7 +36,7 @@ export class TimesheetDayPage {
   tsLineList: TimesheetLineList;
   tsTable = {} as TimesheetTableContact;
   tsChanged: boolean = false;
-  periodDateList: TimesheetPeriodDateList[] = [];
+  periodDateList: TimesheetPeriodDateList;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
     public modalCtrl: ModalController, public viewCtrl: ViewController, public paramService: ParameterserviceProvider,
@@ -56,7 +56,8 @@ export class TimesheetDayPage {
         periodFrom: this.periodFrom,
         periodTo: this.periodTo,
         isEditable: this.isEditable,
-        tsTable: this.tsTable
+        tsTable: this.tsTable,
+        periodList:this.tsTable.TimesheetPeriodDateList
       });
     profileModal.onDidDismiss(data => {
 
@@ -90,7 +91,7 @@ export class TimesheetDayPage {
     this.isEditable = this.navParams.get("isEditable");
     this.setFullcalendarEvents(this.tsLineList);
 
-    this.periodDateList.push(this.tsTable.TimesheetPeriodDateList);
+    this.periodDateList = this.tsTable.TimesheetPeriodDateList;
     console.log(this.periodDateList)
   }
 
@@ -109,7 +110,8 @@ export class TimesheetDayPage {
         periodFrom: this.periodFrom,
         periodTo: this.periodTo,
         isEditable: true,
-        tsTable: this.tsTable
+        tsTable: this.tsTable,
+        periodList:this.tsTable.TimesheetPeriodDateList
       });
 
     profileModal.onDidDismiss(data => {
@@ -185,23 +187,20 @@ export class TimesheetDayPage {
           if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
             cell.css("background-color", "#E5E5F7");
           }
-          //   if (tsLineList != null) {
-          //     Object.keys(tsLineList).map(el => {
-          //       var arr = tsLineList[el].TimesheetLineDateList;
-          //       arr.forEach(key => {
-          //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
-          //           if (key.WorkingHours == 0) {
-          //             cell.css("background-color", "#f4f4f4");
-          //           }
-          //         }
-          //       });
-          //     });
-          //   }
+          if (component.periodDateList !=null) {
+            Object.keys(component.periodDateList).map(el => {
+              var values = component.periodDateList[el];
+              if (moment(values.PeriodDate).format("YYYY-MM-DD") == moment(date).format("YYYY-MM-DD")) {
+                if (values.WorkingHours == 0) {
+                  cell.css("background-color", "#f4f4f4");
+                }
+              }
+            });
+          }
         },
         events: evntData
       });
       $('.fc-day-header span').each(function () {
-
         var fullTxt = $(this).html();
         var date = fullTxt.split(' ');
         var dayName = date[0];
@@ -211,7 +210,6 @@ export class TimesheetDayPage {
         if (month.length == 1) month = "0" + month;
         if (day.length == 1) day = "0" + day;
         $(this).html(dayName + " " + month + "/" + day);
-
       });
       $('#calendar1').fullCalendar('removeEvents');
       $('#calendar1').fullCalendar('addEventSource', evntData);

@@ -20,6 +20,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { Events } from 'ionic-angular';
 import { Validators } from '@angular/forms';
+import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 /**
  * Generated class for the TimesheetView2Page page.
@@ -53,6 +54,7 @@ export class TimesheetView2Page {
   tsProject: TimesheetProject;
   tsActivity: TimesheetActivity;
   tsCategory: TimesheetCategory;
+  periodDateList: TimesheetPeriodDateList;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
     public modalCtrl: ModalController, public viewCtrl: ViewController, public alertCtrl: AlertController,
@@ -72,14 +74,17 @@ export class TimesheetView2Page {
     this.periodTo = this.navParams.get("periodTo");
     tsLineData = this.navParams.get("lineList");
     this.isEditable = this.navParams.get("isEditable");
+    this.periodDateList = this.navParams.get("periodList");
     if (tsLineData != null) {
       this.tsLineList = Array(tsLineData);
       this.isNewTs = false;
     } else {
+      
       this.tsLineDate = this.getBetweenDates();
       this.isNewTs = true;
       this.newTsLine.TimesheetLineDateList = Object(this.tsLineDate);
     }
+    console.log(this.periodDateList);
   }
   selectedProject(project: any) {
     console.log(project);
@@ -167,18 +172,16 @@ export class TimesheetView2Page {
           if (moment(date).format("YYYY-MM-DD") === moment(today).format("YYYY-MM-DD")) {
             cell.css("background-color", "#E5E5F7");
           }
-          //   if (tsLineList != null) {
-          //     Object.keys(tsLineList).map(el => {
-          //       var arr = tsLineList[el].TimesheetLineDateList;
-          //       arr.forEach(key => {
-          //         if (moment(date).format("YYYY-MM-DD") == moment(key.LineDate).format("YYYY-MM-DD")) {
-          //           if (key.WorkingHours == 0) {
-          //             cell.css("background-color", "#f4f4f4");
-          //           }
-          //         }
-          //       });
-          //     });
-          //   }
+          if (component.periodDateList != null) {
+            Object.keys(component.periodDateList).map(el => {
+              var values = component.periodDateList[el];
+              if (moment(values.PeriodDate).format("YYYY-MM-DD") == moment(date).format("YYYY-MM-DD")) {
+                if (values.WorkingHours == 0) {
+                  cell.css("background-color", "#f4f4f4");
+                }
+              }
+            });
+          }
         },
         events: evntData
       });
