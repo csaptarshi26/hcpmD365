@@ -1,3 +1,4 @@
+import { LeaveCalendarPage } from './../leave-calendar/leave-calendar';
 import { LeaveAddPage } from './../leave-add/leave-add';
 import { LeaveAppLineContract } from './../../models/leave/leaveAppLineContract.interface';
 import { LeaveAppTableContract } from './../../models/leave/leaveAppTableContact.interface';
@@ -18,6 +19,7 @@ export class LeaveView1Page {
   pageRefreshed:boolean=false;
   leaveApp: LeaveAppTableContract;
   status: String = "all";
+  editPageIndex:any=null;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
@@ -26,7 +28,7 @@ export class LeaveView1Page {
   }
   public ionViewWillEnter() {
     var data=this.navParams.get('leaveContact') || null;
-    if(data !=null) this.leaveApp = data
+    if(data !=null && this.editPageIndex!=null) this.leaveApp = data
   }
   ionViewDidLoad() {
     this.getLeaveApplication();
@@ -45,8 +47,7 @@ export class LeaveView1Page {
         loading.dismiss();
         this.leaveApp = res;
         console.log(res);
-      },
-      error => {
+      },error => {
         loading.dismiss();
         console.log(error);
       }
@@ -86,13 +87,19 @@ export class LeaveView1Page {
     this.showConfirm("Delete","Do you want to delete this Leave Line?",LeaveLine,i);
   }
   newLeave() {
-    this.navCtrl.push('LeaveAddPage');
+    this.navCtrl.push('LeaveAddPage',{
+      isEditable: true,
+      leaveContract:this.leaveApp
+    });
   }
 
-  editPage(details: LeaveAppTableContract) {
+  editPage(details: LeaveAppTableContract,i) {
+    this.editPageIndex=i;
     this.navCtrl.push('LeaveView2Page', {
+      leaveTable:this.leaveApp,
       leaveDetails: details,
-      isEditable: details.IsEditable
+      isEditable: details.IsEditable,
+      editPageIndex:i
     })
   }
   doRefresh(refresher) {
@@ -153,5 +160,9 @@ export class LeaveView1Page {
     });
 
     toast.present();
+  }
+
+  leaveCalendarPage(){
+    this.navCtrl.push('LeaveCalendarPage')
   }
 }

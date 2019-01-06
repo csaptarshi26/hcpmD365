@@ -166,7 +166,7 @@ export class TimesheetDayPage {
   setFullcalendarOptions(evntData: any, tsLineList) {
     const component = this;
     var sdate = moment(this.periodFrom).format("YYYY-MM-DD");
-    var edate = moment(this.periodTo, "YYYY-MM-DD").add('days', 1)
+    var edate = moment(this.periodTo, "YYYY-MM-DD").add(1,'days')
     $(document).ready(function () {
       $('#calendar1').fullCalendar({
         height: 200,

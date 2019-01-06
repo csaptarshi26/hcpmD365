@@ -14,8 +14,10 @@ import * as moment from 'moment';
 })
 export class LeaveView2Page {
 
+  leaveTable:LeaveAppTableContract;
   leaveContact: LeaveAppTableContract[];
   isEditable: boolean;
+  editPageIndex:any=null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private axservice: AxserviceProvider,
     private parameterservice: ParameterserviceProvider, private toastCtrl: ToastController, 
@@ -24,8 +26,10 @@ export class LeaveView2Page {
   }
 
   getParams() {
+    this.leaveTable=this.navParams.get("leaveTable");
     this.leaveContact = Array(this.navParams.get("leaveDetails"));
     this.isEditable = this.navParams.get("isEditable");
+    this.editPageIndex=this.navParams.get("editPageIndex");
   }
   ionViewDidLoad() {
 
@@ -36,12 +40,6 @@ export class LeaveView2Page {
   }
 
   SaveLeave() {
-    Object.keys(this.leaveContact).map(el => {
-      var arr = this.leaveContact[el].ApplicationLine;
-      arr.forEach(element => {
-        element.LeaveDays = this.getDiffDays(element.ValidFrom, element.ValidTo);
-      });
-    });
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...'
@@ -50,9 +48,14 @@ export class LeaveView2Page {
     this.axservice.updateEmplLeaveAppl(this.leaveContact[0]).subscribe(
       res => {
         loading.dismiss();
-        this.leaveContact[0] = res;
-        console.log(this.leaveContact);
-        this.presentToast("Leave Updated successfully")
+        if(res.Error){
+          this.errorToast(res.Remarks)
+        }else{
+          this.leaveContact[0] = res;
+          this.leaveTable[this.editPageIndex]=res;
+          console.log(this.leaveContact);
+          this.presentToast("Leave Created");
+        }
       },
       error => {
         loading.dismiss();
@@ -60,6 +63,15 @@ export class LeaveView2Page {
       });
   }
 
+  errorToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      position: 'top',
+      showCloseButton: true,
+      closeButtonText: "Ok"
+    });
+    toast.present();
+  }
   showConfirm() {
     const confirm = this.alertCtrl.create({
       title: 'Update',
@@ -90,16 +102,9 @@ export class LeaveView2Page {
     });
 
     toast.onDidDismiss(() => {
-      this.navCtrl.getPrevious().data.leaveContact=this.leaveContact;
+      this.navCtrl.getPrevious().data.leaveContact=this.leaveTable;
       this.navCtrl.pop();
     });
     toast.present();
-  }
-
-  getDiffDays(startDate, endDate) {
-    startDate = moment(startDate);
-    endDate = moment(endDate);
-    var daysDiff = endDate.diff(startDate, 'days');
-    return daysDiff + 1;
   }
 }

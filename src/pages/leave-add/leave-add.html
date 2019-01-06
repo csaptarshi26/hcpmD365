@@ -5,24 +5,27 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
+
     <ion-title>Add Leave</ion-title>
+
     <ion-buttons end>
       <ion-fab top right edge>
-        <button ion-fab mini icon-only color="primary" (click)="SaveLeave()" [disabled]="!isEditable">
+        <button ion-fab mini icon-only color="primary" (click)="showConfirm()" [disabled]="!isEditable">
           <ion-icon name="document"></ion-icon>
         </button>
       </ion-fab>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    
+
     <ion-item>
-      <ion-label>Leave Type</ion-label>
+      <ion-label color="dark">Leave Type</ion-label>
       <ion-select [(ngModel)]="leaveLine.AbsenceCode" interface="action-sheet" (ionChange)="selectedLeaveCode(leaveLine.AbsenceCode)">
-        <ion-option *ngFor="let projects of tsProject" value="{{projects.ProjId}}">{{projects.Name}}</ion-option>
+        <ion-option *ngFor="let leave of leaveBalance" value="{{leave.Code}}">{{leave.Description}}</ion-option>
       </ion-select>
     </ion-item>
 
@@ -33,17 +36,22 @@
 
     <ion-item>
       <ion-label color="dark">End Date</ion-label>
-      <ion-datetime placeholder="Select End Date" displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidTo"></ion-datetime>
+      <ion-datetime placeholder="Select End Date" displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label>Days</ion-label>
-      <ion-label text-right>0</ion-label>
+      <ion-label color="dark">Balance</ion-label>
+      <ion-label text-right *ngIf="balance!=null">{{balance}} </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="leaveLine.ValidFrom == leaveLine.ValidTo && leaveLine.ValidFrom !== undefined">
+      <ion-label color="dark">Hours</ion-label>
+      <ion-input type="number" [min]="0" [max]="24" [(ngModel)]="leaveLine.hours"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Balance</ion-label>
-      <ion-label text-right>0</ion-label>
+      <ion-label color="dark">Remarks</ion-label>
+      <ion-textarea [(ngModel)]="leaveLine.Remarks"></ion-textarea>
     </ion-item>
 
   </ion-list>

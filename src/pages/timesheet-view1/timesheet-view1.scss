@@ -31,10 +31,6 @@ page-timesheet-view1 {
     .addLine{
         margin-top: -10px;
     }
-    .fabButton{
-        position:absolute;
-        z-index: 1;
-    }
     .tsPeriod{
         color: #0A6ACC;
     }
@@ -47,10 +43,6 @@ page-timesheet-view1 {
     }
     ion-content ion-fab-list[side=right] {
         margin: -4px 55px !important;
-    }
-    ion-content .fab {
-        width: 35px !important;
-        height: 35px !important;
     }
     .projName{
         font-weight: 500;
@@ -70,5 +62,21 @@ page-timesheet-view1 {
         background-repeat: no-repeat;
         background-size: 27px 44px;
         cursor: pointer;
+    }
+     .color-red{
+        border-color: color($colors, danger) !important;
+        color:  color($colors, danger) !important;
+    }
+    .color-blue{
+        border-color: color($colors, primary) !important;
+        color:  color($colors, primary) !important;
+    }
+    .color-green{
+        border-color: color($colors, secondary) !important;
+        color:  color($colors, secondary) !important;
+    }
+    .color-grey{
+        border-color: color($colors, labelColor) !important;
+        color:  color($colors, labelColor) !important;
     }
 }

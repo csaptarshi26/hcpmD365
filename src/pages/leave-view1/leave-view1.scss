@@ -7,6 +7,12 @@ page-leave-view1 {
         font-style: normal;
         text-align: left;
     }
+    ion-content ion-fab-list[side=left] .fab-in-list, ion-fab-list[side=right] .fab-in-list {
+        margin: 0 4px !important;
+    }
+    ion-content ion-fab-list[side=right] {
+        margin: -4px 55px !important;
+    }
     .noTs{
         font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
         font-size: 13pt;
@@ -19,12 +25,30 @@ page-leave-view1 {
         overflow-y: hidden;
     }
     .addLine{
-        margin-top: -10px;
+        margin-top: -12px;
     }
-    .projName{
-        font-weight: 500;
+    .leaveDesc{
+        font-weight: 600;
     }
     button:disabled {
         opacity: .4 !important;
     }
+
+    .color-red{
+        border-color: color($colors, danger) !important;
+        color:  color($colors, danger) !important;
+    }
+    .color-blue{
+        border-color: color($colors, primary) !important;
+        color:  color($colors, primary) !important;
+    }
+    .color-green{
+        border-color: color($colors, secondary) !important;
+        color:  color($colors, secondary) !important;
+    }
+    .color-grey{
+        border-color: color($colors, labelColor) !important;
+        color:  color($colors, labelColor) !important;
+    }
+
 }

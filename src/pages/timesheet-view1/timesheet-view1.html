@@ -47,7 +47,9 @@
           <ion-list *ngSwitchCase="'all'">
             <ion-item>
               <ion-label text-right>
-                <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                <button ion-button outline [ngClass]="{'color-red': details.ApprovalStatus === 'Returned', 'color-blue': details.ApprovalStatus === 'Draft',
+                'color-green': details.ApprovalStatus === 'Approved','color-grey': details.ApprovalStatus === 'Submitted'} "
+                  (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
                   {{details.ApprovalStatus}}
                 </button>
               </ion-label>
@@ -94,7 +96,9 @@
           <ion-list *ngSwitchCase="'draft'">
             <ion-item *ngIf="details.ApprovalStatus=='Draft'">
               <ion-label text-right>
-                <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                <button ion-button outline [ngClass]="{'color-red': details.ApprovalStatus === 'Returned', 'color-blue': details.ApprovalStatus === 'Draft',
+                'color-green': details.ApprovalStatus === 'Approved','color-grey': details.ApprovalStatus === 'Submitted'} "
+                  (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
                   {{details.ApprovalStatus}}
                 </button>
               </ion-label>
@@ -141,7 +145,9 @@
           <ion-list *ngSwitchCase="'approved'">
             <ion-item *ngIf="details.ApprovalStatus=='Approved'">
               <ion-label text-right>
-                <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                <button ion-button outline [ngClass]="{'color-red': details.ApprovalStatus === 'Returned', 'color-blue': details.ApprovalStatus === 'Draft',
+                  'color-green': details.ApprovalStatus === 'Approved','color-grey': details.ApprovalStatus === 'Submitted'} "
+                  (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
                   {{details.ApprovalStatus}}
                 </button>
               </ion-label>
@@ -188,7 +194,9 @@
           <ion-list *ngSwitchCase="'returned'">
             <ion-item *ngIf="details.ApprovalStatus=='Returned'">
               <ion-label text-right>
-                <button ion-button outline (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
+                <button ion-button outline [ngClass]="{'color-red': details.ApprovalStatus === 'Returned', 'color-blue': details.ApprovalStatus === 'Draft',
+                  'color-green': details.ApprovalStatus === 'Approved','color-grey': details.ApprovalStatus === 'Submitted'} "
+                  (click)="modalPage(details,details.TimesheetLineList,details.IsEditable,i)">
                   {{details.ApprovalStatus}}
                 </button>
               </ion-label>

@@ -1,4 +1,3 @@
-import { PipesModule } from './../../pipes/pipes.module';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LeaveView2Page } from './leave-view2';
@@ -8,8 +7,7 @@ import { LeaveView2Page } from './leave-view2';
     LeaveView2Page,
   ],
   imports: [
-    IonicPageModule.forChild(LeaveView2Page),
-    PipesModule
+    IonicPageModule.forChild(LeaveView2Page)
   ],
 })
 export class LeaveView2PageModule {}

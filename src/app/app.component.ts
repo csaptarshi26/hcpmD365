@@ -30,12 +30,12 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Login', component: LoginPage },
-      { title: 'Profile', component: ProfilePage },
-      { title: 'Timesheet', component: TimesheetView1Page },
-      { title: 'Leave', component:LeaveView1Page},
-      { title: 'Settings', component: SettingsPage },
+      { title: 'Home',            component: HomePage },
+      { title: 'Login',           component: LoginPage },
+      { title: 'Profile',         component: ProfilePage },
+      { title: 'Timesheet',       component: TimesheetView1Page },
+      { title: 'Leave',           component:LeaveView1Page},
+      { title: 'Settings',        component: SettingsPage }
     ];
   }
 

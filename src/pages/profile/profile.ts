@@ -24,7 +24,7 @@ export class ProfilePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
     this.getWorkerDetails();
-    
+    this.getSalaryDetails()
   }
 
   getWorkerDetails() {
@@ -33,9 +33,19 @@ export class ProfilePage {
       this.name = this.worker.Name;
       this.personnelNumber = this.worker.personnelNumber;
       this.phone = this.worker.Phone;
+      console.log(res);
     }, (error) => {
       console.log('get worker details: '+ error);
     })
+  }
+  getSalaryDetails(){
+    this.axservice.getEmplSalaryRegister(this.parameterservice.user,new Date()).subscribe(
+      res =>{
+        console.log(res);
+      },error =>{
+        console.log(error);
+      }
+    )
   }
 
 }

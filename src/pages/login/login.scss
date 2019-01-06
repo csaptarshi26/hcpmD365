@@ -3,23 +3,4 @@ page-login {
         overflow: visible !important;
         opacity: 1;
     }
-    ion-content ion-fab-list[side=left] .fab-in-list, ion-fab-list[side=right] .fab-in-list {
-        margin: 0 4px !important;
-    }
-    ion-content ion-fab-list[side=right] {
-        margin: -4px 55px !important;
-    }
-    ion-content .fab {
-        width: 35px !important;
-        height: 35px !important;
-    }
-    .tsNumber{
-        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
-        font-size: 14pt;
-        color:  #0A6ACC;
-        font-weight: 400;
-        font-style: normal;
-        text-align: left;
-    }
-    
-}
+ }

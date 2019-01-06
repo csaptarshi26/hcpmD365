@@ -2,7 +2,9 @@ import { LeaveAppLineContract } from "./leaveAppLineContract.interface";
 
 
 export interface LeaveAppTableContract{
-    ApplicationLine:LeaveAppLineContract
+    ApplicationLine:LeaveAppLineContract;
+    EmpId:string;
+    Error:boolean;
     IsDeleted:boolean;
     IsEditable:boolean;
     LeaveApplicationCode:string;

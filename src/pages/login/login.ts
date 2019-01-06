@@ -24,7 +24,9 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, public loadingCtrl: LoadingController,
     private parameterservice: ParameterserviceProvider, public storageservice: StorageserviceProvider) {
-  }
+      
+      this.setFullcalendarEvents();
+    }
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
@@ -33,11 +35,7 @@ export class LoginPage {
     if (this.authenticated == false) {
       this.login();
     }
-  
-  
   }
-
-  
   login() {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
@@ -68,5 +66,45 @@ export class LoginPage {
     this.storageservice.setAuthenticated(false);
     this.storageservice.setLoginUser("");
     this.storageservice.setEmployeeId("");
+  }
+
+
+  setFullcalendarEvents() {
+    var eventData = [];
+    eventData.push({
+      start: moment('2019-01-10').format("YYYY-MM-DD"),
+      end:moment('2019-01-11',"YYYY-MM-DD").add(1,'days'),
+      allDay: true,
+      title: 'hi',
+      color: 'red'
+    });
+    this.setFullcalendarOptions(eventData);
+  }
+  setFullcalendarOptions(evntData: any) {
+    const component = this;
+    var sdate = moment('2019-01-01').format("YYYY-MM-DD");
+    var edate = moment('2019-01-31', "YYYY-MM-DD").add('days', 1)
+    $(document).ready(function () {
+      $('#calendar1').fullCalendar({
+        height:500,
+        editable: true,
+        eventLimit: false,
+        header: {
+          left: 'prev,next',
+          center: 'title',
+          right: 'month,year'
+        },
+        defaultView: 'month',
+        visibleRange: {
+          start: sdate,
+          end: edate
+        },
+        
+        events: evntData
+      });
+      $('#calendar1').fullCalendar('removeEvents');
+      $('#calendar1').fullCalendar('addEventSource', evntData);
+      $('#calendar1').fullCalendar('rerenderEvents');
+    });
   }
 }

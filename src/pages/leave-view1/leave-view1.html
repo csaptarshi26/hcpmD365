@@ -3,7 +3,9 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+
     <ion-title>Leave Application</ion-title>
+
     <ion-buttons end>
       <ion-fab top right edge>
         <button ion-fab mini (click)="newLeave()">
@@ -11,6 +13,7 @@
         </button>
       </ion-fab>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -29,19 +32,28 @@
     </ion-segment>
   </div>
 
+  <ion-fab right bottom>
+    <button ion-fab mini (click)="leaveCalendarPage()">
+      <ion-icon name="calendar"></ion-icon>
+    </button>
+  </ion-fab>
+
+
   <div *ngFor="let leaveDetails of leaveApp,let i=index">
     <div *ngIf="!leaveDetails.IsDeleted">
       <div [ngSwitch]="status">
         <ion-list *ngSwitchCase="'all'">
           <ion-item>
             <ion-label item-right>
-              <button float-right ion-button outline (click)="editPage(leaveDetails)">
+              <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
+              'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                (click)="editPage(leaveDetails,i)">
                 {{leaveDetails.Status}}
               </button>
             </ion-label>
             <ion-label item-left>
-              <p text-wrap class="tsNumber">
-                {{leaveDetails.PeriodFrom | date:'shortDate'}} - {{leaveDetails.PeriodTo | date:'shortDate'}}
+              <p class="tsNumber">
+                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
                 <ion-fab small class="addLine">
                   <button ion-fab mini color="primary">
                     <ion-icon name="arrow-dropright"></ion-icon>
@@ -61,8 +73,9 @@
                 <div *ngIf="!leaveLine.IsDeleted">
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
-                      <p text-wrap class="projName">{{leaveLine.AbsenceCodeDescription}}</p>
+                      <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
                       <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>{{leaveDetails.LeaveApplicationCode}}</p>
                     </ion-item>
                     <ion-item-options side="right">
                       <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine,i)">
@@ -78,19 +91,142 @@
         <!-- FOR DRAFT STATUS -->
         <ion-list *ngSwitchCase="'draft'">
           <ion-item *ngIf="leaveDetails.Status=='created'">
-            s
+            <ion-label item-right>
+              <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
+                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                (click)="editPage(leaveDetails,i)">
+                {{leaveDetails.Status}}
+              </button>
+            </ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">
+                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                <ion-fab small class="addLine">
+                  <button ion-fab mini color="primary">
+                    <ion-icon name="arrow-dropright"></ion-icon>
+                  </button>
+                  <ion-fab-list side="right">
+                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails,i)">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails,i)">
+                      <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+                  </ion-fab-list>
+                </ion-fab>
+              </p>
+
+              <div *ngFor="let leaveLine of leaveDetails.ApplicationLine">
+                <div *ngIf="!leaveLine.IsDeleted">
+                  <ion-item-sliding>
+                    <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
+                      <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
+                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>{{leaveDetails.LeaveApplicationCode}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine,i)">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
           </ion-item>
         </ion-list>
         <!-- FOR APPROVED STATUS -->
         <ion-list *ngSwitchCase="'approved'">
           <ion-item *ngIf="leaveDetails.Status=='Approved'">
+            <ion-label item-right>
+              <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
+                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                (click)="editPage(leaveDetails,i)">
+                {{leaveDetails.Status}}
+              </button>
+            </ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">
+                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                <ion-fab small class="addLine">
+                  <button ion-fab mini color="primary">
+                    <ion-icon name="arrow-dropright"></ion-icon>
+                  </button>
+                  <ion-fab-list side="right">
+                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails,i)">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails,i)">
+                      <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+                  </ion-fab-list>
+                </ion-fab>
+              </p>
 
+              <div *ngFor="let leaveLine of leaveDetails.ApplicationLine">
+                <div *ngIf="!leaveLine.IsDeleted">
+                  <ion-item-sliding>
+                    <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
+                      <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
+                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>{{leaveDetails.LeaveApplicationCode}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine,i)">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
           </ion-item>
         </ion-list>
         <!-- FOR REJECTED STATUS-->
         <ion-list *ngSwitchCase="'returned'">
           <ion-item *ngIf="leaveDetails.Status=='Returned'">
+            <ion-label item-right>
+              <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
+                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                (click)="editPage(leaveDetails,i)">
+                {{leaveDetails.Status}}
+              </button>
+            </ion-label>
+            <ion-label item-left>
+              <p class="tsNumber">
+                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                <ion-fab small class="addLine">
+                  <button ion-fab mini color="primary">
+                    <ion-icon name="arrow-dropright"></ion-icon>
+                  </button>
+                  <ion-fab-list side="right">
+                    <button ion-fab color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveHeader(leaveDetails,i)">
+                      <ion-icon name="trash"></ion-icon>
+                    </button>
+                    <button ion-fab color="secondary" [disabled]="!leaveDetails.IsEditable" (click)="submitLeave(leaveDetails,i)">
+                      <ion-icon name="checkmark-circle"></ion-icon>
+                    </button>
+                  </ion-fab-list>
+                </ion-fab>
+              </p>
 
+              <div *ngFor="let leaveLine of leaveDetails.ApplicationLine">
+                <div *ngIf="!leaveLine.IsDeleted">
+                  <ion-item-sliding>
+                    <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
+                      <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
+                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>{{leaveDetails.LeaveApplicationCode}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" [disabled]="!leaveDetails.IsEditable" (click)="deleteLeaveLine(leaveLine,i)">
+                        <ion-icon name="trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </div>
+              </div>
+            </ion-label>
           </ion-item>
         </ion-list>
       </div>

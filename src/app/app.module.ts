@@ -1,6 +1,4 @@
-import { DateDiffPipe } from './../pipes/date-diff/date-diff';
 import { PipesModule } from './../pipes/pipes.module';
-import { LeaveView2Page } from './../pages/leave-view2/leave-view2';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
