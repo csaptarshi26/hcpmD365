@@ -4,6 +4,7 @@ import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
+import { LeaveView2Page } from '../leave-view2/leave-view2';
 @IonicPage()
 @Component({
   selector: 'page-leave-calendar',
@@ -20,7 +21,15 @@ export class LeaveCalendarPage {
     this.getLeaveApplication();
    
   }
+  public ionViewWillEnter() {
+    var data=this.navParams.get('leaveContact') || null;
+    if(data !=null){ 
+      this.leaveApp = data
+      this.setFullcalendarEvents();
+    }
+  }
   goBack() {
+    this.navCtrl.getPrevious().data.leaveApp=this.leaveApp;
     this.navCtrl.pop();
   }
   setFullcalendarEvents() {
@@ -41,7 +50,9 @@ export class LeaveCalendarPage {
           end:moment(key.ValidTo,"YYYY-MM-DD").add(1,'days'),
           allDay: true,
           title: key.AbsenceCode,
-          color: color
+          color: color,
+          leaveDetails:this.leaveApp[el],
+          editPageIndex:el
         });
       });
     })
@@ -51,13 +62,27 @@ export class LeaveCalendarPage {
     const component = this;
     $(document).ready(function () {
       $('#calendar1').fullCalendar({
-        height:400,
+        height:500,
         editable: true,
         eventLimit: false,
         header: {
           left: 'prev',
           center: 'title',
           right: 'next'
+        },
+        dayClick: (date) => {
+          var d = moment(date).format("YYYY-MM-DD")
+         
+        },
+        eventClick: (event) => {
+          var d = moment(event.start).format("YYYY-MM-DD")
+          component.navCtrl.push('LeaveView2Page',{
+            leaveTable:component.leaveApp,
+            leaveDetails:event.leaveDetails,
+            isEditable:event.leaveDetails.IsEditable,
+            editPageIndex:event.editPageIndex
+          })
+          console.log(event)
         },
         defaultView: 'month',
         events: evntData

@@ -28,6 +28,8 @@ export class LeaveView1Page {
   }
   public ionViewWillEnter() {
     var data=this.navParams.get('leaveContact') || null;
+    var dataFromCalendar=this.navParams.get("leaveApp") || null;
+    if(dataFromCalendar != null) this.leaveApp =dataFromCalendar;
     if(data !=null && this.editPageIndex!=null) this.leaveApp = data
   }
   ionViewDidLoad() {

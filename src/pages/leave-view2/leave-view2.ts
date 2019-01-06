@@ -54,7 +54,7 @@ export class LeaveView2Page {
           this.leaveContact[0] = res;
           this.leaveTable[this.editPageIndex]=res;
           console.log(this.leaveContact);
-          this.presentToast("Leave Created");
+          this.presentToast("Leave updated successfully");
         }
       },
       error => {
