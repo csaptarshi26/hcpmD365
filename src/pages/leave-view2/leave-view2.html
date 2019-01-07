@@ -26,12 +26,12 @@
           </ion-item-divider>
 
           <ion-item>
-            <ion-label color="dark">From : </ion-label>
-            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidFrom" [disabled]="!isEditable"></ion-datetime>
+            <ion-label color="dark">From</ion-label>
+            <ion-datetime displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidFrom" [disabled]="!isEditable"></ion-datetime>
           </ion-item>
           <ion-item>
-            <ion-label color="dark">To : </ion-label>
-            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"
+            <ion-label color="dark">To</ion-label>
+            <ion-datetime displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"
               [disabled]="!isEditable"></ion-datetime>
           </ion-item>
 
@@ -49,7 +49,12 @@
             <ion-label color="dark">Remarks</ion-label>
             <ion-textarea [disabled]="!isEditable" [(ngModel)]="leaveLine.Remarks"></ion-textarea>
           </ion-item>
-          
+
+          <ion-item *ngIf="leaveLine.ValidFrom == leaveLine.ValidTo && leaveLine.ValidFrom !== undefined">
+            <ion-label color="dark">Hours</ion-label>
+            <ion-input type="number" [min]="0" [max]="24" [disabled]="!isEditable" [(ngModel)]="leaveLine.hours"></ion-input>
+          </ion-item>
+
         </ion-item-group>
       </ion-list>
     </div>

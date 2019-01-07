@@ -1,8 +1,9 @@
+import { SalaryContract } from './../../models/worker/workerSalary.interface';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
-import { worker } from '../../models/worker/worker.interface';
+import { Worker } from '../../models/worker/worker.interface';
 
 @IonicPage()
 @Component({
@@ -11,38 +12,49 @@ import { worker } from '../../models/worker/worker.interface';
 })
 export class ProfilePage {
 
-  worker: worker;
-  name: string;
-  personnelNumber: string;
-  phone: string;
+  worker: Worker;
+  SalaryContract: SalaryContract;
+  toggleDetails: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider) {
-    
-  }
 
+    this.toggleDetails =
+      {
+        job: { value: false, icon: 'arrow-dropdown' },
+        address: { value: false, icon: 'arrow-dropdown' },
+        personal: { value: false, icon: 'arrow-dropdown' },
+        document: { value: false, icon: 'arrow-dropdown' }
+      }
+  }
+  toggleCard(data) {
+    if (data.value) {
+      data.value = false;
+      data.icon = 'arrow-dropdown';
+    } else {
+      data.value = true;
+      data.icon = 'arrow-dropup';
+    }
+  }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
     this.getWorkerDetails();
     this.getSalaryDetails()
   }
 
   getWorkerDetails() {
     this.axservice.getWorkerDetails(this.parameterservice.user).subscribe(res => {
-      this.worker = res;
-      this.name = this.worker.Name;
-      this.personnelNumber = this.worker.personnelNumber;
-      this.phone = this.worker.Phone;
-      console.log(res);
+      this.worker = Object(Array(res));
+      console.log(this.worker);
     }, (error) => {
-      console.log('get worker details: '+ error);
+      console.log(error);
     })
   }
-  getSalaryDetails(){
-    this.axservice.getEmplSalaryRegister(this.parameterservice.user,new Date()).subscribe(
-      res =>{
+  getSalaryDetails() {
+    this.axservice.getEmplSalaryRegister(this.parameterservice.user, new Date()).subscribe(
+      res => {
+        this.SalaryContract = res;
         console.log(res);
-      },error =>{
+      }, error => {
         console.log(error);
       }
     )

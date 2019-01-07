@@ -1,11 +1,36 @@
-export interface worker {
-    personnelNumber: string;
-    Name: string;
-    FirstName: string;
-    LastName: string;
-    Initial: string;
+export interface Worker {
+    Address:string;
+    AnniversaryDate:Date;
+    BankAccountNumber:string;
+    BankName:string;
+    BloodGroup:string;
+    CivilId:string;
+    CivilIdExpiry:Date;
+    DateOfBirth:Date;
+    DepartmentName:string;
+    Education:string;
+    Email:string;
+    EmpId:string;
+    FirstName:string;
+    Gender:string;
+    Image:string;
+    Initial:string;
+    JobTitle:string;
+    JoiningDate:Date;
+    LastName:string;
+    MaritalStatus:string;
+    Mobile:string;
+    Name:string;
+    Nationality:string;
+    PassportExpiry:Date;
+    PassportNo:string;
+    PassportPlaceOfIssue:string;
+    PersonalEmail:string;
+    PersonnelNumber: string;
     Phone: string;
-    Mobile: string;
-    PersonalEmail: string;
-    DepartmentName: string;
+    Religion:string;
+    ReportingManager:string;
+    Salary:string;
+    VisaExpiry:string;
+    WorkExperience:string;
 }

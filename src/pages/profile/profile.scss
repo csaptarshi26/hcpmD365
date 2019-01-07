@@ -1,3 +1,27 @@
 page-profile {
-
+    .headerCard{
+        height:30%;
+        text-align: center;
+    }
+    .card-md:first-child{
+        margin: 0px !important; 
+        border-radius: 2px;
+        width: 100% !important; 
+        font-size: 1.4rem;
+    }
+    .label-md {
+        font-size: 10pt !important;
+    }
+    .cardInfo{
+        margin-top: 20px !important;
+    }
+    img{
+        border-radius: 50%;
+    }
+    .card .list .item:not(:last-child) {
+        border-bottom: 1px solid #e6e5e5;
+    }
+    .item-md{
+        padding-left: 0px !important;
+    }
 }

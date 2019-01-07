@@ -30,13 +30,13 @@
     </ion-item>
 
     <ion-item>
-      <ion-label color="dark">Start Date</ion-label>
-      <ion-datetime placeholder="Select Start Date" displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidFrom"></ion-datetime>
+      <ion-label color="dark">From</ion-label>
+      <ion-datetime placeholder="Select Start Date" displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidFrom"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label color="dark">End Date</ion-label>
-      <ion-datetime placeholder="Select End Date" displayFormat="MMM DD, YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"></ion-datetime>
+      <ion-label color="dark">To</ion-label>
+      <ion-datetime placeholder="Select End Date" displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"></ion-datetime>
     </ion-item>
 
     <ion-item>
@@ -44,15 +44,31 @@
       <ion-label text-right *ngIf="balance!=null">{{balance}} </ion-label>
     </ion-item>
 
+    <ion-item onclick="document.getElementById('id01').style.display='block'">
+      <ion-label color="dark">Comments</ion-label>
+      <ion-label>{{leaveLine.Remarks}}</ion-label>
+    </ion-item>
+
     <ion-item *ngIf="leaveLine.ValidFrom == leaveLine.ValidTo && leaveLine.ValidFrom !== undefined">
       <ion-label color="dark">Hours</ion-label>
       <ion-input type="number" [min]="0" [max]="24" [(ngModel)]="leaveLine.hours"></ion-input>
     </ion-item>
-
-    <ion-item>
-      <ion-label color="dark">Remarks</ion-label>
-      <ion-textarea [(ngModel)]="leaveLine.Remarks"></ion-textarea>
-    </ion-item>
-
   </ion-list>
+
+  <div class="w3-container">
+    <div id="id01" class="w3-modal">
+      <div class="w3-modal-content">
+        <header class="w3-container w3-light-grey">
+          <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+          <h2>Comments</h2>
+        </header>
+        <div class="w3-container" style="height:300px;">
+          <ion-item>
+            <ion-label color="inputLabelColor" floating>Comments</ion-label>
+            <ion-textarea [(ngModel)]="leaveLine.Remarks"></ion-textarea>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

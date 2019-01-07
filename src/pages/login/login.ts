@@ -1,7 +1,7 @@
 
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, Toggle } from 'ionic-angular';
 import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 import { StorageserviceProvider } from '../../providers/storageservice/storageservice';
@@ -17,17 +17,31 @@ export class LoginPage {
 
   public user: string;
   public authenticated: boolean;
-
+  toggleDetails:any;
 
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, public loadingCtrl: LoadingController,
     private parameterservice: ParameterserviceProvider, public storageservice: StorageserviceProvider) {
+      this.toggleDetails=
+       {
+        job:{value:false,icon:'arrow-dropdown'},
+        address:{value:false,icon:'arrow-dropdown'},
+        personal:{value:false,icon:'arrow-dropdown'},
+        document:{value:false,icon:'arrow-dropdown'}
+      }
       
-      this.setFullcalendarEvents();
     }
-  
+    toggleCard(data){
+      if(data.value){ 
+        data.value=false;
+        data.icon='arrow-dropdown';
+      }else{
+        data.value=true;
+        data.icon='arrow-dropup';
+      }
+    }
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.authenticated = this.parameterservice.authenticated;
@@ -66,45 +80,5 @@ export class LoginPage {
     this.storageservice.setAuthenticated(false);
     this.storageservice.setLoginUser("");
     this.storageservice.setEmployeeId("");
-  }
-
-
-  setFullcalendarEvents() {
-    var eventData = [];
-    eventData.push({
-      start: moment('2019-01-10').format("YYYY-MM-DD"),
-      end:moment('2019-01-11',"YYYY-MM-DD").add(1,'days'),
-      allDay: true,
-      title: 'hi',
-      color: 'red'
-    });
-    this.setFullcalendarOptions(eventData);
-  }
-  setFullcalendarOptions(evntData: any) {
-    const component = this;
-    var sdate = moment('2019-01-01').format("YYYY-MM-DD");
-    var edate = moment('2019-01-31', "YYYY-MM-DD").add('days', 1)
-    $(document).ready(function () {
-      $('#calendar1').fullCalendar({
-        height:500,
-        editable: true,
-        eventLimit: false,
-        header: {
-          left: 'prev,next',
-          center: 'title',
-          right: 'month,year'
-        },
-        defaultView: 'month',
-        visibleRange: {
-          start: sdate,
-          end: edate
-        },
-        
-        events: evntData
-      });
-      $('#calendar1').fullCalendar('removeEvents');
-      $('#calendar1').fullCalendar('addEventSource', evntData);
-      $('#calendar1').fullCalendar('rerenderEvents');
-    });
   }
 }

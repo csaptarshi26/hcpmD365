@@ -62,7 +62,7 @@ export class LeaveCalendarPage {
     const component = this;
     $(document).ready(function () {
       $('#calendar1').fullCalendar({
-        height:500,
+        height:400,
         editable: true,
         eventLimit: false,
         header: {

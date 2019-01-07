@@ -103,7 +103,7 @@ export class TimesheetView1Page {
     }, (error) => {
       loading.dismiss();
       this.showDetails = false;
-      console.log('Error - get worker ts period details: ' + error);
+      console.log( error);
     });
 
   }

@@ -36,7 +36,6 @@ export class LeaveAddPage {
     this.navCtrl.pop();
   }
   selectedLeaveCode(code) {
-    console.log(code);
     Object.keys(this.leaveBalance).map(el => {
       if (this.leaveBalance[el].Code == code) {
         this.balance = this.leaveBalance[el].Balance;
@@ -59,14 +58,12 @@ export class LeaveAddPage {
     this.newLeave.PeriodFrom = this.leaveLine.ValidFrom;
     this.newLeave.PeriodTo = this.leaveLine.ValidTo;
 
-    console.log(this.leaveContract);
     this.createLeaveServiceCall(len);
   }
 
   createLeaveServiceCall(len) {
     this.axservice.updateEmplLeaveAppl(this.newLeave).subscribe(
       res => {
-        console.log(res);
         if(res.Error){
           this.errorToast(res.Remarks)
         }else{
@@ -86,25 +83,40 @@ export class LeaveAddPage {
     });
     toast.present();
   }
+  validator(){
+    if(typeof this.leaveLine.AbsenceCode === "undefined"){
+      this.errorToast("Absence Code Cann't be blank");
+    }else if(typeof this.leaveLine.ValidFrom === "undefined"){
+      this.errorToast("Start Date Cann't be blank");
+    }else if(typeof this.leaveLine.ValidTo === "undefined"){
+      this.errorToast("End Date Cann't be blank");
+    }else if((this.leaveLine.ValidFrom == this.leaveLine.ValidTo) &&
+     (typeof this.leaveLine.hours === "undefined")){
+      this.errorToast("Hours Cann't be blank");
+    }else{
+      return true;
+    }
+    return false;
+  }
   showConfirm() {
-    const confirm = this.alertCtrl.create({
-      title: 'Add',
-      message: 'Are you sure you want to Apply Leave for the given date?',
-      buttons: [
-        {
-          text: 'Disagree',
-          handler: () => {
+    if(this.validator()){
+      const confirm = this.alertCtrl.create({
+        title: 'Add',
+        message: 'Are you sure you want to Apply Leave for the given date?',
+        buttons: [
+          {
+            text: 'Disagree',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Agree',
+            handler: () => this.createNewLeave()
           }
-        },
-        {
-          text: 'Agree',
-          handler: () => {
-            this.createNewLeave();
-          }
-        }
-      ]
-    });
-    confirm.present();
+        ]
+      });
+      confirm.present();
+    }
   }
 
   presentToast(msg: any) {
