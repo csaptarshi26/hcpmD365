@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-fab right bottom>
+    <button ion-fab mini icon-only color="primary" (click)="showPayslip()">
+      <ion-icon name="cash"></ion-icon>
+    </button>
+  </ion-fab>
   <ion-list *ngFor="let emp of worker">
 
     <ion-card class="headerCard" color="primary">
@@ -27,7 +32,7 @@
         Job Details
         <ion-icon float-right name="{{toggleDetails.job.icon}}"></ion-icon>
       </ion-card-header>
-      <ion-card-content  *ngIf="toggleDetails.job.value">
+      <ion-card-content *ngIf="toggleDetails.job.value">
         <ion-list>
           <ion-item>
             <ion-label>Employee Id</ion-label>
@@ -64,7 +69,7 @@
         Address Details
         <ion-icon float-right name="{{toggleDetails.address.icon}}"></ion-icon>
       </ion-card-header>
-      <ion-card-content  *ngIf="toggleDetails.address.value">
+      <ion-card-content *ngIf="toggleDetails.address.value">
         <ion-list>
           <ion-item>
             <ion-label>Address</ion-label>
@@ -165,6 +170,24 @@
             <ion-label text-left text-wrap>{{emp.VisaExpiry | date:'mediumDate'}}</ion-label>
           </ion-item>
 
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Leave Balance Details -->
+    <ion-card class="cardInfo" (click)="toggleCard(toggleDetails.leave)">
+      <ion-card-header color="primary" text-center>
+        Leave Balance Details
+        <ion-icon float-right name="{{toggleDetails.leave.icon}}"></ion-icon>
+      </ion-card-header>
+      <ion-card-content *ngIf="toggleDetails.leave.value">
+        <ion-list>
+          <div *ngFor="let leave of leaveBalance">
+            <ion-item>
+              <ion-label text-wrap>{{leave.Description}}</ion-label>
+              <ion-label text-left text-wrap>{{leave.Balance | number : '1.2-2'}}</ion-label>
+            </ion-item>
+          </div>
         </ion-list>
       </ion-card-content>
     </ion-card>

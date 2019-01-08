@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()">
         <ion-icon name="arrow-back"></ion-icon>
@@ -14,6 +14,7 @@
         </button>
       </ion-fab>
     </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -37,12 +38,12 @@
 
           <ion-item>
             <ion-label color="dark">Days</ion-label>
-            <ion-label text-right>{{leaveLine.LeaveDays}}</ion-label>
+            <ion-label text-right>{{leaveLine.LeaveDays | number : '1.2-2'}}</ion-label>
           </ion-item>
 
           <ion-item>
             <ion-label color="dark">Balance Days</ion-label>
-            <ion-label text-right>{{leaveLine.BalanceDays}}</ion-label>
+            <ion-label text-right>{{leaveLine.BalanceDays | number : '1.2-2'}}</ion-label>
           </ion-item>
 
           <ion-item>

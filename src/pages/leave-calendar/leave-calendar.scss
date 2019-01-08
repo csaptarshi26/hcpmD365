@@ -1,5 +1,16 @@
 page-leave-calendar {
     .fc-event{
-        height:30px !important;
+        height:25px !important;
+    }
+    .fc .fc-toolbar>*>:first-child {
+        background: transparent !important;
+        border: none !important;
+        margin-left: 0;
+      }
+      .fc-state-default {
+        box-shadow:none !important;
+      }
+      .fc-toolbar.fc-header-toolbar {
+        margin-bottom: 0em;
     }
 }

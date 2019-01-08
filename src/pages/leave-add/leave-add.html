@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()">
         <ion-icon name="arrow-back"></ion-icon>
@@ -20,8 +20,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-
+  <ion-list style="margin-top: 10px;">
+    <div id="calendar1" padding></div>
     <ion-item>
       <ion-label color="dark">Leave Type</ion-label>
       <ion-select [(ngModel)]="leaveLine.AbsenceCode" interface="action-sheet" (ionChange)="selectedLeaveCode(leaveLine.AbsenceCode)">
@@ -31,12 +31,14 @@
 
     <ion-item>
       <ion-label color="dark">From</ion-label>
-      <ion-datetime placeholder="Select Start Date" displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidFrom"></ion-datetime>
+      <ion-datetime placeholder="Select Start Date" displayFormat="DDD DD MMM , YYYY" 
+      [(ngModel)]="leaveLine.ValidFrom" (ionChange)="setFullcalendarEvents()"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label color="dark">To</ion-label>
-      <ion-datetime placeholder="Select End Date" displayFormat="DDD DD MMM , YYYY" [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}"></ion-datetime>
+      <ion-datetime placeholder="Select End Date" displayFormat="DDD DD MMM , YYYY" 
+      [(ngModel)]="leaveLine.ValidTo" min="{{leaveLine.ValidFrom}}" (ionChange)="setFullcalendarEvents()"></ion-datetime>
     </ion-item>
 
     <ion-item>

@@ -33,7 +33,6 @@ export class LeaveCalendarPage {
     this.navCtrl.pop();
   }
   setFullcalendarEvents() {
-    console.log(this.leaveApp);
     var eventData = [];
     Object.keys(this.leaveApp).map(el=>{
       var line=this.leaveApp[el].ApplicationLine;
@@ -61,7 +60,7 @@ export class LeaveCalendarPage {
   setFullcalendarOptions(evntData: any) {
     const component = this;
     $(document).ready(function () {
-      $('#calendar1').fullCalendar({
+      $('#calendar12').fullCalendar({
         height:400,
         editable: true,
         eventLimit: false,
@@ -87,9 +86,9 @@ export class LeaveCalendarPage {
         defaultView: 'month',
         events: evntData
       });
-      $('#calendar1').fullCalendar('removeEvents');
-      $('#calendar1').fullCalendar('addEventSource', evntData);
-      $('#calendar1').fullCalendar('rerenderEvents');
+      $('#calendar12').fullCalendar('removeEvents');
+      $('#calendar12').fullCalendar('addEventSource', evntData);
+      $('#calendar12').fullCalendar('rerenderEvents');
     });
   }
 
@@ -110,5 +109,12 @@ export class LeaveCalendarPage {
         console.log(error);
       }
     )
+  }
+
+  newLeave() {
+    this.navCtrl.push('LeaveAddPage',{
+      isEditable: true,
+      leaveContract:this.leaveApp
+    });
   }
 }

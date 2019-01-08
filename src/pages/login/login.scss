@@ -3,5 +3,9 @@ page-login {
         overflow: visible !important;
         opacity: 1;
     }
+    .fc-basic-view .fc-body .fc-row {
+        min-height: 1em !important;
+      }
+      
    
  }

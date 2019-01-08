@@ -21,11 +21,8 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    // this.statusBar.styleLightContent();
-    // this.statusBar.hide();
-    this.statusBar.backgroundColorByHexString('#f4f4f4');
-    this.statusBar.styleLightContent();
-   
+    statusBar.backgroundColorByHexString('#7dc5f6');
+    statusBar.styleLightContent();
     this.initializeApp();
 
     // used for an example of ngFor and navigation

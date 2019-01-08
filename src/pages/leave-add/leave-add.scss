@@ -7,5 +7,19 @@ page-leave-add {
       }
     }
   }
-     
+
+  .fc-basic-view .fc-body .fc-row {
+    min-height: 1em !important;
+  }
+  .fc .fc-toolbar>*>:first-child {
+    background: transparent !important;
+    border: none !important;
+    margin-left: 0;
+  }
+  .fc-state-default {
+    box-shadow:none !important;
+  }
+  .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0em;
+  }
 }

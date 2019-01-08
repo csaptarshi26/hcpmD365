@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -53,7 +53,7 @@
             </ion-label>
             <ion-label item-left>
               <p class="tsNumber">
-                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                {{leaveDetails.PeriodFrom | date:'LL/dd/yy'}} - {{leaveDetails.PeriodTo | date:'LL/dd/yy'}}
                 <ion-fab small class="addLine">
                   <button ion-fab mini color="primary">
                     <ion-icon name="arrow-dropright"></ion-icon>
@@ -74,7 +74,7 @@
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
                       <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
-                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>Days : {{leaveLine.LeaveDays | number : '1.2-2' }}</p>
                       <p>{{leaveDetails.LeaveApplicationCode}}</p>
                     </ion-item>
                     <ion-item-options side="right">
@@ -100,7 +100,7 @@
             </ion-label>
             <ion-label item-left>
               <p class="tsNumber">
-                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                {{leaveDetails.PeriodFrom | date:'LL/dd/yy'}} - {{leaveDetails.PeriodTo | date:'LL/dd/yy'}}
                 <ion-fab small class="addLine">
                   <button ion-fab mini color="primary">
                     <ion-icon name="arrow-dropright"></ion-icon>
@@ -147,7 +147,7 @@
             </ion-label>
             <ion-label item-left>
               <p class="tsNumber">
-                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                {{leaveDetails.PeriodFrom | date:'LL/dd/yy'}} - {{leaveDetails.PeriodTo | date:'LL/dd/yy'}}
                 <ion-fab small class="addLine">
                   <button ion-fab mini color="primary">
                     <ion-icon name="arrow-dropright"></ion-icon>
@@ -194,7 +194,7 @@
             </ion-label>
             <ion-label item-left>
               <p class="tsNumber">
-                {{leaveDetails.PeriodFrom | date:'dd/LL/yy'}} - {{leaveDetails.PeriodTo | date:'dd/LL/yy'}}
+                {{leaveDetails.PeriodFrom | date:'LL/dd/yy'}} - {{leaveDetails.PeriodTo | date:'LL/dd/yy'}}
                 <ion-fab small class="addLine">
                   <button ion-fab mini color="primary">
                     <ion-icon name="arrow-dropright"></ion-icon>

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>PaySlip</ion-title>
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card *ngFor="let salary of SalaryContract">
+    <ion-card-header color="primary" text-center>{{ salary.ValidTo | date :'MMMM , yyyy'}}</ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Pay Element</ion-label>
+        <ion-label text-left text-wrap>Amount ({{currency}})</ion-label>
+      </ion-item>
+      <hr>
+      <ion-item *ngFor="let payslip of salary.PayrollList">
+        <ion-label>{{payslip.PayElementCode}}</ion-label>
+        <ion-label text-left text-wrap [ngClass]="{'positive': payslip.Amount > 0,'negetive' :  payslip.Amount < 0}">
+          {{payslip.Amount | number : '1.2-2'}}
+        </ion-label>
+      </ion-item>
+      <hr>
+      <ion-item>
+        <ion-label>Total Amount</ion-label>
+        <ion-label text-left text-wrap> {{totalAmount}} </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,35 +1,17 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Login</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content>
-  <!-- <h4>
+  <h4>
     <div *ngIf="authenticated; else elseBlock">You are logged in as {{user}}</div>
     <ng-template #elseBlock>Please login</ng-template>
   </h4>
   <button ion-button color="primary" (click)='login()' block *ngIf="!authenticated">Login</button>
-  <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button> -->
-  
-  <!-- <ion-card (click)="toggleCard(toggleDetails.job)">
-    <ion-card-header color="primary">
-      Job Details
-      <ion-icon float-right name="{{toggleDetails.job.icon}}"></ion-icon>
-    </ion-card-header>
-    <ion-card-content  *ngIf="toggleDetails.job.value">
-      <ion-list >
-        <ion-item>
-          <ion-label>Employee Id</ion-label>
-          <ion-label text-right>12345</ion-label>
-        </ion-item>
+  <button ion-button color="primary" (click)='logout()' block *ngIf="authenticated">Logout</button>
 
-        <ion-item>
-          <ion-label>Job Title</ion-label>
-          <ion-label text-right>Analsyt</ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card> -->
+  
 </ion-content>

@@ -17,31 +17,16 @@ export class LoginPage {
 
   public user: string;
   public authenticated: boolean;
-  toggleDetails:any;
-
+  startDate: string = null;
+  endDate: string = null;
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private axservice: AxserviceProvider, public loadingCtrl: LoadingController,
     private parameterservice: ParameterserviceProvider, public storageservice: StorageserviceProvider) {
-      this.toggleDetails=
-       {
-        job:{value:false,icon:'arrow-dropdown'},
-        address:{value:false,icon:'arrow-dropdown'},
-        personal:{value:false,icon:'arrow-dropdown'},
-        document:{value:false,icon:'arrow-dropdown'}
-      }
-      
-    }
-    toggleCard(data){
-      if(data.value){ 
-        data.value=false;
-        data.icon='arrow-dropdown';
-      }else{
-        data.value=true;
-        data.icon='arrow-dropup';
-      }
-    }
+    this.setFullcalendarEvents();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
     this.authenticated = this.parameterservice.authenticated;
@@ -54,9 +39,9 @@ export class LoginPage {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...',
-      duration:2000
+      duration: 2000
     });
-  
+
     loading.present();
     this.axservice.login.subscribe((data) => {
       loading.dismiss();
@@ -80,5 +65,43 @@ export class LoginPage {
     this.storageservice.setAuthenticated(false);
     this.storageservice.setLoginUser("");
     this.storageservice.setEmployeeId("");
+  }
+
+  setFullcalendarEvents() {
+    var eventData = [];
+    if (this.startDate != null && this.endDate != null) {
+      eventData.push({
+        start: moment(this.startDate).format("YYYY-MM-DD"),
+        end: moment(this.endDate, "YYYY-MM-DD").add(1, 'days'),
+        allDay: true,
+        title: 'hi',
+      });
+    }
+    this.setFullcalendarOptions(eventData);
+  }
+  setFullcalendarOptions(evntData: any) {
+    const component = this;
+    $(document).ready(function () {
+      $('#calendar1').fullCalendar({
+        height: 300,
+        editable: true,
+        eventLimit: false,
+        header: {
+          left: 'prev',
+          center: 'title',
+          right: 'next'
+        },
+       
+        dayClick: (date) => {
+          var d = moment(date).format("YYYY-MM-DD")
+
+        },
+        defaultView: 'month',
+        events: evntData
+      });
+      $('#calendar1').fullCalendar('removeEvents');
+      $('#calendar1').fullCalendar('addEventSource', evntData);
+      $('#calendar1').fullCalendar('rerenderEvents');
+    });
   }
 }

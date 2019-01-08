@@ -1,0 +1,8 @@
+page-payslip {
+    .positive{
+        color:  color($colors, secondary) !important;
+    }
+    .negetive{
+        color:  color($colors, danger) !important;
+    }
+}

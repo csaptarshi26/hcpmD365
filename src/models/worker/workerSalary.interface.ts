@@ -1,7 +1,9 @@
+import { BenefitContract } from './workerBenefit.interface';
+import { PayrollContract } from './workerPayroll.interface';
 export interface SalaryContract{
-    BenefitList:any;
+    BenefitList:BenefitContract;
     Name:string;
-    PayrollList:any;
+    PayrollList:PayrollContract;
     PersonnelNumber:string;
     ValidFrom:Date;
     ValidTo:Date;

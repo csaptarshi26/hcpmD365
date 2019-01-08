@@ -1,17 +1,26 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons left>
       <button ion-button icon-only (click)="goBack()">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
+
     <ion-title>Leave Calendar</ion-title>
+
+    <ion-buttons end>
+        <ion-fab top right edge>
+          <button ion-fab mini (click)="newLeave()">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-fab>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list style="margin-top:10px;">
-    <div id="calendar1"></div>
+  <ion-list>
+    <div id="calendar12"></div>
   </ion-list>
 </ion-content>

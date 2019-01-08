@@ -1,6 +1,8 @@
+import { PayslipPage } from './../payslip/payslip';
+import { LeaveBalanceContract } from './../../models/leave/leaveBalanceContract.interface';
 import { SalaryContract } from './../../models/worker/workerSalary.interface';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 import { Worker } from '../../models/worker/worker.interface';
@@ -15,16 +17,19 @@ export class ProfilePage {
   worker: Worker;
   SalaryContract: SalaryContract;
   toggleDetails: any;
+  leaveBalance: LeaveBalanceContract;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
+    private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider,
+    private toastCtrl: ToastController) {
 
     this.toggleDetails =
       {
         job: { value: false, icon: 'arrow-dropdown' },
         address: { value: false, icon: 'arrow-dropdown' },
         personal: { value: false, icon: 'arrow-dropdown' },
-        document: { value: false, icon: 'arrow-dropdown' }
+        document: { value: false, icon: 'arrow-dropdown' },
+        leave:  {value:false,icon:'arrow-dropdown'}
       }
   }
   toggleCard(data) {
@@ -38,26 +43,45 @@ export class ProfilePage {
   }
   ionViewDidLoad() {
     this.getWorkerDetails();
-    this.getSalaryDetails()
+    this.getLeaveBalanceDetails();
   }
 
+  getLeaveBalanceDetails(){
+    this.axservice.getEmplLeaveBalance(this.parameterservice.user).subscribe(
+      res => {
+        this.leaveBalance = res;
+      }, error => {
+        console.log(error);
+      });
+  }
   getWorkerDetails() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'circles',
+      content: 'Please wait...'
+    });
+    loading.present();
     this.axservice.getWorkerDetails(this.parameterservice.user).subscribe(res => {
+      loading.dismiss();
       this.worker = Object(Array(res));
       console.log(this.worker);
     }, (error) => {
-      console.log(error);
+      loading.dismiss();
+      this.errorToast("Error while connecting to server");
     })
   }
-  getSalaryDetails() {
-    this.axservice.getEmplSalaryRegister(this.parameterservice.user, new Date()).subscribe(
-      res => {
-        this.SalaryContract = res;
-        console.log(res);
-      }, error => {
-        console.log(error);
-      }
-    )
+ 
+  showPayslip(){
+    this.navCtrl.push('PayslipPage');
+  }
+
+  errorToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      position: 'top',
+      showCloseButton: true,
+      closeButtonText: "Ok"
+    });
+    toast.present();
   }
 
 }
