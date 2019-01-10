@@ -92,19 +92,24 @@ export class TimesheetView1Page {
       loading.present();
     }
     this.showDetails = false;
-    this.axservice.getWorkerTimesheet(this.parameterservice.user, periodDate).subscribe(res => {
-      loading.dismiss();
-      if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
-      console.log(res)
-      this.tsTableContact = res;
-      this.periodFrom = this.tsTableContact[0].PeriodFrom;
-      this.periodTo = this.tsTableContact[0].PeriodTo;
-      this.getList();
-    }, (error) => {
+    if (this.parameterservice.user == "") {
       loading.dismiss();
       this.showDetails = false;
-      console.log( error);
-    });
+    } else {
+      this.axservice.getWorkerTimesheet(this.parameterservice.user, periodDate).subscribe(res => {
+        loading.dismiss();
+        if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
+        console.log(res)
+        this.tsTableContact = res;
+        this.periodFrom = this.tsTableContact[0].PeriodFrom;
+        this.periodTo = this.tsTableContact[0].PeriodTo;
+        this.getList();
+      }, (error) => {
+        loading.dismiss();
+        this.showDetails = false;
+        console.log(error);
+      });
+    }
 
   }
   newTimesheet() {
@@ -112,7 +117,7 @@ export class TimesheetView1Page {
       isEditable: true,
       periodFrom: this.periodFrom,
       periodTo: this.periodTo,
-      periodList:this.tsTableContact[0].TimesheetPeriodDateList
+      periodList: this.tsTableContact[0].TimesheetPeriodDateList
     });
     newTS.onDidDismiss(data => {
       if (data != null) {
@@ -203,7 +208,7 @@ export class TimesheetView1Page {
         periodTo: this.periodTo,
         isEditable: true,
         tsTable: tsDetails,
-        periodList:this.tsTableContact[0].TimesheetPeriodDateList
+        periodList: this.tsTableContact[0].TimesheetPeriodDateList
       });
 
     profileModal.onDidDismiss(data => {

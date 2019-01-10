@@ -1,9 +1,9 @@
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { AxserviceProvider } from './../../providers/axservice/axservice';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, Slides } from 'ionic-angular';
 import { SalaryContract } from '../../models/worker/workerSalary.interface';
-
+import * as moment from 'moment';
 /**
  * Generated class for the PayslipPage page.
  *
@@ -17,31 +17,47 @@ import { SalaryContract } from '../../models/worker/workerSalary.interface';
   templateUrl: 'payslip.html',
 })
 export class PayslipPage {
-
+  @ViewChild(Slides) slides: Slides;
+  
   worker: Worker;
   SalaryContract: SalaryContract;
-  totalAmount:any=0;
-  currency:string;
+  totalAmount: any = 0;
+  currency: string;
+  joiningDate: Date;
+  isPayroll:boolean=false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public loadingCtrl: LoadingController,
+  periodList: any = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
     private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider,
     private toastCtrl: ToastController) {
+
+    this.joiningDate = navParams.get("joiningDate");
+
+    this.periodList=this.getMonths(this.joiningDate,new Date());
+    console.log(this.periodList);
   }
 
   ionViewDidLoad() {
-    this.getSalaryDetails();
+    this.getSalaryDetails(new Date());
   }
-  getSalaryDetails() {
+  getSalaryDetails(month) {
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...'
     });
     loading.present();
-    this.axservice.getEmplSalaryRegister(this.parameterservice.user, new Date('2018-09-01')).subscribe(
+    this.axservice.getEmplSalaryRegister(this.parameterservice.user, month ).subscribe(
       res => {
         loading.dismiss();
-        this.SalaryContract =Object(Array(res));
+        this.SalaryContract = Object(Array(res));
         console.log(this.SalaryContract);
+        var arr=res.PayrollList;
+        if(arr.length !=0 ){
+          this.isPayroll=true;
+        }else{
+          this.isPayroll=false;
+        }
         this.getTotalAmount()
       }, error => {
         loading.dismiss();
@@ -49,12 +65,12 @@ export class PayslipPage {
       }
     )
   }
-  getTotalAmount(){
-    Object.keys(this.SalaryContract).map(el=>{
-      var arr=this.SalaryContract[el].PayrollList;
+  getTotalAmount() {
+    Object.keys(this.SalaryContract).map(el => {
+      var arr = this.SalaryContract[el].PayrollList;
       arr.forEach(key => {
-        this.totalAmount=this.totalAmount + key.Amount;
-        this.currency=key.Currency
+        this.totalAmount = this.totalAmount + key.Amount;
+        this.currency = key.Currency
       });
     })
   }
@@ -62,10 +78,37 @@ export class PayslipPage {
     let toast = this.toastCtrl.create({
       message: msg,
       position: 'top',
+      duration:2000,
       showCloseButton: true,
       closeButtonText: "Ok"
     });
     toast.present();
+  }
+
+  getMonths(from,to) {
+    var startDate = moment(from);
+    var endDate = moment(to);
+    
+    var result = [];
+    
+    var currentDate = startDate.clone();
+    
+    while (currentDate.isBefore(endDate)) {
+        result.push({month:endDate.format("YYYY-MM-01")});
+        endDate.add(-1, 'month');
+    }
+    return result;
+  }
+
+  slideChanged() {
+    let currentIndex = this.slides.getActiveIndex();
+    this.getSalaryDetails(this.periodList[currentIndex].month);
+  }
+  nextSlide() {
+    this.slides.slideNext();
+  }
+  prevSlide() {
+    this.slides.slidePrev();
   }
 
 }

@@ -2,6 +2,7 @@ page-profile {
     .headerCard{
         height:30%;
         text-align: center;
+        position: sticky;
     }
     .card-md:first-child{
         margin: 0px !important; 
@@ -23,5 +24,15 @@ page-profile {
     }
     .item-md{
         padding-left: 0px !important;
+    }
+    .noData{
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
+        font-size: 13pt;
+        color: rgb(47, 41, 43);
+        font-style: normal;
+        text-align: center;
+        padding: 5px;
+        line-height: 1.2;
+        overflow-y: hidden;
     }
 }

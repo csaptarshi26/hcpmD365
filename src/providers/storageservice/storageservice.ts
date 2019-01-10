@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import 'rxjs/Rx';
 import { ParameterserviceProvider } from '../parameterservice/parameterservice';
-import { DateTime } from 'ionic-angular';
 
 @Injectable()
 export class StorageserviceProvider {
-
-  
 
   constructor(private storage: Storage, private parameterservice: ParameterserviceProvider) {
     console.log('Hello StorageserviceProvider Provider');
@@ -17,7 +13,7 @@ export class StorageserviceProvider {
 
   getAllValuesFromStorage = Observable.create((observer) => {
     let variables = 0;
-    this.storage.get('D365URL').then((data) => {
+    this.storage.get('hcpmD365URL').then((data) => {
       this.parameterservice.D365URL = data;
       observer.next(data);
       variables++;
@@ -25,7 +21,7 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
-    this.storage.get('authenticated').then((data) => {
+    this.storage.get('hcpmAuthenticated').then((data) => {
       this.parameterservice.authenticated = data;
       observer.next(data);
       variables++;
@@ -33,7 +29,7 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
-    this.storage.get('user').then((data) => {
+    this.storage.get('hcpmUser').then((data) => {
       this.parameterservice.user = data;
       observer.next(data);
       variables++;
@@ -41,7 +37,7 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
-    this.storage.get('token').then((data) => {
+    this.storage.get('hcpmToken').then((data) => {
       this.parameterservice.token = data;
       observer.next(data);
       variables++;
@@ -49,7 +45,7 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
-    this.storage.get('tokenExpiryDateTime').then((data) => {
+    this.storage.get('hcpmTokenExpiryDateTime').then((data) => {
       this.parameterservice.tokenExpiryDateTime = data;
       observer.next(data);
       variables++;
@@ -57,7 +53,7 @@ export class StorageserviceProvider {
         observer.complete();
       }
     })
-    this.storage.get('employeeId').then((data) => {
+    this.storage.get('hcpmEmployeeId').then((data) => {
       this.parameterservice.employeeId = data;
       observer.next(data);
       variables++;
@@ -68,32 +64,32 @@ export class StorageserviceProvider {
   })
 
   setD365URL(D365URL: string) {
-    this.storage.set('D365URL', D365URL);
+    this.storage.set('hcpmD365URL', D365URL);
     this.parameterservice.D365URL = D365URL;
   }
 
   setAuthenticated(authenticated: boolean) {
-    this.storage.set('authenticated', authenticated);
+    this.storage.set('hcpmAuthenticated', authenticated);
     this.parameterservice.authenticated = authenticated;
   }
 
   setLoginUser(user: string) {
-    this.storage.set('user', user);
+    this.storage.set('hcpmUser', user);
     this.parameterservice.user = user;
   }
 
   setToken(token: string) {
-    this.storage.set('token', token);
+    this.storage.set('hcpmToken', token);
     this.parameterservice.token = token;
   }
 
   setTokenExpiryDateTime(tokenExpiryDateTime: Date) {
-    this.storage.set('tokenExpiryDateTime', tokenExpiryDateTime);
+    this.storage.set('hcpmTokenExpiryDateTime', tokenExpiryDateTime);
     this.parameterservice.tokenExpiryDateTime = tokenExpiryDateTime;
   }
 
   setEmployeeId(employeeId: string) {
-    this.storage.set('employeeId', employeeId);
+    this.storage.set('hcpmEmployeeId', employeeId);
     this.parameterservice.employeeId = employeeId;
   }
 }

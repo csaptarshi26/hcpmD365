@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -39,7 +39,7 @@
   </ion-fab>
 
 
-  <div *ngFor="let leaveDetails of leaveApp,let i=index">
+  <div *ngFor="let leaveDetails of leaveApp,let i=index" style="margin-top:10px;">
     <div *ngIf="!leaveDetails.IsDeleted">
       <div [ngSwitch]="status">
         <ion-list *ngSwitchCase="'all'">
@@ -90,10 +90,10 @@
         </ion-list>
         <!-- FOR DRAFT STATUS -->
         <ion-list *ngSwitchCase="'draft'">
-          <ion-item *ngIf="leaveDetails.Status=='created'">
+          <ion-item *ngIf="leaveDetails.Status=='Created'">
             <ion-label item-right>
               <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
-                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                  'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
                 (click)="editPage(leaveDetails,i)">
                 {{leaveDetails.Status}}
               </button>
@@ -121,7 +121,7 @@
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
                       <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
-                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>Days : {{leaveLine.LeaveDays | number : '1.2-2' }}</p>
                       <p>{{leaveDetails.LeaveApplicationCode}}</p>
                     </ion-item>
                     <ion-item-options side="right">
@@ -140,7 +140,7 @@
           <ion-item *ngIf="leaveDetails.Status=='Approved'">
             <ion-label item-right>
               <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
-                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                  'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
                 (click)="editPage(leaveDetails,i)">
                 {{leaveDetails.Status}}
               </button>
@@ -168,7 +168,7 @@
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
                       <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
-                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>Days : {{leaveLine.LeaveDays | number : '1.2-2' }}</p>
                       <p>{{leaveDetails.LeaveApplicationCode}}</p>
                     </ion-item>
                     <ion-item-options side="right">
@@ -187,7 +187,7 @@
           <ion-item *ngIf="leaveDetails.Status=='Returned'">
             <ion-label item-right>
               <button float-right ion-button outline [ngClass]="{'color-red': leaveDetails.Status === 'Returned', 'color-blue': leaveDetails.Status === 'Created',
-                'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
+                  'color-green': leaveDetails.Status === 'Approved','color-grey': leaveDetails.Status === 'Started'} "
                 (click)="editPage(leaveDetails,i)">
                 {{leaveDetails.Status}}
               </button>
@@ -215,7 +215,7 @@
                   <ion-item-sliding>
                     <ion-item no-padding text-wrap (click)="editPage(leaveDetails)">
                       <p class="leaveDesc">{{leaveLine.AbsenceCodeDescription}}</p>
-                      <p>Days : {{leaveLine.LeaveDays}}</p>
+                      <p>Days : {{leaveLine.LeaveDays | number : '1.2-2' }}</p>
                       <p>{{leaveDetails.LeaveApplicationCode}}</p>
                     </ion-item>
                     <ion-item-options side="right">

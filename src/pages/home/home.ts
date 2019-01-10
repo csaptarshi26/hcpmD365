@@ -56,7 +56,7 @@ export class HomePage {
       })
     } else {
       console.log('Navigating to Login page');
-      this.navCtrl.push(LoginPage);
+      //this.navCtrl.push(LoginPage);
     }
   }
 

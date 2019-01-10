@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -11,25 +11,47 @@
 
 
 <ion-content>
-  <ion-card *ngFor="let salary of SalaryContract">
-    <ion-card-header color="primary" text-center>{{ salary.ValidTo | date :'MMMM , yyyy'}}</ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label>Pay Element</ion-label>
-        <ion-label text-left text-wrap>Amount ({{currency}})</ion-label>
-      </ion-item>
-      <hr>
-      <ion-item *ngFor="let payslip of salary.PayrollList">
-        <ion-label>{{payslip.PayElementCode}}</ion-label>
-        <ion-label text-left text-wrap [ngClass]="{'positive': payslip.Amount > 0,'negetive' :  payslip.Amount < 0}">
-          {{payslip.Amount | number : '1.2-2'}}
-        </ion-label>
-      </ion-item>
-      <hr>
-      <ion-item>
-        <ion-label>Total Amount</ion-label>
-        <ion-label text-left text-wrap> {{totalAmount}} </ion-label>
-      </ion-item>
-    </ion-card-content>
+
+
+  <ion-card>
+    <ion-card-header color="primary" text-center>
+      <!-- {{ salary.ValidTo | date :'MMMM , yyyy'}} -->
+      <div class="slides-container" style="margin-top:10px">
+        <div class="swiper-wrapper">
+          <ion-slides #slides style="height:40px" dir="rtl" (ionSlideDidChange)="slideChanged()">
+            <ion-slide *ngFor="let period of periodList">
+              {{period.month | date :'MMMM , yyyy'}}
+              <div class="swiper-button-next" (click)="nextSlide()"></div>
+              <div class="swiper-button-prev" (click)="prevSlide()"></div>
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </div>
+    </ion-card-header>
+    <div *ngIf="isPayroll ; else noPayroll">
+      <ion-card-content *ngFor="let salary of SalaryContract">
+        <ion-item>
+          <ion-label>Pay Element</ion-label>
+          <ion-label text-right text-wrap>Amount ({{currency}})</ion-label>
+        </ion-item>
+        <hr>
+        <ion-item *ngFor="let payslip of salary.PayrollList">
+          <ion-label>{{payslip.PayElementCode}}</ion-label>
+          <ion-label text-right text-wrap [ngClass]="{'positive': payslip.Amount > 0,'negetive' :  payslip.Amount < 0}">
+            {{payslip.Amount | number : '1.2-2'}}
+          </ion-label>
+        </ion-item>
+        <hr>
+        <ion-item>
+          <ion-label><b>Total Amount</b></ion-label>
+          <ion-label text-right text-wrap><b> {{totalAmount}} </b></ion-label>
+        </ion-item>
+      </ion-card-content>
+    </div>
+    <ng-template #noPayroll>
+      <div class="noData">
+        No payroll for this period
+      </div>
+    </ng-template>
   </ion-card>
 </ion-content>

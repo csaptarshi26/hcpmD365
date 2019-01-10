@@ -5,4 +5,31 @@ page-payslip {
     .negetive{
         color:  color($colors, danger) !important;
     }
+    .sliderNavigation{
+        height:15px;
+        margin-top: 0px;
+    }
+    .swiper-button-prev, .swiper-button-next {
+        top: 50%;
+        margin-top: -10px !important;
+        background-position: center;
+        position: absolute;
+        z-index: 10;
+        width: 27px;
+        height: 20px !important;
+        background-repeat: no-repeat;
+        background-size: 27px 44px;
+        cursor: pointer;
+    }
+
+    .noData{
+        font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
+        font-size: 13pt;
+        color: rgb(47, 41, 43);
+        font-style: normal;
+        text-align: center;
+        padding: 5px;
+        line-height: 1.2;
+        overflow-y: hidden;
+    }
 }

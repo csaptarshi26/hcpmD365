@@ -14,11 +14,14 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-.fc-scroller { overflow-x: auto !important; }
+.fc-scroller { 
+    overflow-x: auto !important; 
+}
 *{
     font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
 }
-.toolbar-md-primary .toolbar-background-md {
-    background: #7dc5f6 !important;
-    //background: linear-gradient(to right, #41c3eb, #346281) !important;
-}
+// .toolbar-md-primary .toolbar-background-md {
+//     background: #f4f4f4 !important;
+//     color: #222;
+//     //background: linear-gradient(to right, #41c3eb, #346281) !important;
+// }

@@ -3,9 +3,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { SettingsPage } from '../pages/settings/settings';
 import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
@@ -16,19 +13,16 @@ import { TimesheetView1Page } from '../pages/timesheet-view1/timesheet-view1';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = ProfilePage;
 
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    statusBar.backgroundColorByHexString('#7dc5f6');
-    statusBar.styleLightContent();
+    
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home',            component: HomePage },
-      { title: 'Login',           component: LoginPage },
       { title: 'Profile',         component: ProfilePage },
       { title: 'Timesheet',       component: TimesheetView1Page },
       { title: 'Leave',           component:LeaveView1Page},
@@ -40,7 +34,8 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#488aff');
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
     });
   }
