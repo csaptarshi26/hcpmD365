@@ -92,7 +92,6 @@ export class TimesheetDayPage {
     this.setFullcalendarEvents(this.tsLineList);
 
     this.periodDateList = this.tsTable.TimesheetPeriodDateList;
-    console.log(this.periodDateList)
   }
 
   goBack() {

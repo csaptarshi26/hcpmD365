@@ -7,7 +7,8 @@ import { AxserviceProvider } from '../../providers/axservice/axservice';
 import { ParameterserviceProvider } from '../../providers/parameterservice/parameterservice';
 import { Worker } from '../../models/worker/worker.interface';
 import { StorageserviceProvider } from '../../providers/storageservice/storageservice';
-import * as moment from 'moment'
+import * as moment from 'moment';
+import {Events} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -26,16 +27,9 @@ export class ProfilePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
     private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider, private sanitizer: DomSanitizer,
-    private toastCtrl: ToastController, public storageservice: StorageserviceProvider) {
+    private toastCtrl: ToastController, public storageservice: StorageserviceProvider,public events : Events) {
 
-    this.toggleDetails =
-      {
-        job: { value: false, icon: 'arrow-dropdown' },
-        address: { value: false, icon: 'arrow-dropdown' },
-        personal: { value: false, icon: 'arrow-dropdown' },
-        document: { value: false, icon: 'arrow-dropdown' },
-        leave: { value: false, icon: 'arrow-dropdown' }
-      }
+    
   }
   toggleCard(data) {
     if (data.value) {
@@ -48,6 +42,14 @@ export class ProfilePage {
   }
   ionViewDidLoad() {
     this.initializeStorageVariables();
+    this.toggleDetails =
+      {
+        job: { value: false, icon: 'arrow-dropdown' },
+        address: { value: false, icon: 'arrow-dropdown' },
+        personal: { value: false, icon: 'arrow-dropdown' },
+        document: { value: false, icon: 'arrow-dropdown' },
+        leave: { value: false, icon: 'arrow-dropdown' }
+      }
   }
 
   getLeaveBalanceDetails() {
@@ -75,10 +77,10 @@ export class ProfilePage {
       res.PassportExpiry="";
     }
     if(moment(res.CivilIdExpiry).format("YYYY-MM-DD")===moment('1900-01-01').format("YYYY-MM-DD")){
-      res.DateOfBirth="";
+      res.CivilIdExpiry="";
     }
     if(moment(res.VisaExpiry).format("YYYY-MM-DD")===moment('1900-01-01').format("YYYY-MM-DD")){
-      res.DateOfBirth="";
+      res.VisaExpiry="";
     }
     return res;
   }
@@ -119,7 +121,7 @@ export class ProfilePage {
     });
     loading.present();
     this.storageservice.getAllValuesFromStorage.subscribe((data) => {
-      console.log('Get value from storage ' + data);
+      
     }, (error) => {
       loading.dismiss();
       console.log('Get value from storage - error ' + error);
@@ -134,13 +136,13 @@ export class ProfilePage {
   navigatingToLogin() {
     this.authenticated = this.parameterservice.authenticated;
     if (this.authenticated == true) {
-
+      this.events.publish('loggedin');
       this.getWorkerDetails();
       this.getLeaveBalanceDetails();
 
       this.axservice.createProxyUserToken.subscribe((data) => {
 
-        console.log('User token ' + data.accessToken);
+        
       }, (error) => {
 
         console.log('Generating token error' + error);
@@ -154,9 +156,8 @@ export class ProfilePage {
   callAADLogin() {
     this.axservice.login.subscribe((data) => {
       console.log('Login ' + data);
-
+      this.events.publish('loggedin');
       this.axservice.createProxyUserToken.subscribe((data) => {
-
         this.authenticated = this.parameterservice.authenticated;
         this.getWorkerDetails();
         this.getLeaveBalanceDetails();
@@ -173,7 +174,8 @@ export class ProfilePage {
     this.callAADLogin();
   }
   logout() {
-
+    this.events.publish('loggedOut');
+    this.parameterservice.authenticated=false;
     this.authenticated = false;
     this.storageservice.setAuthenticated(false);
     this.storageservice.setLoginUser("");

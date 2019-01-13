@@ -53,8 +53,8 @@ export class AxserviceProvider {
         this.storageservice.setToken(authResponse.accessToken);
         this.storageservice.setTokenExpiryDateTime(authResponse.expiresOn);
         observer.next(authResponse);
-        console.log('Proxy user token is ' , authResponse.accessToken);
-        console.log('Proxy user token will expire on ', authResponse.expiresOn);
+        // console.log('Proxy user token is ' , authResponse.accessToken);
+        // console.log('Proxy user token will expire on ', authResponse.expiresOn);
       })
       .catch((e: any) => {
         this.storageservice.setToken('');
