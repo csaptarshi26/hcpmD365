@@ -5,15 +5,6 @@
     </button>
     <ion-title>Profile</ion-title>
 
-    <ion-buttons *ngIf="authenticated" end>
-      <ion-fab top right edge>
-        <button ion-fab mini (click)="logout()" color="danger">
-          <ion-icon name="power"></ion-icon>
-        </button>
-      </ion-fab>
-    </ion-buttons>
-
-
     <ion-buttons end *ngIf="!authenticated">
       <ion-fab top right edge>
         <button ion-fab mini (click)="login()" color="primary">
@@ -29,14 +20,9 @@
 
 <ion-content>
   <div *ngIf="authenticated ; else loginMsgBlock">
-    <ion-fab right bottom>
-      <button ion-fab mini icon-only color="primary" (click)="showPayslip()">
-        <ion-icon name="cash"></ion-icon>
-      </button>
-    </ion-fab>
     <ion-list *ngFor="let emp of worker">
       <div sticky>
-        <ion-card class="headerCard" color="primary" >
+        <ion-card class="headerCard" color="primary">
           <div style="margin-left:40%">
             <img style="height:80px;width:80px;margin-top: 10px" [src]="getImageStr()" />
           </div>
@@ -202,17 +188,14 @@
           <ion-icon float-right name="{{toggleDetails.leave.icon}}"></ion-icon>
         </ion-card-header>
         <ion-card-content *ngIf="toggleDetails.leave.value">
-          <ion-list>
-            <div *ngFor="let leave of leaveBalance">
-              <ion-item>
-                <ion-label text-wrap>{{leave.Description}}</ion-label>
-                <ion-label text-left text-wrap>{{leave.Balance | number : '1.2-2'}}</ion-label>
-              </ion-item>
-            </div>
+          <ion-list >
+            <ion-item *ngFor="let leave of leaveBalance">
+              <ion-label text-wrap>{{leave.Description}}</ion-label>
+              <ion-label text-right text-wrap>{{leave.Balance | number : '1.2-2'}}</ion-label>
+            </ion-item>
           </ion-list>
         </ion-card-content>
       </ion-card>
-
     </ion-list>
   </div>
   <ng-template #loginMsgBlock>

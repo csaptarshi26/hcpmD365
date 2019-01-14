@@ -94,14 +94,11 @@ export class ProfilePage {
       loading.dismiss();
       this.worker = Object(Array(this.checkDate(res)));
       this.imgSrc = res.Image;
+      this.parameterservice.joiningDate=this.worker[0].JoiningDate
     }, (error) => {
       loading.dismiss();
       this.errorToast("Error while connecting to server");
     })
-  }
-
-  showPayslip() {
-    this.navCtrl.push('PayslipPage',{joiningDate:this.worker[0].JoiningDate});
   }
 
   errorToast(msg) {
@@ -173,16 +170,16 @@ export class ProfilePage {
   login() {
     this.callAADLogin();
   }
-  logout() {
-    this.events.publish('loggedOut');
-    this.parameterservice.authenticated=false;
-    this.authenticated = false;
-    this.storageservice.setAuthenticated(false);
-    this.storageservice.setLoginUser("");
-    this.storageservice.setEmployeeId("");
+  // logout() {
+  //   this.events.publish('loggedOut');
+  //   this.parameterservice.authenticated=false;
+  //   this.authenticated = false;
+  //   this.storageservice.setAuthenticated(false);
+  //   this.storageservice.setLoginUser("");
+  //   this.storageservice.setEmployeeId("");
 
-    this.errorToast("Logged out succesfully");
-  }
+  //   this.errorToast("Logged out succesfully");
+  // }
 
 
   public getImageStr() {

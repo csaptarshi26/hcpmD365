@@ -1,3 +1,4 @@
+import { PayslipPage } from './../pages/payslip/payslip';
 import { PipesModule } from './../pipes/pipes.module';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { BrowserModule } from '@angular/platform-browser';
@@ -47,7 +48,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TimesheetView3Page,
     TimesheetDayPage,
     LeaveView1Page,
-    ProfilePage
+    ProfilePage,
+    PayslipPage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     TimesheetView3Page,
     TimesheetDayPage,
     ProfilePage,
-    LeaveView1Page
+    LeaveView1Page,
+    PayslipPage
   ],
   providers: [
     StatusBar,

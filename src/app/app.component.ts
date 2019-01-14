@@ -1,3 +1,4 @@
+import { PayslipPage } from './../pages/payslip/payslip';
 import { ParameterserviceProvider } from './../providers/parameterservice/parameterservice';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
 import { Component, ViewChild } from '@angular/core';
@@ -18,7 +19,7 @@ export class MyApp {
 
   rootPage: any = ProfilePage;
 
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ icon:string, title: string, component: any }>;
   authenticated: boolean = false;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public storageservice: StorageserviceProvider,
@@ -34,22 +35,24 @@ export class MyApp {
     this.events.subscribe('loggedOut', () =>{ 
       this.authenticated = false;
       this.pages = [
-        { title: 'Profile', component: ProfilePage },
-        { title: 'Settings', component: SettingsPage }
+        { icon:'contact', title: 'Profile', component: ProfilePage },
+        { icon:'settings', title: 'Settings', component: SettingsPage }
       ];})
     this.events.subscribe('loggedin', () => {
       this.authenticated = true;
       this.pages = [
-        { title: 'Profile', component: ProfilePage },
-        { title: 'Timesheet', component: TimesheetView1Page },
-        { title: 'Leave', component: LeaveView1Page },
-        { title: 'Settings', component: SettingsPage }
+        { icon:'contact', title: 'Profile', component: ProfilePage },
+        { icon:'time', title: 'Timesheet', component: TimesheetView1Page },
+        { icon:'bicycle', title: 'Leave', component: LeaveView1Page },
+        { icon:'logo-bitcoin', title: 'Payslip',component: PayslipPage},
+        { icon:'settings', title: 'Settings', component: SettingsPage },
+        { icon:'power', title: 'Logout', component : null}
       ];
     });
     if (!this.authenticated) {
       this.pages = [
-        { title: 'Profile', component: ProfilePage },
-        { title: 'Settings', component: SettingsPage }
+        { icon:'contact', title: 'Profile', component: ProfilePage },
+        { icon:'settings', title: 'Settings', component: SettingsPage }
       ];
     }
     console.log(this.authenticated);
@@ -67,7 +70,11 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    if(page.component){
+      this.nav.setRoot(page.component);
+    }else{
+      this.logout();
+    }
   }
 
   menuOpened() {
@@ -80,13 +87,15 @@ export class MyApp {
     this.storageservice.setAuthenticated(false);
     this.storageservice.setLoginUser("");
     this.storageservice.setEmployeeId("");
-
     this.errorToast("Logged out succesfully");
+    this.nav.setRoot(ProfilePage);
+    
   }
   errorToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
       position: 'top',
+      duration:3000,
       showCloseButton: true,
       closeButtonText: "Ok"
     });

@@ -32,7 +32,7 @@ export class PayslipPage {
     private axservice: AxserviceProvider, private parameterservice: ParameterserviceProvider,
     private toastCtrl: ToastController) {
 
-    this.joiningDate = navParams.get("joiningDate");
+    this.joiningDate = this.parameterservice.joiningDate;
 
     this.periodList=this.getMonths(this.joiningDate,new Date());
     console.log(this.periodList);

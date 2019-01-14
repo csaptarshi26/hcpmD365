@@ -12,6 +12,7 @@ export class ParameterserviceProvider {
   public tokenExpiryDateTime: Date;
   public employeeId: string;
   public colorList:any=[];
+  public joiningDate:Date;
   public totalStorageVariables: number = 6;
 
   constructor() {

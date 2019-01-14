@@ -20,6 +20,16 @@
 *{
     font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; 
 }
+.appIcon{
+    font-size: 1.8em !important;
+    color:  color($colors, sideMenuIcon) !important;
+}
+.menuText{
+    display:inline-block; 
+    margin-left: 15px;
+    padding: 0vh 0 .1vh 2vh;
+    vertical-align: super;
+}
 // .toolbar-md-primary .toolbar-background-md {
 //     background: #f4f4f4 !important;
 //     color: #222;
