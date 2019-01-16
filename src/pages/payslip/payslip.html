@@ -29,13 +29,13 @@
       </div>
     </ion-card-header>
     <div *ngIf="isPayroll ; else noPayroll">
-      <ion-card-content *ngFor="let salary of SalaryContract">
+      <ion-card-content>
         <ion-item>
           <ion-label>Pay Element</ion-label>
           <ion-label text-right text-wrap>Amount ({{currency}})</ion-label>
         </ion-item>
         <hr>
-        <ion-item *ngFor="let payslip of salary.PayrollList">
+        <ion-item *ngFor="let payslip of SalaryContract.PayrollList">
           <ion-label>{{payslip.PayElementCode}}</ion-label>
           <ion-label text-right text-wrap [ngClass]="{'positive': payslip.Amount > 0,'negetive' :  payslip.Amount < 0}">
             {{payslip.Amount | number : '1.2-2'}}
@@ -44,7 +44,7 @@
         <hr>
         <ion-item>
           <ion-label><b>Total Amount</b></ion-label>
-          <ion-label text-right text-wrap><b> {{totalAmount}} </b></ion-label>
+          <ion-label text-right text-wrap><b> {{totalAmount | number : '1.2-2'}} </b></ion-label>
         </ion-item>
       </ion-card-content>
     </div>

@@ -3,7 +3,7 @@ import { PayrollContract } from './workerPayroll.interface';
 export interface SalaryContract{
     BenefitList:BenefitContract;
     Name:string;
-    PayrollList:PayrollContract;
+    PayrollList:PayrollContract[];
     PersonnelNumber:string;
     ValidFrom:Date;
     ValidTo:Date;

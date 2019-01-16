@@ -20,7 +20,7 @@ export class PayslipPage {
   @ViewChild(Slides) slides: Slides;
   
   worker: Worker;
-  SalaryContract: SalaryContract;
+  SalaryContract: SalaryContract ={} as SalaryContract;
   totalAmount: any = 0;
   currency: string;
   joiningDate: Date;
@@ -50,7 +50,7 @@ export class PayslipPage {
     this.axservice.getEmplSalaryRegister(this.parameterservice.user, month ).subscribe(
       res => {
         loading.dismiss();
-        this.SalaryContract = Object(Array(res));
+        this.SalaryContract = res;
         console.log(this.SalaryContract);
         var arr=res.PayrollList;
         if(arr.length !=0 ){
@@ -66,13 +66,11 @@ export class PayslipPage {
     )
   }
   getTotalAmount() {
-    Object.keys(this.SalaryContract).map(el => {
-      var arr = this.SalaryContract[el].PayrollList;
+      var arr = this.SalaryContract.PayrollList;
       arr.forEach(key => {
         this.totalAmount = this.totalAmount + key.Amount;
         this.currency = key.Currency
       });
-    })
   }
   errorToast(msg) {
     let toast = this.toastCtrl.create({

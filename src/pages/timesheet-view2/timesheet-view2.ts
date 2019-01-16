@@ -347,7 +347,7 @@ export class TimesheetView2Page {
       this.newTSContact.PeriodFrom = this.periodFrom;
       this.newTSContact.PeriodTo = this.periodTo;
       this.newTSContact.IsEditable = true;
-      this.newTSContact.EmplId = "000020";
+      this.newTSContact.EmplId = this.parameterservice.employeeId;
       this.newTSContact.TimesheetNumber = "";
       var arr = [];
       arr = Array(this.newTsLine);

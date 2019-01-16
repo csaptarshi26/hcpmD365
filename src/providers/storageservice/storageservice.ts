@@ -92,4 +92,9 @@ export class StorageserviceProvider {
     this.storage.set('hcpmEmployeeId', employeeId);
     this.parameterservice.employeeId = employeeId;
   }
+
+  //hcpmEmployeeName
+  //hcpmEmployeeImage
+  //hcpmEmployeeEmail
+  //hcpmEmployeePhone
 }

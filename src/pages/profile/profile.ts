@@ -17,7 +17,7 @@ import {Events} from 'ionic-angular';
 })
 export class ProfilePage {
 
-  worker: Worker;
+  emp: Worker ={} as Worker;
   SalaryContract: SalaryContract;
   toggleDetails: any;
   leaveBalance: LeaveBalanceContract;
@@ -92,9 +92,11 @@ export class ProfilePage {
     loading.present();
     this.axservice.getWorkerDetails(this.parameterservice.user).subscribe(res => {
       loading.dismiss();
-      this.worker = Object(Array(this.checkDate(res)));
+      
+      this.emp = this.checkDate(res);
       this.imgSrc = res.Image;
-      this.parameterservice.joiningDate=this.worker[0].JoiningDate
+      this.storageservice.setEmployeeId(this.emp.PersonnelNumber);
+      this.parameterservice.joiningDate=this.emp.JoiningDate
     }, (error) => {
       loading.dismiss();
       this.errorToast("Error while connecting to server");
