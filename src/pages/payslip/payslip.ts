@@ -25,6 +25,7 @@ export class PayslipPage {
   currency: string;
   joiningDate: Date;
   isPayroll:boolean=false;
+  todayDate:any;
 
   periodList: any = [];
 
@@ -35,10 +36,10 @@ export class PayslipPage {
     this.joiningDate = this.parameterservice.joiningDate;
 
     this.periodList=this.getMonths(this.joiningDate,new Date());
-    console.log(this.periodList);
   }
 
   ionViewDidLoad() {
+    this.today();
     this.getSalaryDetails(new Date());
   }
   getSalaryDetails(month) {
@@ -108,5 +109,11 @@ export class PayslipPage {
   prevSlide() {
     this.slides.slidePrev();
   }
-
+  dateValue(date){
+    this.getSalaryDetails(moment(date).format("YYYY-MM-01"));
+    console.log(moment(date).format("YYYY-MM-01"));
+  }
+  today(){
+    this.todayDate=moment().format('YYYY-MM')
+  }
 }

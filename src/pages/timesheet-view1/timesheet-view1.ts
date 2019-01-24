@@ -99,7 +99,6 @@ export class TimesheetView1Page {
       this.axservice.getWorkerTimesheet(this.parameterservice.user, periodDate).subscribe(res => {
         loading.dismiss();
         if (res != null && res[0].TimesheetNumber != "") this.showDetails = true;
-        console.log(res)
         this.tsTableContact = res;
         this.periodFrom = this.tsTableContact[0].PeriodFrom;
         this.periodTo = this.tsTableContact[0].PeriodTo;
@@ -147,7 +146,6 @@ export class TimesheetView1Page {
         if (!(typeof this.DelTsLineIndex === "undefined")) {
           this.tsTableContact[this.DelTsLineIndex] = res;
         }
-        console.log(this.tsTableContact);
         loading.dismiss();
         this.presentToast("Timesheet Deleted Successfully")
       },

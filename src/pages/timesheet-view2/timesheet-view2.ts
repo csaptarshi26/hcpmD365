@@ -84,7 +84,6 @@ export class TimesheetView2Page {
       this.isNewTs = true;
       this.newTsLine.TimesheetLineDateList = Object(this.tsLineDate);
     }
-    console.log(this.periodDateList);
   }
   selectedProject(project: any) {
     console.log(project);

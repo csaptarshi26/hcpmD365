@@ -20,6 +20,10 @@
         <div class="swiper-wrapper">
           <ion-slides #slides style="height:40px" dir="rtl" (ionSlideDidChange)="slideChanged()">
             <ion-slide *ngFor="let period of periodList">
+              <!-- <ion-item>
+                <ion-datetime style="margin-right:30%" displayFormat="MMMM , YYYY" pickerFormat="MMMM YYYY"
+                [(ngModel)]="period.month" (ionChange)="dateValue(period.month)" max="{{todayDate}}"></ion-datetime>
+              </ion-item> -->
               {{period.month | date :'MMMM , yyyy'}}
               <div class="swiper-button-next" (click)="nextSlide()"></div>
               <div class="swiper-button-prev" (click)="prevSlide()"></div>

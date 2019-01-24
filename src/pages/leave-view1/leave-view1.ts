@@ -48,10 +48,9 @@ export class LeaveView1Page {
       res => {
         loading.dismiss();
         this.leaveApp = res;
-        console.log(res);
       },error => {
         loading.dismiss();
-        console.log(error);
+        console.log(error.status);
       }
     )
   }
@@ -112,7 +111,6 @@ export class LeaveView1Page {
     }, 2000);
   }
   deleteLeaveSerivceCall(leaveAppContact,i){
-    console.log(leaveAppContact);
     let loading = this.loadingCtrl.create({
       spinner: 'circles',
       content: 'Please wait...',

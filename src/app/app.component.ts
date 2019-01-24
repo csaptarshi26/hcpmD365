@@ -55,7 +55,6 @@ export class MyApp {
         { icon:'settings', title: 'Settings', component: SettingsPage }
       ];
     }
-    console.log(this.authenticated);
   }
   initializeApp() {
     this.platform.ready().then(() => {

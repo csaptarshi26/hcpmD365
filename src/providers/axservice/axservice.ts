@@ -50,6 +50,7 @@ export class AxserviceProvider {
     authContext.acquireTokenSilentAsync(this.parameterservice.D365URL, 'fe96cad0-da0f-48e9-af8d-124d17ce1e7e',
      this.parameterservice.proxyUser)
       .then((authResponse: AuthenticationResult) => {
+        
         this.storageservice.setToken(authResponse.accessToken);
         this.storageservice.setTokenExpiryDateTime(authResponse.expiresOn);
         observer.next(authResponse);

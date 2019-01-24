@@ -20,8 +20,7 @@
 
 <ion-content>
   <div *ngIf="authenticated ; else loginMsgBlock">
-    <ion-list>
-      <div sticky>
+    <ion-list *ngIf="emp != null;">
         <ion-card class="headerCard" color="primary">
           <div style="margin-left:40%">
             <img style="height:80px;width:80px;margin-top: 10px" [src]="getImageStr()" />
@@ -32,7 +31,6 @@
             <p>{{emp.Email}}</p>
           </ion-card-content>
         </ion-card>
-      </div>
       <!-- JOB DETAILS -->
       <ion-card class="cardInfo" (click)="toggleCard(toggleDetails.job)">
         <ion-card-header color="primary" text-center>
@@ -188,7 +186,7 @@
           <ion-icon float-right name="{{toggleDetails.leave.icon}}"></ion-icon>
         </ion-card-header>
         <ion-card-content *ngIf="toggleDetails.leave.value">
-          <ion-list >
+          <ion-list>
             <ion-item *ngFor="let leave of leaveBalance">
               <ion-label text-wrap>{{leave.Description}}</ion-label>
               <ion-label text-right text-wrap>{{leave.Balance | number : '1.2-2'}}</ion-label>
