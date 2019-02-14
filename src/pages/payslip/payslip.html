@@ -50,6 +50,10 @@
           <ion-label><b>Total Amount</b></ion-label>
           <ion-label text-right text-wrap><b> {{totalAmount | number : '1.2-2'}} </b></ion-label>
         </ion-item>
+
+        <ion-item (click)="downloadPayslip()">
+          <ion-label><u>Download as PDF</u></ion-label>
+        </ion-item>
       </ion-card-content>
     </div>
     <ng-template #noPayroll>

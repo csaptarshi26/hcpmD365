@@ -8,19 +8,16 @@ import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.in
 import { Component, Input, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, ToastController } from 'ionic-angular';
 import { CalendarComponent } from 'ng-fullcalendar';
-import { Options } from 'fullcalendar';
 import * as moment from 'moment'
 import { TimesheetLineDateList } from '../../models/timesheet/tsLineDateListContact.interface';
 import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
-
+import * as $ from 'jquery'
 @IonicPage()
 @Component({
   selector: 'page-timesheet-day',
   templateUrl: 'timesheet-day.html',
 })
 export class TimesheetDayPage {
-
-  calendarOptions: Options;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   fcHeader: any = 0;

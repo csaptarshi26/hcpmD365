@@ -244,6 +244,22 @@ export class AxserviceProvider {
     return service;
   } 
 
+  getPayslip(user: string, date: Date): Observable<any> {
+    var service = Observable.create((observer) => {
+      let url = this.parameterservice.D365URL + '/api/services/AFZCRMServiceGroup/AFZCRMService/getEmpPaySlip';
+      this.hTTP.setDataSerializer( "utf8" );
+      let body = {_empId: user, _date: date};
+      this.hTTP.post(url, JSON.stringify(body), {"Content-Type": "application/json","Authorization": "Bearer "+this.parameterservice.token}).then( data => {      
+        observer.next(JSON.parse(data.data));
+      }).catch( error => {
+        observer.error(error);
+      });
+    });
+    return service;
+  } 
+
+
+
   private extractData(res: Response) { 
     return res.json() || { };
   }

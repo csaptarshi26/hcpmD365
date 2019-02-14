@@ -1,3 +1,4 @@
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { PayslipPage } from './../pages/payslip/payslip';
 import { PipesModule } from './../pipes/pipes.module';
 import { LeaveView1Page } from './../pages/leave-view1/leave-view1';
@@ -32,7 +33,9 @@ import { TimesheetView3Page } from '../pages/timesheet-view3/timesheet-view3';
 import { TimesheetDayPage } from '../pages/timesheet-day/timesheet-day';
 import { HTTP } from '@ionic-native/http';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener';
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
   slidesPerView: 'auto'
@@ -79,6 +82,10 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PayslipPage
   ],
   providers: [
+    File,
+    DocumentViewer,
+    FileTransfer,
+    FileOpener,
     StatusBar,
     SplashScreen,
     MSAdal,

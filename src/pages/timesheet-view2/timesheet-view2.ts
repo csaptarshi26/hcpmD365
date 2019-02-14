@@ -1,7 +1,6 @@
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { TimesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
 import { CalendarComponent } from 'ng-fullcalendar';
-import { Options } from 'fullcalendar';
 import { TimesheetDayPage } from './../timesheet-day/timesheet-day';
 import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
@@ -36,7 +35,6 @@ import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodD
 })
 export class TimesheetView2Page {
   @ViewChild(Nav) nav: Nav;
-  calendarOptions: Options;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   fcHeader: any = 0;
