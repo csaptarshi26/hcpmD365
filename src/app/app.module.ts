@@ -6,7 +6,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { FullCalendarModule } from 'ng-fullcalendar';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
@@ -60,7 +59,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BrowserAnimationsModule,
     IonicModule.forRoot(MyApp,{tabsPlacement: 'top'}),
     IonicStorageModule.forRoot(),
-    FullCalendarModule,
     SwiperModule,
     MomentModule,
     CustomFormsModule,

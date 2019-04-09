@@ -184,7 +184,7 @@ export class LeaveAddPage {
     }
     
     $(document).ready(function () {
-      $('#calendar1').fullCalendar({
+     (<any>$('#calendar1')).fullCalendar({
         height: 300,
         editable: true,
         eventLimit: false,
@@ -200,10 +200,10 @@ export class LeaveAddPage {
         defaultView: 'month',
         events: evntData
       });
-      $('#calendar1').fullCalendar('gotoDate', moment(edate));
-      $('#calendar1').fullCalendar('removeEvents');
-      $('#calendar1').fullCalendar('addEventSource', evntData);
-      $('#calendar1').fullCalendar('rerenderEvents');
+      (<any>$('#calendar1')).fullCalendar('gotoDate', moment(edate));
+      (<any>$('#calendar1')).fullCalendar('removeEvents');
+      (<any>$('#calendar1')).fullCalendar('addEventSource', evntData);
+      (<any>$('#calendar1')).fullCalendar('rerenderEvents');
     });
   }
 

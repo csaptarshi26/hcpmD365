@@ -9,7 +9,6 @@ import * as _ from "lodash";
 import { TimesheetDayPage } from '../timesheet-day/timesheet-day';
 import { Slides } from 'ionic-angular';
 import * as moment from 'moment'
-import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 @IonicPage()
 @Component({

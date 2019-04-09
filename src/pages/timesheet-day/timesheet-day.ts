@@ -1,13 +1,10 @@
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
-import { CommentsPage } from './../comments/comments';
 import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { TimesheetView2Page } from './../timesheet-view2/timesheet-view2';
 import { TimesheetLineList } from './../../models/timesheet/tsLineListContact.interface';
-import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
 import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, LoadingController, ToastController } from 'ionic-angular';
-import { CalendarComponent } from 'ng-fullcalendar';
 import * as moment from 'moment'
 import { TimesheetLineDateList } from '../../models/timesheet/tsLineDateListContact.interface';
 import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
@@ -18,7 +15,6 @@ import * as $ from 'jquery'
   templateUrl: 'timesheet-day.html',
 })
 export class TimesheetDayPage {
-  @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   fcHeader: any = 0;
 
@@ -164,7 +160,7 @@ export class TimesheetDayPage {
     var sdate = moment(this.periodFrom).format("YYYY-MM-DD");
     var edate = moment(this.periodTo, "YYYY-MM-DD").add(1,'days')
     $(document).ready(function () {
-      $('#calendar1').fullCalendar({
+      (<any>$('#calendar0')).fullCalendar({
         height: 200,
         editable: true,
         eventLimit: false,
@@ -207,9 +203,9 @@ export class TimesheetDayPage {
         if (day.length == 1) day = "0" + day;
         $(this).html(dayName + " " + month + "/" + day);
       });
-      $('#calendar1').fullCalendar('removeEvents');
-      $('#calendar1').fullCalendar('addEventSource', evntData);
-      $('#calendar1').fullCalendar('rerenderEvents');
+      (<any>$('#calendar0')).fullCalendar('removeEvents');
+      (<any>$('#calendar0')).fullCalendar('addEventSource', evntData);
+      (<any>$('#calendar0')).fullCalendar('rerenderEvents');
     });
   }
 }

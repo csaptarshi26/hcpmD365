@@ -1,11 +1,8 @@
 import { ParameterserviceProvider } from './../../providers/parameterservice/parameterservice';
 import { TimesheetLineDateList } from './../../models/timesheet/tsLineDateListContact.interface';
-import { CalendarComponent } from 'ng-fullcalendar';
-import { TimesheetDayPage } from './../timesheet-day/timesheet-day';
 import { AxserviceProvider } from './../../providers/axservice/axservice';
-import { TimesheetView1Page } from './../timesheet-view1/timesheet-view1';
 import { TimesheetView3Page } from './../timesheet-view3/timesheet-view3';
-import { Component, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Modal, AlertController, LoadingController } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { TimesheetLineList } from '../../models/timesheet/tsLineListContact.interface';
@@ -15,10 +12,9 @@ import { TimesheetCategory } from '../../models/timesheet/TimesheetCategory.inte
 import * as moment from 'moment';
 import { ToastController } from 'ionic-angular';
 declare var $: any;
-import { Nav, Platform } from 'ionic-angular';
+import { Nav } from 'ionic-angular';
 import { TimesheetTableContact } from '../../models/timesheet/tsTableContract.interface';
 import { Events } from 'ionic-angular';
-import { Validators } from '@angular/forms';
 import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodDate.interface';
 
 /**
@@ -35,7 +31,6 @@ import { TimesheetPeriodDateList } from '../../models/timesheet/timesheetPeriodD
 })
 export class TimesheetView2Page {
   @ViewChild(Nav) nav: Nav;
-  @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   fcHeader: any = 0;
   isEditable: boolean;

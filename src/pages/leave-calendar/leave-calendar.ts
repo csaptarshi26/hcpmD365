@@ -4,7 +4,6 @@ import { AxserviceProvider } from './../../providers/axservice/axservice';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
-import { LeaveView2Page } from '../leave-view2/leave-view2';
 @IonicPage()
 @Component({
   selector: 'page-leave-calendar',
@@ -60,7 +59,7 @@ export class LeaveCalendarPage {
   setFullcalendarOptions(evntData: any) {
     const component = this;
     $(document).ready(function () {
-      $('#calendar12').fullCalendar({
+      (<any>$('#calendar12')).fullCalendar({
         height:400,
         editable: true,
         eventLimit: false,
@@ -86,9 +85,9 @@ export class LeaveCalendarPage {
         defaultView: 'month',
         events: evntData
       });
-      $('#calendar12').fullCalendar('removeEvents');
-      $('#calendar12').fullCalendar('addEventSource', evntData);
-      $('#calendar12').fullCalendar('rerenderEvents');
+      (<any>$('#calendar12')).fullCalendar('removeEvents');
+      (<any>$('#calendar12')).fullCalendar('addEventSource', evntData);
+      (<any>$('#calendar12')).fullCalendar('rerenderEvents');
     });
   }
 
